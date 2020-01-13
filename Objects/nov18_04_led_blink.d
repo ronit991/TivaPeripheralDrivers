@@ -1,0 +1,11 @@
+.\objects\nov18_04_led_blink.o: nov18_04_led_blink.c
+.\objects\nov18_04_led_blink.o: TM4C123xx.h
+.\objects\nov18_04_led_blink.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\nov18_04_led_blink.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\nov18_04_led_blink.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_04_led_blink.o: TM4C123xx.h
+.\objects\nov18_04_led_blink.o: TM4C123xx.h
+.\objects\nov18_04_led_blink.o: GPIO_PIN_NAMES.h
+.\objects\nov18_04_led_blink.o: TM4C123xx.h
+.\objects\nov18_04_led_blink.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_04_led_blink.o: TM4C123xx.h

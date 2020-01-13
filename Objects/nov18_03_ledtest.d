@@ -1,0 +1,11 @@
+.\objects\nov18_03_ledtest.o: nov18_03_ledtest.c
+.\objects\nov18_03_ledtest.o: TM4C123xx.h
+.\objects\nov18_03_ledtest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\nov18_03_ledtest.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\nov18_03_ledtest.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_03_ledtest.o: TM4C123xx.h
+.\objects\nov18_03_ledtest.o: TM4C123xx.h
+.\objects\nov18_03_ledtest.o: GPIO_PIN_NAMES.h
+.\objects\nov18_03_ledtest.o: TM4C123xx.h
+.\objects\nov18_03_ledtest.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_03_ledtest.o: TM4C123xx.h

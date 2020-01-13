@@ -1,0 +1,12 @@
+.\objects\jan01__00_spi_tiva_to_uno.o: Jan01__00_spi_tiva_to_uno.c
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xx.h
+.\objects\jan01__00_spi_tiva_to_uno.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\jan01__00_spi_tiva_to_uno.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\jan01__00_spi_tiva_to_uno.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xxGPIO_DRIVER.h
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xx.h
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xxSSI_DRIVER.h
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xx.h
+.\objects\jan01__00_spi_tiva_to_uno.o: GPIO_PIN_NAMES.h
+.\objects\jan01__00_spi_tiva_to_uno.o: TM4C123xx.h
+.\objects\jan01__00_spi_tiva_to_uno.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

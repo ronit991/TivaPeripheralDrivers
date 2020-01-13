@@ -1,0 +1,12 @@
+.\objects\nov18_05_pin_read.o: nov18_05_pin_read.c
+.\objects\nov18_05_pin_read.o: TM4C123xx.h
+.\objects\nov18_05_pin_read.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\nov18_05_pin_read.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\nov18_05_pin_read.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\nov18_05_pin_read.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_05_pin_read.o: TM4C123xx.h
+.\objects\nov18_05_pin_read.o: TM4C123xx.h
+.\objects\nov18_05_pin_read.o: GPIO_PIN_NAMES.h
+.\objects\nov18_05_pin_read.o: TM4C123xx.h
+.\objects\nov18_05_pin_read.o: TM4C123xxGPIO_DRIVER.h
+.\objects\nov18_05_pin_read.o: TM4C123xx.h

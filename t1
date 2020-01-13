@@ -1,0 +1,22 @@
+	switch(PortName)
+	{
+		case GPIO_PORT_A:	GPIOA_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<0;
+											break;
+		case GPIO_PORT_B:	GPIOB_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<1;
+											break;
+		case GPIO_PORT_C:	GPIOC_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<2;
+											break;
+		case GPIO_PORT_D:	GPIOD_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<3;
+											break;
+		case GPIO_PORT_E:	GPIOE_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<4;
+											break;
+		case GPIO_PORT_F:	GPIOF_INT_PIN = PinNumber;
+											Nvic->EN[0] |= 1<<30;
+											break;
+
+	}

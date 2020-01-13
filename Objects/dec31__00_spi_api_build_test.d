@@ -1,0 +1,9 @@
+.\objects\dec31__00_spi_api_build_test.o: dec31__00_spi_api_build_test.c
+.\objects\dec31__00_spi_api_build_test.o: TM4C123xx.h
+.\objects\dec31__00_spi_api_build_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\dec31__00_spi_api_build_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\dec31__00_spi_api_build_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\dec31__00_spi_api_build_test.o: TM4C123xxGPIO_DRIVER.h
+.\objects\dec31__00_spi_api_build_test.o: TM4C123xx.h
+.\objects\dec31__00_spi_api_build_test.o: TM4C123xxSSI_DRIVER.h
+.\objects\dec31__00_spi_api_build_test.o: TM4C123xx.h
