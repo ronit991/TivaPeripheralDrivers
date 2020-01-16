@@ -39,8 +39,30 @@ uint8_t GPIOF_INT_PIN = 99;
 
 
 
+
 /******************************************************************************************************************
-*																					APIs Supported by this Drivier																					*
+*																						Functions for internal use																						*
+*	Below are the definitions for functions which are meant to be used only by the GPIO Driver APIs.								*
+*	Any use of these functions should be striclty avoided outside the scope of this driver as this may cause				*
+*	serious problems within the microcontroller.																																		*
+******************************************************************************************************************/
+
+static void GPIO_write_unlock(	GPIO_reg* pGPIO)
+{
+	pGPIO->GPIO_LOCK = 0x4C4F434B;
+	pGPIO->GPIO_CR |= 0x00000011;
+}
+
+static void GPIO_write_lock(	GPIO_reg* pGPIO)
+{
+	pGPIO->GPIO_LOCK = 0x00000000;
+	pGPIO->GPIO_CR &= 0x11111100;
+}
+
+
+
+/******************************************************************************************************************
+*																				User APIs Supported by this Driver																				*
 *																																																									*
 *	void			GPIO_ClockControl()		-- Enable/Disable clock for a GPIO port																					*
 *	void			GPIO_Init()						-- Initialize a GPIO port																												*
@@ -471,26 +493,6 @@ uint8_t		getAltFnNum(uint8_t AltFnName)
 		case I2C3:	return 3;
 		default:		return 0;
 	}
-}
-
-/******************************************************************************************************************
-*																						Functions for internal use																						*
-*		Below are the definitions for functions which are meant to be used only by the above APIs.	Any use of these	*
-*		functions should be striclty avoided outside the scope of this driver as this may cause serious problems			*
-*		within the microcontroller.																																										*
-*		Definitions for these can be found in TM4C123xxGPIO_DRIVER.c file																							*
-******************************************************************************************************************/
-
-void GPIO_write_unlock(	GPIO_reg* pGPIO)
-{
-	pGPIO->GPIO_LOCK = 0x4C4F434B;
-	pGPIO->GPIO_CR |= 0x00000011;
-}
-
-void GPIO_write_lock(	GPIO_reg* pGPIO)
-{
-	pGPIO->GPIO_LOCK = 0x00000000;
-	pGPIO->GPIO_CR &= 0x11111100;
 }
 
 

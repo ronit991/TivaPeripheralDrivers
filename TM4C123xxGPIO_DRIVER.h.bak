@@ -2,7 +2,8 @@
 *	@file			-	TM4C123xxGPIO_DRIVER.h																																							*
 *	@author		-	Ronit Vairagi																																												*
 *																																																									*
-*	This file contains prototypes of GPIO Driver APIs. 
+*	This file contains prototypes of GPIO Driver APIs. Bit position macros and shorthands which are used by the			*
+*	GPIO Driver APIs are also defined here.																																					*
 *																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
 ******************************************************************************************************************/
@@ -98,31 +99,17 @@ void			GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_
 void			GPIO_DeInit(			uint8_t GPIO_PORT);															// De-Initialize or Reset a GPIO port
 void			GPIO_ClockControl(uint8_t GPIO_Port, uint8_t Clk_En);							// Enable/Disable clock for a GPIO port
 
+void			DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in digital mode.
+void			AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in  analog mode.
+void			InterruptPin(uint8_t pin, uint8_t triggerMode);										// Configure a pin with interrupt function.
+
 void			ToggleGPIOPin(uint8_t pin);																				// Toggle the state of a GPIO pin
 void			WriteToPin(		uint8_t pin, uint8_t Value);												// Write data to a GPIO pin
 void			WriteToPort(	uint8_t GPIO_PORT, uint8_t Values);									// Write data to a GPIO port
 uint8_t		ReadFromPin(	uint8_t pin);																				// Read data from a GPIO pin
 uint8_t		ReadFromPort(	uint8_t GPIO_PORT);																	// Read data from a GPIO port
 
-void			DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in digital mode
-void			AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in  analog mode
-
-void			InterruptPin(uint8_t pin, uint8_t triggerMode);
-
-uint8_t		getAltFnNum(uint8_t AltFnName);
-
-
-
-/******************************************************************************************************************
-*																						Functions for internal use																						*
-*		Below are the prototypes for functions which are meant to be used only by the above APIs.	Any use of these		*
-*		functions should be striclty avoided outside the scope of this driver as this may cause serious problems			*
-*		within the microcontroller.																																										*
-*		Definitions for these can be found in TM4C123xxGPIO_DRIVER.c file																							*
-******************************************************************************************************************/
-
-void GPIO_write_unlock(	GPIO_reg* pGPIO);
-void GPIO_write_lock(		GPIO_reg* pGPIO);
+uint8_t		getAltFnNum(uint8_t AltFnName);																		// Get the alternate function no. for a specific peripheral
 
 
 

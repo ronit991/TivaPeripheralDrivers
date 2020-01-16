@@ -98,10 +98,11 @@
 
 // @InterruptsNeedToBeEnabled
 #define SSI_NoInterrupts				0
-#define SSI_InterruptTxFIFO			4
-#define SSI_InterruptRxFIFO			3
-#define SSI_InterruptRxTimeout	2
 #define SSI_InterruptRxOverrun	1
+#define SSI_InterruptRxTimeout	2
+#define SSI_InterruptRxFIFO			3
+#define SSI_InterruptTxFIFO			4
+#define SSI_InterruptTxRxBoth		5
 
 
 
@@ -115,11 +116,25 @@ void SSIDeInit(uint8_t SSIx);
 void SSIClockControl(uint8_t SSIx,uint8_t	EnorDi);
 
 void SSIStart(uint8_t SSIx, uint8_t DeviceMode, uint8_t InterruptMode);
+void SSIStartK(uint8_t SSIx, uint8_t DeviceMode);
+
+ssi_reg* GetSSIAddressOf(uint8_t SSIx);
 
 void SSISendData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
 void SSIRecvData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
 
 void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
 void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
+
+void SSIIntrSend(uint8_t SSIx, uint8_t SS_pin);
+void SSIIntrReceive(uint8_t SSIx, uint8_t SS_pin);
+
+extern uint16_t* SSIIntrTxBuf[4];
+extern uint16_t* SSIIntrRxBuf[4];
+
+extern uint8_t SSIIntrTxCount[4];
+extern uint8_t SSIIntrRxCount[4];
+
+//extern uint8_t SSIIntrMaskPosition[4];
 
 #endif

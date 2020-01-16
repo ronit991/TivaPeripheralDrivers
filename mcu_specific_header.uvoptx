@@ -119,6 +119,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -147,25 +151,41 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>22</LineNumber>
+          <LineNumber>17</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>4690</Address>
+          <Address>4844</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\jan05__00_spi_tiva_to_arduino.c</Filename>
+          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\jan05__00_spi_tiva_to_arduino.c\22</Expression>
+          <Expression>\\mcu_specific_header\jan12__00_spi_master_with_interrupt.c\17</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>263</LineNumber>
+          <LineNumber>21</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>3080</Address>
+          <Address>4862</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\mcu_specific_header\jan12__00_spi_master_with_interrupt.c\21</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>307</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>3350</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -174,28 +194,12 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\TM4C123xxSSI_DRIVER.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\TM4C123xxSSI_DRIVER.c\263</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>17</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>4662</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\jan05__00_spi_tiva_to_arduino.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\jan05__00_spi_tiva_to_arduino.c\17</Expression>
+          <Expression>\\mcu_specific_header\TM4C123xxSSI_DRIVER.c\307</Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>276</LineNumber>
+          <LineNumber>13</LineNumber>
           <EnabledFlag>1</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -204,7 +208,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\TM4C123xxSSI_DRIVER.c</Filename>
+          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -254,6 +258,16 @@
           <count>8</count>
           <WinNumber>1</WinNumber>
           <ItemText>currentData</ItemText>
+        </Ww>
+        <Ww>
+          <count>9</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pSSI0</ItemText>
+        </Ww>
+        <Ww>
+          <count>10</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>pSSI1</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
