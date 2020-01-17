@@ -22,7 +22,7 @@ int main(void)
 		delay_l();
 		blink();
 	}
-	
+	pSSI0->SSI_IM = 0;
 	return 0;
 }
 
@@ -30,6 +30,7 @@ int main(void)
 void SSI0_Handler(void)
 {
 	uint8_t Interrupts = (uint8_t)(pSSI0->SSI_MIS & 0x0000000F);
+	
 	if(Interrupts & 0x01)				//	Receive overrun
 	{
 	}

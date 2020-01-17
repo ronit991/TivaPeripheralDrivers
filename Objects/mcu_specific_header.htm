@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\mcu_specific_header.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\mcu_specific_header.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Tue Jan 14 21:41:35 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Thu Jan 16 22:45:17 2020
 <BR><P>
 <H3>Maximum Stack Usage =        144 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1336,14 +1336,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[13]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSI0_Handler
 </UL>
 
-<P><STRONG><a name="[9d]"></a>SSISendData</STRONG> (Thumb, 218 bytes, Stack size 64 bytes, tm4c123xxssi_driver.o(i.SSISendData))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = SSISendData &rArr; __hardfp_ceil &rArr; __aeabi_cdrcmple
+<P><STRONG><a name="[9d]"></a>SSISendData</STRONG> (Thumb, 196 bytes, Stack size 56 bytes, tm4c123xxssi_driver.o(i.SSISendData))
+<BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = SSISendData &rArr; __hardfp_ceil &rArr; __aeabi_cdrcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__hardfp_ceil
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
-<LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WriteToPin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -1366,7 +1365,6 @@ Global Symbols
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getPinNumber
 </UL>
 <BR>[Called By]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;blink
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSISendData
 <LI><a href="#[98]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSIIntrSend
 <LI><a href="#[99]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SSIInit
 </UL>

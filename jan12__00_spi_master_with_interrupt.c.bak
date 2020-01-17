@@ -13,7 +13,7 @@ int main(void)
 //	SSIStart(SSI0, SSI_Master_Mode, SSI_NoInterrupts);
 //	SSIStart(SSI1, SSI_Master_Mode, SSI_InterruptTxFIFO);
 	SSIStartK(SSI0,SSI_Master_Mode);
-	SSIStartK(SSI1,SSI_Master_Mode);
+	SSIStartK(SSI3,SSI_Master_Mode);
 	char data[] = "ok";
 	uint16_t length = strlen(data);
 	while(1)
@@ -22,14 +22,15 @@ int main(void)
 		delay_l();
 		blink();
 	}
-	
+//	pSSI0->SSI_IM = 0;
 	return 0;
 }
 
 /*****************************************************************************************************************/
 void SSI0_Handler(void)
 {
-	uint8_t Interrupts = (uint8_t)(pSSI0->SSI_MIS & 0x0000000F);
+	/*uint8_t Interrupts = (uint8_t)(pSSI0->SSI_MIS & 0x0000000F);
+	
 	if(Interrupts & 0x01)				//	Receive overrun
 	{
 	}
@@ -43,7 +44,7 @@ void SSI0_Handler(void)
 	else if(Interrupts & 0x08)	//	Transmit FIFO Half-Full or less
 	{
 		SSIIntrSend(SSI0, SSI0_SS_PIN);
-	}
+	}*/
 }
 
 /*****************************************************************************************************************/

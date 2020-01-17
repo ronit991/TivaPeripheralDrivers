@@ -41,6 +41,18 @@ SSI interrupt function
 SSI0_Handler()
 
 
+/******************************************************************************************************************
+*																								NEW PERIPHERAL SECTION																						*
+******************************************************************************************************************/
+//	x.1 Base Addresses
+//	x.2 Clock Enable and Disable Macros
+//	x.3 Register Definition
+//	x.4 Module Access Pointers
+
+
+
+
+
 
 
 

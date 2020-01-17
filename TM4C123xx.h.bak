@@ -4,7 +4,7 @@
 *																																																									*
 * This file contains base addresses of core components, base addresses of peripherals, core components' register	*
 *	definitions, peripheral register definitions, pointers to peripheral registers, and clock enable/disable macros.*
-* This file also contains some shorthands which are used in the other files.																			*
+* This file also contains some shorthands and peripheral name definitions which are used in the other files.			*
 *																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
 ******************************************************************************************************************/
@@ -16,21 +16,41 @@
 *			<>	Change GPIO register pointer names from GPIO_X(H/P) to GPIOX_(H/P) to increase readability.							*
 *					Make sure to update every header and source files to match the new naming convention.										*
 *			<>	Add bus selection feature in every function.																														*
+*			<>	Update the Exception Handler register definition with all exception handlers.														*
 ******************************************************************************************************************/
 
+/******************************************************************************************************************
+*	Sections in this file:-																																													*
+* 0. Peripheral Names																																															*
+*	1. Core Components																																															*
+* 2. GPIO Modules																																																	*
+* 3. SSI Modules																																																	*
+*	4. I2C Modules																																																	*
+*																																																									*
+*		Each peripheral has the following sub-sections:-																															*
+*		i		Base Addresses.																																														*
+*		ii	Clock Enable & Disable Macros.																																						*
+*		iii	Peripheral Register Definition.																																						*
+*		iv	Module Access Pointers.																																										*
+******************************************************************************************************************/
+
+
+
+#ifndef TM4C123XX_H
+#define TM4C123XX_H
 
 #include<stdint.h>
 #include<stdio.h>
 #include<stdlib.h>
 
-#ifndef TM4C123XX_H
-#define TM4C123XX_H
+#define __vo volatile
 
 
 
 /******************************************************************************************************************
 *																									Peripheral Names																								*
 ******************************************************************************************************************/
+
 // 1 - GPIO ports
 #define GPIO_PORT_A 0
 #define GPIO_PORT_B 1
@@ -45,7 +65,7 @@
 #define SSI2 8
 #define SSI3 9
 
-// 3 - Inter Integrated Circuit (I2C) Interface
+// 3 - Inter Integrated Circuit (I2C) Communication Interface
 #define I2C0 10
 #define I2C1 11
 #define I2C2 12
@@ -70,73 +90,22 @@
 
 
 /******************************************************************************************************************
-*																				 CORE COMPONENTS' BASE ADDRESSES																					*
+*																								 CORE COMPONENTS																									*
 ******************************************************************************************************************/
-#define FLASH_BASE_ADDRESS						0X00000000U							// Base Addr of Flash Memory
-#define SRAM_BASE_ADDRESS							0x20000000U							// Base Addr of SRAM1
-#define SRAM													SRAM_BASE_ADDRESS				// Shorthand for SRAM Base Addr
 
-#define CORE_PERIPH_BASE 							0xE000E000U							// Base Addr of Core Peripherals
-#define SYSTEM_CONTROL_BASE_ADDRESS		0x400FE000U							// Base Addr of System Control Block Register
-#define NVIC_BASE_ADDRESS							0xE000E100U							// Base Addr of NVIC registers
+//	1.1 - Base Addresses
+#define FLASH_BASE_ADDR								0X00000000U							// Base Addr of Flash Memory
+#define SRAM_BASE_ADDR								0x20000000U							// Base Addr of SRAM1
+
+#define CORE_PERIPHERAL_BASE_ADDR 		0xE000E000U							// Base Addr of Core Peripherals
+#define SYSTEM_CONTROL_BASE_ADDR			0x400FE000U							// Base Addr of System Control Block Register
+#define NVIC_BASE_ADDR								0xE000E100U							// Base Addr of NVIC registers
 #define VECTOR_TABLE_BASE_ADDR				0x00000000U							// Base Addr of Vector Table
 
 
 
-/******************************************************************************************************************
-*																							 GPIO BASE ADDRESSES																								*
-*		These use the format GPIOX(H/P) = GPIO_BASE_ADDRESS + Port_Offset																							*
-*		Note: All GPIO  ports are connected to both AHB and APB Bus ( GPIOxP => APB bus GPIOxH => AHB bus )						*
-******************************************************************************************************************/
-#define GPIO_BASE																		 0x40004000U
-#define GPIOAP_BASE_ADDRESS							(GPIO_BASE + 0x00000000U)
-#define GPIOBP_BASE_ADDRESS							(GPIO_BASE + 0x00001000U)
-#define GPIOCP_BASE_ADDRESS							(GPIO_BASE + 0x00002000U)
-#define GPIODP_BASE_ADDRESS							(GPIO_BASE + 0x00003000U)
-#define GPIOEP_BASE_ADDRESS							(GPIO_BASE + 0x00020000U)
-#define GPIOFP_BASE_ADDRESS							(GPIO_BASE + 0x00021000U)
+//	1.2 - System Control Block : Register Definition
 
-#define GPIOAH_BASE_ADDRESS							(GPIO_BASE + 0x00054000U)
-#define GPIOBH_BASE_ADDRESS							(GPIO_BASE + 0x00055000U)
-#define GPIOCH_BASE_ADDRESS							(GPIO_BASE + 0x00056000U)
-#define GPIODH_BASE_ADDRESS							(GPIO_BASE + 0x00057000U)
-#define GPIOEH_BASE_ADDRESS							(GPIO_BASE + 0x00058000U)
-#define GPIOFH_BASE_ADDRESS							(GPIO_BASE + 0x00059000U)
-
-
-
-/******************************************************************************************************************
-*																						SSI MODULE BASE ADDRESSES																							*
-*		SSI interface is connected to APB bus.																																				*
-******************************************************************************************************************/
-#define SSI0_BASE 0x40008000
-#define SSI1_BASE 0x40009000
-#define SSI2_BASE 0x4000A000
-#define SSI3_BASE 0x4000B000
-
-
-
-/******************************************************************************************************************
-*																						I2C MODULE BASE ADDRESSES																							*
-*		I2C interface is connected to APB bus.																																				*
-******************************************************************************************************************/
-#define I2C0_BASE 0x40020000U
-#define I2C1_BASE 0x40021000U
-#define I2C2_BASE 0x40022000U
-#define I2C3_BASE 0x40023000U
-
-
-
-/***************************** REGISTER DEFINITIONS FOR MICROCONTROLLER'S PERIPHERALS *****************************/
-#define __vo volatile
-
-
-
-/******************************************************************************************************************
-*																			System Control Register Definition																					*
-*		Base address for system control peripherals is defined as SYSTEM_CONTROL_BASE_ADDRESS in CORE COMPONENTS'			*
-*		BASE ADDRESS Section																																													*
-******************************************************************************************************************/
 typedef struct
 {
 	__vo uint32_t  DID0;                              // Device Identification 0
@@ -327,17 +296,138 @@ typedef struct
   __vo uint32_t  PRWTIMER; 
 }SYSCTL_reg;
 
-#define SYSCTL ( (SYSCTL_reg*)SYSTEM_CONTROL_BASE_ADDRESS )
+#define SYSCTL ( (SYSCTL_reg*)SYSTEM_CONTROL_BASE_ADDR )		// Pointer for Register Access (System Control Block)
+
+
+
+//	1.3 - Exception Handlers : Register Definition
+
+typedef struct
+{
+	__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
+	__vo uint32_t	GPIOA;
+	__vo uint32_t	GPIOB;
+	__vo uint32_t	GPIOC;
+	__vo uint32_t	GPIOD;
+	__vo uint32_t	GPIOE;
+	__vo uint8_t	Offset1_64h[100];						// Refer to comment 1 for details
+	__vo uint32_t	GPIOF;
+}Exception_Handler_reg;
+
+		/* Pointer for Register Access (Exception Handlers)	*/
+#define ExceptionHandlers ( (Exception_Handler_reg*)VECTOR_TABLE_BASE_ADDR )
+
+/*	Comments for the above section
+ *		1.	There are few addresses of ISRs of different peripherals which should lie between GPIO E and F.	These
+ *				will be defined later.
+ */
+
+
+
+//	1.4 - Nested Vector Interrupt Controller (NVIC) : Register Definition
+
+typedef struct
+{
+	__vo uint32_t EN[5];
+	__vo uint32_t RESERVED0[27];
+	__vo uint32_t DIS[5];
+	__vo uint32_t RESERVED1[27];
+	__vo uint32_t PEND[5];
+	__vo uint32_t RESERVED2[27];
+	__vo uint32_t UNPEND[5];
+	__vo uint32_t RESERVED3[27];
+	__vo uint32_t ACTIVE[5];
+	__vo uint32_t RESERVED4[59];
+	__vo uint32_t PRI[35];
+	__vo uint32_t RESERVED5[669];
+	__vo uint32_t SWTRIG;
+}NVIC_reg;
+
+#define Nvic ( (NVIC_reg*)NVIC_BASE_ADDR )
+		/**************************************************************************************************************
+		*	NVIC Enable Registers Bit definitions																																				*
+		*							Enable 0 Reg		Enable 1 Reg		Enable 2 Reg		Enable 3 Reg		Enable 4 Reg										*
+		*		Bit				 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#											*
+		*		0								0								32							64							96							128*
+		*		1								1								33							65							97							129*
+		*		2								2								34							66							98							130*
+		*		3								3								35							67							99							131*
+		*		4								4								36							68							100							132*
+		*		5								5								37							69							101							133*
+		*		6								6								38							70							102							134*
+		*		7								7								39							71							103							135*
+		*		8								8								40							72							104							136*
+		*		9								9								41							73							105							137*
+		*		10							10							42							74							106							138*
+		*		11							11							43							75							107*
+		*		12							12							44							76							108*
+		*		13							13							45							77							109*
+		*		14							14							46							78							110*
+		*		15							15							47							79							111*
+		*		16							16							48							80							112*
+		*		17							17							49							81							113*
+		*		18							18							50							82							114*
+		*		19							19							51							83							115*
+		*		20							20							52							84							116																				*
+		*		21							21							53							85							117																				*
+		*		22							22							54							86							118																				*
+		*		23							23							55							87							119																				*
+		*		24							24							56							88							120																				*
+		*		25							25							57							89							121																				*
+		*		26							26							58							90							122																				*
+		*		27							27							59							91							123																				*
+		*		28							28							60							92							124																				*
+		*		29							29							61							93							125																				*
+		*		30							30							62							94							126																				*
+		*		31							31							63							95							127																				*
+		**************************************************************************************************************/
 
 
 
 /******************************************************************************************************************
-*																		Register Definition for GPIO PORTS																						*
-*		Base address for these is defined in the GPIO BASE ADDRESSES section																					*
+*																							 			GPIO Ports																										*
+*		All GPIO  ports are connected to both AHB and APB Bus ( GPIOxP => APB bus GPIOxH => AHB bus )									*
 ******************************************************************************************************************/
+
+//	2.1 Base Addresses
+
+#define GPIO_BASE																		 0x40004000U
+#define GPIOAP_BASE_ADDRESS							(GPIO_BASE + 0x00000000U)
+#define GPIOBP_BASE_ADDRESS							(GPIO_BASE + 0x00001000U)
+#define GPIOCP_BASE_ADDRESS							(GPIO_BASE + 0x00002000U)
+#define GPIODP_BASE_ADDRESS							(GPIO_BASE + 0x00003000U)
+#define GPIOEP_BASE_ADDRESS							(GPIO_BASE + 0x00020000U)
+#define GPIOFP_BASE_ADDRESS							(GPIO_BASE + 0x00021000U)
+
+#define GPIOAH_BASE_ADDRESS							(GPIO_BASE + 0x00054000U)
+#define GPIOBH_BASE_ADDRESS							(GPIO_BASE + 0x00055000U)
+#define GPIOCH_BASE_ADDRESS							(GPIO_BASE + 0x00056000U)
+#define GPIODH_BASE_ADDRESS							(GPIO_BASE + 0x00057000U)
+#define GPIOEH_BASE_ADDRESS							(GPIO_BASE + 0x00058000U)
+#define GPIOFH_BASE_ADDRESS							(GPIO_BASE + 0x00059000U)
+
+
+//	2.2 Clock Enable and Disable Macros
+
+#define GPIOA_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<0) )
+#define GPIOB_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<1) )
+#define GPIOC_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<2) )
+#define GPIOD_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<3) )
+#define GPIOE_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<4) )
+#define GPIOF_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<5) )
+
+#define GPIOA_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<0) )
+#define GPIOB_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<1) )
+#define GPIOC_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<2) )
+#define GPIOD_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<3) )
+#define GPIOE_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<4) )
+#define GPIOF_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<5) )
+
+
+//	2.3 Register Definition
+
 typedef struct
 {
-	//__vo uint32_t GPIO_DATA[256];
 	__vo uint32_t RESERVED0[255];
 	__vo uint32_t GPIO_DATA;
 	__vo uint32_t GPIO_DIR;
@@ -364,166 +454,83 @@ typedef struct
 	__vo uint32_t GPIO_PCTL;
 	__vo uint32_t GPIO_ADCCTL;
 	__vo uint32_t GPIO_DMACTL;
+	
 	__vo uint32_t RESERVED2[678];
+	
 	/*	Registers defined below are READ_ONLY.*/
-//	__vo uint32_t GPIOPeriphlD4;
-//	__vo uint32_t GPIOPeriphlD5;
-//	__vo uint32_t GPIOPeriphlD6;
-//	__vo uint32_t GPIOPeriphlD7;
-//	__vo uint32_t GPIOPeriphlD0;
-//	__vo uint32_t GPIOPeriphlD1;
-//	__vo uint32_t GPIOPeriphlD2;
-//	__vo uint32_t GPIOPeriphlD3;
-//	__vo uint32_t GPIOPCellID0;
-//	__vo uint32_t GPIOPCellID1;
-//	__vo uint32_t GPIOPCellID2;
-//	__vo uint32_t GPIOPCellID3;
+	__vo uint32_t GPIOPeriphlD4;
+	__vo uint32_t GPIOPeriphlD5;
+	__vo uint32_t GPIOPeriphlD6;
+	__vo uint32_t GPIOPeriphlD7;
+	__vo uint32_t GPIOPeriphlD0;
+	__vo uint32_t GPIOPeriphlD1;
+	__vo uint32_t GPIOPeriphlD2;
+	__vo uint32_t GPIOPeriphlD3;
+	__vo uint32_t GPIOPCellID0;
+	__vo uint32_t GPIOPCellID1;
+	__vo uint32_t GPIOPCellID2;
+	__vo uint32_t GPIOPCellID3;
 }GPIO_reg;
 
-#define GPIO_A_H (GPIO_reg*) GPIOAH_BASE_ADDRESS
-#define GPIO_A_P (GPIO_reg*) GPIOAP_BASE_ADDRESS
-#define GPIO_B_H (GPIO_reg*) GPIOBH_BASE_ADDRESS
-#define GPIO_B_P (GPIO_reg*) GPIOBP_BASE_ADDRESS
-#define GPIO_C_H (GPIO_reg*) GPIOCH_BASE_ADDRESS
-#define GPIO_C_P (GPIO_reg*) GPIOCP_BASE_ADDRESS
-#define GPIO_D_H (GPIO_reg*) GPIODH_BASE_ADDRESS
-#define GPIO_D_P (GPIO_reg*) GPIODP_BASE_ADDRESS
-#define GPIO_E_H (GPIO_reg*) GPIOEH_BASE_ADDRESS
-#define GPIO_E_P (GPIO_reg*) GPIOEP_BASE_ADDRESS
-#define GPIO_F_H (GPIO_reg*) GPIOFH_BASE_ADDRESS
-#define GPIO_F_P (GPIO_reg*) GPIOFP_BASE_ADDRESS
+
+//	2.4 Module Access Pointers
+
+#define GPIO_A_H 		( (GPIO_reg*) GPIOAH_BASE_ADDRESS )				//	Pointers for GPIO Module on AHB Bus
+#define GPIO_B_H 		( (GPIO_reg*) GPIOBH_BASE_ADDRESS )
+#define GPIO_C_H 		( (GPIO_reg*) GPIOCH_BASE_ADDRESS )
+#define GPIO_D_H 		( (GPIO_reg*) GPIODH_BASE_ADDRESS )
+#define GPIO_E_H 		( (GPIO_reg*) GPIOEH_BASE_ADDRESS )
+#define GPIO_F_H 		( (GPIO_reg*) GPIOFH_BASE_ADDRESS )
+
+#define GPIO_A_P 		( (GPIO_reg*) GPIOAP_BASE_ADDRESS )				//	Pointers for GPIO Module on APB Bus
+#define GPIO_B_P 		( (GPIO_reg*) GPIOBP_BASE_ADDRESS )
+#define GPIO_C_P 		( (GPIO_reg*) GPIOCP_BASE_ADDRESS )
+#define GPIO_D_P 		( (GPIO_reg*) GPIODP_BASE_ADDRESS )
+#define GPIO_E_P 		( (GPIO_reg*) GPIOEP_BASE_ADDRESS )
+#define GPIO_F_P 		( (GPIO_reg*) GPIOFP_BASE_ADDRESS )
 
 
 
 /******************************************************************************************************************
-*																	Clock Enable & Disable Macros for GPIO Ports																		*
-*																																																									*
-*		Clock to a GPIO port is enabled or disabled by setting or clearing the appropriate bits in the RCGCGPIO				*
-*		register.																																																			*
-*		RCCGPIO Register:																																															*
-*		Bit 0:	1 => Port A is enabled when 1, 0 => disabled.																													*
-*		Bit 1:	1 => Port B is enabled when 1, 0 => disabled.																													*
-*		.						.																		.																															*
-*		.						.																		.																															*
-*		Bit 5:	1 => Port F is enabled when 1, 0 => disabled.																													*
-*		Bit 6-31:	Reserved																																														*
+*																										SSI MODULES																										*
 ******************************************************************************************************************/
-#define GPIOA_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<0) )
-#define GPIOB_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<1) )
-#define GPIOC_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<2) )
-#define GPIOD_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<3) )
-#define GPIOE_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<4) )
-#define GPIOF_PCLK_EN() ( SYSCTL->RCGCGPIO |= (1<<5) )
 
-#define GPIOA_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<0) )
-#define GPIOB_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<1) )
-#define GPIOC_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<2) )
-#define GPIOD_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<3) )
-#define GPIOE_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<4) )
-#define GPIOF_PCLK_DIS() ( SYSCTL->RCGCGPIO &= ~(1<<5) )
+//	3.1 Base Addresses
+#define SSI0_BASE_ADDRESS			0x40008000U
+#define SSI1_BASE_ADDRESS			0x40009000U
+#define SSI2_BASE_ADDRESS			0x4000A000U
+#define SSI3_BASE_ADDRESS			0x4000B000U
 
 
+//	3.2 Clock Enable and Disable Macros
+#define SSI0_PCLK_EN() 		(SYSCTL->RCGCSSI |= (1<<0)	)
+#define SSI1_PCLK_EN() 		(SYSCTL->RCGCSSI |= (1<<1)	)
+#define SSI2_PCLK_EN() 		(SYSCTL->RCGCSSI |= (1<<2)	)
+#define SSI3_PCLK_EN() 		(SYSCTL->RCGCSSI |= (1<<3)	)
 
-/******************************************************************************************************************
-*											 Register Definition for NVIC: Nested Vector Interrupt Controller														*
-*		Base address of NVIC is defined in the CORE COMPONENT BASE ADDRESSES section																	*
-******************************************************************************************************************/
+#define SSI0_PCLK_DIS() 	(SYSCTL->RCGCSSI &= ~(1<<0)	)
+#define SSI1_PCLK_DIS() 	(SYSCTL->RCGCSSI &= ~(1<<1)	)
+#define SSI2_PCLK_DIS() 	(SYSCTL->RCGCSSI &= ~(1<<2)	)
+#define SSI3_PCLK_DIS() 	(SYSCTL->RCGCSSI &= ~(1<<3)	)
+
+
+//	3.3 Register Definition
 typedef struct
 {
-	__vo uint32_t EN[5];
-	__vo uint32_t RESERVED0[27];
-	__vo uint32_t DIS[5];
-	__vo uint32_t RESERVED1[27];
-	__vo uint32_t PEND[5];
-	__vo uint32_t RESERVED2[27];
-	__vo uint32_t UNPEND[5];
-	__vo uint32_t RESERVED3[27];
-	__vo uint32_t ACTIVE[5];
-	__vo uint32_t RESERVED4[59];
-	__vo uint32_t PRI[35];
-	__vo uint32_t RESERVED5[669];
-	__vo uint32_t SWTRIG;
-}NVIC_reg;
-
-#define Nvic ( (NVIC_reg*)NVIC_BASE_ADDRESS )
-/******************************************************************************************************************
-*		NVIC Enable Registers Bit definitions																																					*
-*		NVIC_ENABLE_0																																																	*
-*		Bit:	0  1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27		*
-*		Int#: 0  1  2  3  4  5  6  7  8  9  10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  26  27		*
-*																																																									*
-*		Bit:	28  29  30  31																																													*
-*		Int#: 28  29  30  31																																													*
-*	--------------------------------------------------------------------------------------------------------------- *
-*		NVIC_ENABLE_1																																																	*
-*		Bit:	0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  *
-*		Int#: 32  33  34  35  36  37  38	39  40  41  42  43  44  45  46  47  48  49  50  51  52  53  54  55  56  57	*
-*																																																									*
-*		Bit:	26  27  28  29  30  31																																									*
-*		Int#: 58  59  60  61  62  63																																									*
-*	--------------------------------------------------------------------------------------------------------------- *
-*		NVIC_ENABLE_2																																																	*
-*		Bit:	0   1   2   3   4   5   6   7   8   9   10  11  12  13  14  15  16  17  18  19  20  21  22  23  24  25  *
-*		Int#: 64  65  66  67  68  69  70  71  72  73  74  75  76  77  78  79  80  81  82  83  84  85  86  87  88  89	*
-*																																																									*
-*		Bit:	26  27  28  29  30  31																																									*
-*		Int#: 90  91  92  93  94  95																																									*
-*	--------------------------------------------------------------------------------------------------------------- *
-*		NVIC_ENABLE_3																																																	*
-*		Bit:	0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20  *
-*		Int#: 96   97   98   99   100  101  102  103  104  105  106  107  108  109  110  111  112  113  114  115  116	*
-*																																																									*
-*		Bit:	21   22   23   24   25   26   27   28   29   30   31																										*
-*		Int#: 117  118  119  120  121  122  123  124  125  126  127																										*
-*	--------------------------------------------------------------------------------------------------------------- *
-*		NVIC_ENABLE_4																																																	*
-*		Bit:	0    1    2    3    4    5    6    7    8    9    10		( Bits 11:31 are not used )											*
-*		Int#: 128  129  130  131  132  133  134  135  136  137  138																										*
-******************************************************************************************************************/
-
-
-
-/******************************************************************************************************************
-*																	Register Definition for Exception Handlers																			*
-*		Base address of these is defined in the CORE COMPONENT BASE ADDRESSES section as VECTOR_TABLE_BASE_ADDR				*
-******************************************************************************************************************/
-typedef struct
-{
-	__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
-	__vo uint32_t	GPIOA;
-	__vo uint32_t	GPIOB;
-	__vo uint32_t	GPIOC;
-	__vo uint32_t	GPIOD;
-	__vo uint32_t	GPIOE;
-	__vo uint8_t	Offset1_64h[100];						// Refer to comment 1 for details
-	__vo uint32_t	GPIOF;
-}Vector_Table_reg;
-#define ExceptionHandlers ( (Vector_Table_reg*)VECTOR_TABLE_BASE_ADDR )
-/******************************************************************************************************************
-*		Comments for the above section																																								*
-*		1.	There are few addresses of ISRs of different peripherals which should lie between GPIO E and F.	These			*
-*				will be defined later.																																										*
-******************************************************************************************************************/
-
-
-
-/******************************************************************************************************************
-*													Register Definition for Synchronous Serial Interface (SSI)															*
-*		Base address of these is defined in the SSI MODULE BASE ADDRESSES section.																		*
-******************************************************************************************************************/
-typedef struct
-{
-	__vo uint32_t	SSI_CR[2];
-	__vo uint32_t	SSI_DR;
-	__vo uint32_t	SSI_SR;
-	__vo uint32_t	SSI_CPSR;
-	__vo uint32_t	SSI_IM;
-	__vo uint32_t	SSI_RIS;
-	__vo uint32_t	SSI_MIS;
-	__vo uint32_t	SSI_ICR;
-	__vo uint32_t	SSI_DMACTL;
-	__vo uint8_t	Reserved[4000];							//OFFSET
-	__vo uint32_t	SSI_CC;
+	__vo uint32_t	SSI_CR[2];								// Control Registers 0, and 1
+	__vo uint32_t	SSI_DR;										// Data Register
+	__vo uint32_t	SSI_SR;										// Status Register
+	__vo uint32_t	SSI_CPSR;									// Clock Prescalar
+	__vo uint32_t	SSI_IM;										// Interrupt Mask
+	__vo uint32_t	SSI_RIS;									// Raw Interrupt Status
+	__vo uint32_t	SSI_MIS;									// Masked Interrupt Status
+	__vo uint32_t	SSI_ICR;									// Interrupt Clear
+	__vo uint32_t	SSI_DMACTL;								// DMA Control
+	
+	__vo uint8_t	Reserved[4000];
+	
+	__vo uint32_t	SSI_CC;										// Clock Configuration
+	
 	__vo uint32_t	SSI_PeriphID4;
 	__vo uint32_t	SSI_PeriphID5;
 	__vo uint32_t	SSI_PeriphID6;
@@ -533,54 +540,90 @@ typedef struct
 	__vo uint32_t	SSI_PeriphID2;
 	__vo uint32_t	SSI_PeriphID3;
 	__vo uint32_t	SSI_CellID[4];
+	
 }ssi_reg;
 
-#define pSSI0 ( (ssi_reg*)SSI0_BASE )
-#define pSSI1 ( (ssi_reg*)SSI1_BASE )
-#define pSSI2 ( (ssi_reg*)SSI2_BASE )
-#define pSSI3 ( (ssi_reg*)SSI3_BASE )
 
-/******************************************************************************************************************
-*																	Clock Enable & Disable Macros for SSI Modules																		*
-*		Clock to the SSI modules can be enabled or diabled by setting or clearing the appropriate bit in the RCGCSSI	*
-*		register.																																																			*
-*		Bit 0:	1 => SSI Module 0 is Enabled, 0 => Disabled																														*
-*		Bit 1:	1 => SSI Module 1 is Enabled, 0 => Disabled																														*
-*		Bit 2:	1 => SSI Module 2 is Enabled, 0 => Disabled																														*
-*		Bit 3:	1 => SSI Module 3 is Enabled, 0 => Disabled																														*
-*		Bit 4-31:	Reserved																																														*
-******************************************************************************************************************/
-#define SSI0_PCLK_EN() (SYSCTL->RCGCSSI |= (1<<0))
-#define SSI1_PCLK_EN() (SYSCTL->RCGCSSI |= (1<<1))
-#define SSI2_PCLK_EN() (SYSCTL->RCGCSSI |= (1<<2))
-#define SSI3_PCLK_EN() (SYSCTL->RCGCSSI |= (1<<3))
+//	3.4 Module Access Pointers
 
-#define SSI0_PCLK_DIS() (SYSCTL->RCGCSSI &= ~(1<<0))
-#define SSI1_PCLK_DIS() (SYSCTL->RCGCSSI &= ~(1<<1))
-#define SSI2_PCLK_DIS() (SYSCTL->RCGCSSI &= ~(1<<2))
-#define SSI3_PCLK_DIS() (SYSCTL->RCGCSSI &= ~(1<<3))
+#define pSSI0 		( (ssi_reg*) SSI0_BASE_ADDRESS )
+#define pSSI1 		( (ssi_reg*) SSI1_BASE_ADDRESS )
+#define pSSI2 		( (ssi_reg*) SSI2_BASE_ADDRESS )
+#define pSSI3 		( (ssi_reg*) SSI3_BASE_ADDRESS )
 
 
 
 /******************************************************************************************************************
-*															Clock Enable & Disable Macros for I2C Modules																				*
-*		I2C modules' clock can be enabled by setting the appropriate bit in the RCGCI2C register											*
-*		RCGCI2C Register Definition:																																									*
-*		Bit 0:	1 => I2C Module 0 is Enabled, 0 => Disabled																														*
-*		Bit 1:	1 => I2C Module 1 is Enabled, 0 => Disabled																														*
-*		Bit 2:	1 => I2C Module 2 is Enabled, 0 => Disabled																														*
-*		Bit 3:	1 => I2C Module 3 is Enabled, 0 => Disabled																														*
-*		Bit 4-31:	Reserved																																														*
+*																										I2C MODULES																										*
 ******************************************************************************************************************/
-#define I2C0_PCLK_EN()	( SYSCTL->RCGCI2C |= (1<<0) )
-#define I2C1_PCLK_EN()	( SYSCTL->RCGCI2C |= (1<<1) )
-#define I2C2_PCLK_EN()	( SYSCTL->RCGCI2C |= (1<<2) )
-#define I2C3_PCLK_EN()	( SYSCTL->RCGCI2C |= (1<<3) )
 
-#define I2C0_PCLK_DIS()	( SYSCTL->RCGCI2C &= ~(1<<0) )
-#define I2C1_PCLK_DIS()	( SYSCTL->RCGCI2C &= ~(1<<1) )
-#define I2C2_PCLK_DIS()	( SYSCTL->RCGCI2C &= ~(1<<2) )
-#define I2C3_PCLK_DIS()	( SYSCTL->RCGCI2C &= ~(1<<3) )
+//	4.1 Base Addresses
+
+#define I2C0_BASE_ADDRESS			0x40020000U
+#define I2C1_BASE_ADDRESS			0x40021000U
+#define I2C2_BASE_ADDRESS			0x40022000U
+#define I2C3_BASE_ADDRESS			0x40023000U
+
+
+//	4.2 Clock Enable and Disable Macros
+
+#define I2C0_PCLK_EN()			( SYSCTL->RCGCI2C |= (1<<0) )
+#define I2C1_PCLK_EN()			( SYSCTL->RCGCI2C |= (1<<1) )
+#define I2C2_PCLK_EN()			( SYSCTL->RCGCI2C |= (1<<2) )
+#define I2C3_PCLK_EN()			( SYSCTL->RCGCI2C |= (1<<3) )
+
+#define I2C0_PCLK_DIS()			( SYSCTL->RCGCI2C &= ~(1<<0) )
+#define I2C1_PCLK_DIS()			( SYSCTL->RCGCI2C &= ~(1<<1) )
+#define I2C2_PCLK_DIS()			( SYSCTL->RCGCI2C &= ~(1<<2) )
+#define I2C3_PCLK_DIS()			( SYSCTL->RCGCI2C &= ~(1<<3) )
+
+
+//	4.3 Register Definition
+
+typedef struct
+{
+	/* I2C Master*/
+	__vo uint32_t MSA;								// Master Slave Address
+	__vo uint32_t MCS;								// Master Control/Status
+	__vo uint32_t MDR;								// Master Data
+	__vo uint32_t MTPR;								// Master Timer Period
+	__vo uint32_t MIMR;								// Master Interrupt Mask
+	__vo uint32_t MRIS;								// Master Raw Interrupt Status
+	__vo uint32_t MMIS;								// Master Masked Interrupt Status
+	__vo uint32_t MICR;								// Master Interrupt Clear
+	__vo uint32_t MCR;								// Master Configuration
+	__vo uint32_t MCLKOCNT;						// Master Clock Low Timeout Count
+	__vo uint32_t MBMON;							// Master Bus Monitor
+	__vo uint8_t	RESERVED0[8];
+	__vo uint32_t MCR2;								// Master Configuration 2
+	
+	__vo uint8_t	RESERVED1[1988];
+	
+	/* I2C Slave*/
+	__vo uint32_t SOAR;								// Slave Own Address
+	__vo uint32_t SCSR;								// Slave Control/Status
+	__vo uint32_t SDR;								// Slave Data
+	__vo uint32_t SIMR;								// Slave Interrupt Mask
+	__vo uint32_t SRIS;								// Slave Raw Interrupt Status
+	__vo uint32_t SMIS;								// Slave Masked Interrupt Status
+	__vo uint32_t SICR;								// Slave Interrupt Clear
+	__vo uint32_t SOAR2;							// Slave Own Address 2
+	__vo uint32_t SACKCTL;						// Slave ACK Control
+	
+	__vo uint8_t	RESERVED2[1948];
+	
+	/* I2C Control and Status*/
+	__vo uint32_t PP;									// Peripheral Properties
+	__vo uint32_t PC;									// Peripheral Configuration
+	
+}I2C_reg;
+
+
+//	4.4 Module Access Pointers
+#define pI2C0					( (I2C_reg*) I2C0_BASE_ADDRESS )
+#define pI2C1					( (I2C_reg*) I2C1_BASE_ADDRESS )
+#define pI2C2					( (I2C_reg*) I2C2_BASE_ADDRESS )
+#define pI2C3					( (I2C_reg*) I2C3_BASE_ADDRESS )
 
 
 
@@ -600,6 +643,9 @@ typedef struct
 
 #define APB_BUS	0
 #define AHB_BUS	1
+
+#define SET_BIT |= 1<<
+#define CLR_BIT &= ~ 1<<
 
 
 
