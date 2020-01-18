@@ -8,6 +8,7 @@
 ******************************************************************************************************************/
 
 // Master Control/Status Register (I2CMCSR)
+	/*	Read-Only Status Bits */
 #define I2C_MCS_BUSY				0							//	I2C Controller is Busy
 #define I2C_MCS_ERROR				1							//	Error in last operation
 #define I2C_MCS_ADRACK			2							//	Address Acknowledge
@@ -16,6 +17,13 @@
 #define I2C_MCS_IDLE				5							//	I2C Controller is Idle
 #define I2C_MCS_BUSBUSY			6							//	Bus Busy
 #define I2C_MCS_CLKTO				7							//	Clock Timeout Error
+
+/* Write-Only Control Bits */
+#define I2C_MCS_RUN					0							//	Master Enable
+#define I2C_MCS_START				1							//	Generate START/Repeated START
+#define I2C_MCS_STOP				2							//	Generate STOP
+#define I2C_MCS_ACK					3							//	Data Auto-ACK Enable
+#define I2C_MCS_HS					4							//	High Speed Enable
 
 // Master Timer Period (I2CMTPR)
 #define I2C_MTPR_TPR				0							//	Timer Period
@@ -77,11 +85,11 @@
 #define I2C_SICR_STOP				2							//	"STOP Condition" Interrupt Clear
 
 
-// Slave (I2CSOAR2)
+// Slave Own Address Register 2 (I2CSOAR2)
 #define I2C_SOAR2_ADDR			0							//	Slave Own Address 2
 #define I2C_SOAR2_EN				7							//	Slave Own Address 2 Enable
 
-// Slave (I2C)
+// Slave Acknowledge Control (I2CSACKCTL)
 #define I2C_SACKCTL_OEN			0							//	Slave ACK Override Enable
 #define I2C_SACKCTL_OVAL		1							//	Slave ACK Override Value
 
@@ -97,12 +105,56 @@
 *																			Miscellaneous macros and shorthands																					*
 ******************************************************************************************************************/
 
+#define I2C_SPEED_MODE_STD			0
+#define I2C_SPEED_MODE_FM				1
+#define I2C_SPEED_MODE_FMP			2
+#define I2C_SPEED_MODE_HS				3
+
+#define I2C_AUTO_ACK_DISABLE		0
+#define I2C_AUTO_ACK_ENABLE			1
+
+#define I2C0_SCL_PIN						PB2
+#define I2C0_SDA_PIN						PB3
+
+#define I2C1_SCL_PIN						PA6
+#define I2C1_SDA_PIN						PA7
+
+#define I2C2_SCL_PIN						PE4
+#define I2C2_SDA_PIN						PE5
+
+#define I2C3_SCL_PIN						PD0
+#define I2C3_SDA_PIN						PD1
+
+
+
+typedef struct
+{
+	I2C_reg* pI2Cx;
+	uint8_t I2Cx;
+	uint8_t SpeedMode;
+	uint8_t ClkSpeed;
+	uint8_t ACKControl;
+	uint8_t MasterAddress;
+	uint8_t UseAsSlave;
+
+}I2CHandle;
+
 /******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
 *		Below are the prototypes for driver APIs																																			*
 *		Definitions for these can be found in TM4C123xxI2C_DRIVER.c file																							*
 ******************************************************************************************************************/
+//void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint8_t ClkSpeed, uint8_t ACKControl);
+void I2CInit2(I2CHandle* pI2CHandle);
+void I2CDeInit(uint8_t I2Cx);
 
+uint8_t I2CClockControl(uint8_t I2Cx,uint8_t	EnorDi);
 
+void I2CMasterSendData(I2CHandle* pI2CHandle, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
+
+uint8_t GetSCLPin(uint8_t I2Cx);
+uint8_t GetSDAPin(uint8_t I2Cx);
+
+I2C_reg* I2CGetAddress(uint8_t I2Cx);
 
 #endif

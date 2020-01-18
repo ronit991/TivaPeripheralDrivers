@@ -5,8 +5,5 @@
 .\objects\test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\test.o: TM4C123xxGPIO_DRIVER.h
 .\objects\test.o: TM4C123xx.h
-.\objects\test.o: TM4C123xx.h
+.\objects\test.o: TM4C123xxSSI_DRIVER.h
 .\objects\test.o: GPIO_PIN_NAMES.h
-.\objects\test.o: TM4C123xx.h
-.\objects\test.o: TM4C123xxGPIO_DRIVER.h
-.\objects\test.o: TM4C123xx.h

@@ -119,6 +119,10 @@
       <TargetDriverDllRegistry>
         <SetRegEntry>
           <Number>0</Number>
+          <Key>DLGUARM</Key>
+        </SetRegEntry>
+        <SetRegEntry>
+          <Number>0</Number>
           <Key>ARMRTXEVENTFLAGS</Key>
           <Name>-L70 -Z18 -C0 -M0 -T1</Name>
         </SetRegEntry>
@@ -147,66 +151,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>17</LineNumber>
+          <LineNumber>18</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>4844</Address>
+          <Address>3292</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
+          <Filename>.\test.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\jan12__00_spi_master_with_interrupt.c\17</Expression>
+          <Expression>\\mcu_specific_header\test.c\18</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>21</LineNumber>
+          <LineNumber>16</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>4862</Address>
+          <Address>3288</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
+          <Filename>.\test.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\jan12__00_spi_master_with_interrupt.c\21</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>307</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>3350</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\TM4C123xxSSI_DRIVER.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\mcu_specific_header\TM4C123xxSSI_DRIVER.c\307</Expression>
-        </Bp>
-        <Bp>
-          <Number>3</Number>
-          <Type>0</Type>
-          <LineNumber>13</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\jan12__00_spi_master_with_interrupt.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\mcu_specific_header\test.c\16</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -264,6 +236,11 @@
           <count>10</count>
           <WinNumber>1</WinNumber>
           <ItemText>pSSI1</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>SYSCTL</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -656,24 +633,36 @@
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>29</FileNumber>
-      <FileType>5</FileType>
+      <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\TM4C123GxxI2C_DRIVER.h</PathWithFileName>
-      <FilenameWithoutPath>TM4C123GxxI2C_DRIVER.h</FilenameWithoutPath>
+      <PathWithFileName>.\TM4C123xxI2C_DRIVER.c</PathWithFileName>
+      <FilenameWithoutPath>TM4C123xxI2C_DRIVER.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>30</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\TM4C123xxI2C_DRIVER.h</PathWithFileName>
+      <FilenameWithoutPath>TM4C123xxI2C_DRIVER.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>31</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\TM4C123GxxI2C_DRIVER.c</PathWithFileName>
-      <FilenameWithoutPath>TM4C123GxxI2C_DRIVER.c</FilenameWithoutPath>
+      <PathWithFileName>.\Jan19__00_i2c_build_test.c</PathWithFileName>
+      <FilenameWithoutPath>Jan19__00_i2c_build_test.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

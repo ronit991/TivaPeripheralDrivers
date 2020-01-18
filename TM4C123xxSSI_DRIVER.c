@@ -198,7 +198,7 @@ void SSIDeInit(uint8_t SSIx)
 *	@InterruptsNeedToBeEnabled	- Specifies whether interrupts should be enabled or not.														*
 *																																																									*
 * @Note												- Default settings for SSI modules:																									*
-*																1. Clock Source			-	Precision Internal Oscillator (16 MHz)											*
+*																1. Clock Source			-	System Clock																								*
 *																2. Clock Prescalar	-	2																														*
 *																3. Serial Clk Rate	-	3																														*
 *																4. Phase						-	0																														*
@@ -242,7 +242,7 @@ void SSIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled
 }
 void SSIStartK(uint8_t SSIx, uint8_t DeviceMode)
 {
-	SSIInit(SSIx, DeviceMode, SSI_Clk_PIOSC, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
+	SSIInit(SSIx, DeviceMode, SSI_Clk_SystemClock, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
 }
 
 

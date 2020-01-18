@@ -94,22 +94,23 @@ extern uint8_t GPIOF_INT_PIN;
 *	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
 *	uint8_t		ReadFromPin()					-- Read data from a GPIO pin																										*
 *	uint8_t		ReadFromPort()				-- Read data from a GPIO port																										*
+*	uint8_t		getAltFnNum()					-- Get the alternate function no. for a specific peripheral.										*
 ******************************************************************************************************************/
-void			GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);	// Initialize a GPIO port
-void			GPIO_DeInit(			uint8_t GPIO_PORT);															// De-Initialize or Reset a GPIO port
-void			GPIO_ClockControl(uint8_t GPIO_Port, uint8_t Clk_En);							// Enable/Disable clock for a GPIO port
+void			GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
+void			GPIO_DeInit( uint8_t GPIO_PORT);
+void			GPIO_ClockControl( uint8_t GPIO_Port, uint8_t Clk_En);
 
-void			DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in digital mode.
-void			AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);					// Configure a pin in  analog mode.
-void			InterruptPin(uint8_t pin, uint8_t triggerMode);										// Configure a pin with interrupt function.
+void			DigitalPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
+void			AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
+void			InterruptPin( uint8_t pin, uint8_t triggerMode);
 
-void			ToggleGPIOPin(uint8_t pin);																				// Toggle the state of a GPIO pin
-void			WriteToPin(		uint8_t pin, uint8_t Value);												// Write data to a GPIO pin
-void			WriteToPort(	uint8_t GPIO_PORT, uint8_t Values);									// Write data to a GPIO port
-uint8_t		ReadFromPin(	uint8_t pin);																				// Read data from a GPIO pin
-uint8_t		ReadFromPort(	uint8_t GPIO_PORT);																	// Read data from a GPIO port
+void			ToggleGPIOPin( uint8_t pin);
+void			WriteToPin( uint8_t pin, uint8_t Value);
+void			WriteToPort( uint8_t GPIO_PORT, uint8_t Values);
+uint8_t		ReadFromPin( uint8_t pin);
+uint8_t		ReadFromPort( uint8_t GPIO_PORT);
 
-uint8_t		getAltFnNum(uint8_t AltFnName);																		// Get the alternate function no. for a specific peripheral
+uint8_t		getAltFnNum(uint8_t AltFnName);
 
 
 /******************************************************************************************************************

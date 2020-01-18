@@ -172,16 +172,16 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 		//	Replace the cleared bits with appropriate function selection bits in the GPIOPCTL register.
 		switch(AF)
 		{
-			case 1: 	pGPIO->GPIO_PCTL	|= ( 0b0001<<(PinNumber*4) );		break;
-			case 2: 	pGPIO->GPIO_PCTL	|= ( 0b0010<<(PinNumber*4) );		break;
-			case 3: 	pGPIO->GPIO_PCTL	|= ( 0b0011<<(PinNumber*4) );		break;
-			case 4: 	pGPIO->GPIO_PCTL	|= ( 0b0100<<(PinNumber*4) );		break;
-			case 5: 	pGPIO->GPIO_PCTL	|= ( 0b0101<<(PinNumber*4) );		break;
-			case 6: 	pGPIO->GPIO_PCTL	|= ( 0b0110<<(PinNumber*4) );		break;
-			case 7: 	pGPIO->GPIO_PCTL	|= ( 0b0111<<(PinNumber*4) );		break;
-			case 8: 	pGPIO->GPIO_PCTL	|= ( 0b1000<<(PinNumber*4) );		break;
-			case 9: 	pGPIO->GPIO_PCTL	|= ( 0b1001<<(PinNumber*4) );		break;
-			case 15:	pGPIO->GPIO_PCTL	|= ( 0b1111<<(PinNumber*4) );	 	break;
+			case 1: 	pGPIO->GPIO_PCTL	|= ( 0x1 <<(PinNumber*4) );				break;
+			case 2: 	pGPIO->GPIO_PCTL	|= ( 0x2 <<(PinNumber*4) );				break;
+			case 3: 	pGPIO->GPIO_PCTL	|= ( 0x3 <<(PinNumber*4) );				break;
+			case 4: 	pGPIO->GPIO_PCTL	|= ( 0x4 <<(PinNumber*4) );				break;
+			case 5: 	pGPIO->GPIO_PCTL	|= ( 0x5 <<(PinNumber*4) );				break;
+			case 6: 	pGPIO->GPIO_PCTL	|= ( 0x6 <<(PinNumber*4) );				break;
+			case 7: 	pGPIO->GPIO_PCTL	|= ( 0x7 <<(PinNumber*4) );				break;
+			case 8: 	pGPIO->GPIO_PCTL	|= ( 0x8 <<(PinNumber*4) );				break;
+			case 9: 	pGPIO->GPIO_PCTL	|= ( 0x9 <<(PinNumber*4) );				break;
+			case 15:	pGPIO->GPIO_PCTL	|= ( 0xA <<(PinNumber*4) );	 			break;
 			default:	break;
 		}
 	}
@@ -515,27 +515,27 @@ void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
 	switch(PortName)
 	{
 		case GPIO_PORT_A:	GPIOA_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOA = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOA = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<0;
 											break;
 		case GPIO_PORT_B:	GPIOB_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOB = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOB = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<1;
 											break;
 		case GPIO_PORT_C:	GPIOC_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOC = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOC = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<2;
 											break;
 		case GPIO_PORT_D:	GPIOD_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOD = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOD = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<3;
 											break;
 		case GPIO_PORT_E:	GPIOE_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOE = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOE = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<4;
 											break;
 		case GPIO_PORT_F:	GPIOF_INT_PIN = PinNumber;
-											ExceptionHandlers->GPIOF = (uint32_t)isr_func;
+											ExceptionHandlers->_GPIOF = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<30;
 											break;
 	}

@@ -127,7 +127,7 @@ void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t Cloc
 	for(int i = 0; i<4; i++)
 	{
 		//GPIO_Init(pin, Dir, AltFn, OpType, Mode, DriveStrength, Trigger);
-		GPIO_Init(gpio_pins[i],( (i==2)?IN:OUT ),getAltFnNum(SSIx),PullUp,Digital,Eight_mA,NoInterrupt);
+		GPIO_Init(gpio_pins[i],( (i==2)?IN:OUT ),getAltFnNum(SSIx),PullDn,Digital,Eight_mA,NoInterrupt);
 	}
 	WriteToPin(gpio_pins[2],PIN_RESET);			// Pull SS Pin high so that the slave isn't activated.
 	

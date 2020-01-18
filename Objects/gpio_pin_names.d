@@ -7,4 +7,5 @@
 .\objects\gpio_pin_names.o: TM4C123xxGPIO_DRIVER.h
 .\objects\gpio_pin_names.o: TM4C123xx.h
 .\objects\gpio_pin_names.o: TM4C123xxSSI_DRIVER.h
+.\objects\gpio_pin_names.o: TM4C123xxI2C_DRIVER.h
 .\objects\gpio_pin_names.o: GPIO_PIN_NAMES.h

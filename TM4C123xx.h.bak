@@ -304,23 +304,48 @@ typedef struct
 
 typedef struct
 {
-	__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
-	__vo uint32_t	GPIOA;
-	__vo uint32_t	GPIOB;
-	__vo uint32_t	GPIOC;
-	__vo uint32_t	GPIOD;
-	__vo uint32_t	GPIOE;
-	__vo uint8_t	Offset1_64h[100];						// Refer to comment 1 for details
-	__vo uint32_t	GPIOF;
+	//__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
+	__vo uint8_t	RESERVED00[64];
+	__vo uint32_t	_GPIOA;
+	__vo uint32_t	_GPIOB;
+	__vo uint32_t	_GPIOC;
+	__vo uint32_t	_GPIOD;
+	__vo uint32_t	_GPIOE;
+	__vo uint32_t	_UART0;
+	__vo uint32_t	_UART1;
+	__vo uint32_t	_SSI0;
+	__vo uint32_t	_I2C0;
+	__vo uint32_t	_PWM0_FAULT;
+	__vo uint32_t	_PWM0_GENERATOR0;
+	__vo uint32_t	_PWM0_GENERATOR1;
+	__vo uint32_t	_PWM0_GENERATOR2;
+	__vo uint32_t	_QEI0;
+	__vo uint32_t	_ADC0_SEQUENCE0;
+	__vo uint32_t	_ADC0_SEQUENCE1;
+	__vo uint32_t	_ADC0_SEQUENCE2;
+	__vo uint32_t	_ADC0_SEQUENCE3;
+	__vo uint32_t	_WATCHDOG_TIMER_0_AND_1;
+	__vo uint32_t	_TIMER_0A;
+	__vo uint32_t	_TIMER_0B;
+	__vo uint32_t	_TIMER_1A;
+	__vo uint32_t	_TIMER_1B;
+	__vo uint32_t	_TIMER_2A;
+	__vo uint32_t	_TIMER_2B;
+	__vo uint32_t	_ANALOG_COMPARATOR0;
+	__vo uint32_t	_ANALOG_COMPARATOR1;
+	
+	__vo uint8_t	RESERVED01[4];
+	
+	__vo uint32_t	_SYSTEM_CONTROL;
+	__vo uint32_t	_FLASH_MEM_CTRL_AND_EEPROM_CTRL;
+	__vo uint32_t	_GPIOF;
+	
+	// There are more to be added here.
+	//__vo uint32_t	_
 }Exception_Handler_reg;
 
 		/* Pointer for Register Access (Exception Handlers)	*/
 #define ExceptionHandlers ( (Exception_Handler_reg*)VECTOR_TABLE_BASE_ADDR )
-
-/*	Comments for the above section
- *		1.	There are few addresses of ISRs of different peripherals which should lie between GPIO E and F.	These
- *				will be defined later.
- */
 
 
 
@@ -328,19 +353,14 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t EN[5];
-	__vo uint32_t RESERVED0[27];
-	__vo uint32_t DIS[5];
-	__vo uint32_t RESERVED1[27];
-	__vo uint32_t PEND[5];
-	__vo uint32_t RESERVED2[27];
-	__vo uint32_t UNPEND[5];
-	__vo uint32_t RESERVED3[27];
-	__vo uint32_t ACTIVE[5];
-	__vo uint32_t RESERVED4[59];
-	__vo uint32_t PRI[35];
-	__vo uint32_t RESERVED5[669];
+	__vo uint32_t EN[5];						__vo uint32_t RESERVED0[27];
+	__vo uint32_t DIS[5];						__vo uint32_t RESERVED1[27];
+	__vo uint32_t PEND[5];					__vo uint32_t RESERVED2[27];
+	__vo uint32_t UNPEND[5];				__vo uint32_t RESERVED3[27];
+	__vo uint32_t ACTIVE[5];				__vo uint32_t RESERVED4[59];
+	__vo uint32_t PRI[35];					__vo uint32_t RESERVED5[669];
 	__vo uint32_t SWTRIG;
+	
 }NVIC_reg;
 
 #define Nvic ( (NVIC_reg*)NVIC_BASE_ADDR )
@@ -348,26 +368,26 @@ typedef struct
 		*	NVIC Enable Registers Bit definitions																																				*
 		*							Enable 0 Reg		Enable 1 Reg		Enable 2 Reg		Enable 3 Reg		Enable 4 Reg										*
 		*		Bit				 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#											*
-		*		0								0								32							64							96							128*
-		*		1								1								33							65							97							129*
-		*		2								2								34							66							98							130*
-		*		3								3								35							67							99							131*
-		*		4								4								36							68							100							132*
-		*		5								5								37							69							101							133*
-		*		6								6								38							70							102							134*
-		*		7								7								39							71							103							135*
-		*		8								8								40							72							104							136*
-		*		9								9								41							73							105							137*
-		*		10							10							42							74							106							138*
-		*		11							11							43							75							107*
-		*		12							12							44							76							108*
-		*		13							13							45							77							109*
-		*		14							14							46							78							110*
-		*		15							15							47							79							111*
-		*		16							16							48							80							112*
-		*		17							17							49							81							113*
-		*		18							18							50							82							114*
-		*		19							19							51							83							115*
+		*		0								0								32							64							96							128												*
+		*		1								1								33							65							97							129												*
+		*		2								2								34							66							98							130												*
+		*		3								3								35							67							99							131												*
+		*		4								4								36							68							100							132												*
+		*		5								5								37							69							101							133												*
+		*		6								6								38							70							102							134												*
+		*		7								7								39							71							103							135												*
+		*		8								8								40							72							104							136												*
+		*		9								9								41							73							105							137												*
+		*		10							10							42							74							106							138												*
+		*		11							11							43							75							107																				*
+		*		12							12							44							76							108																				*
+		*		13							13							45							77							109																				*
+		*		14							14							46							78							110																				*
+		*		15							15							47							79							111																				*
+		*		16							16							48							80							112																				*
+		*		17							17							49							81							113																				*
+		*		18							18							50							82							114																				*
+		*		19							19							51							83							115																				*
 		*		20							20							52							84							116																				*
 		*		21							21							53							85							117																				*
 		*		22							22							54							86							118																				*
@@ -630,6 +650,8 @@ typedef struct
 /******************************************************************************************************************
 *																				Miscellaneous macros and shorthands																				*
 ******************************************************************************************************************/
+#define SYS_CLK			16					//	System Clock Frequency (in MHz)
+
 #define ENABLE			1
 #define DISABLE			0
 #define SET					ENABLE
@@ -644,8 +666,8 @@ typedef struct
 #define APB_BUS	0
 #define AHB_BUS	1
 
-#define SET_BIT |= 1<<
-#define CLR_BIT &= ~ 1<<
+#define SET_BIT(x) |= 1<<x
+#define CLR_BIT(X) &= ~ (1<<X)
 
 
 

@@ -172,16 +172,16 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 		//	Replace the cleared bits with appropriate function selection bits in the GPIOPCTL register.
 		switch(AF)
 		{
-			case 1: 	pGPIO->GPIO_PCTL	|= ( 0b0001<<(PinNumber*4) );		break;
-			case 2: 	pGPIO->GPIO_PCTL	|= ( 0b0010<<(PinNumber*4) );		break;
-			case 3: 	pGPIO->GPIO_PCTL	|= ( 0b0011<<(PinNumber*4) );		break;
-			case 4: 	pGPIO->GPIO_PCTL	|= ( 0b0100<<(PinNumber*4) );		break;
-			case 5: 	pGPIO->GPIO_PCTL	|= ( 0b0101<<(PinNumber*4) );		break;
-			case 6: 	pGPIO->GPIO_PCTL	|= ( 0b0110<<(PinNumber*4) );		break;
-			case 7: 	pGPIO->GPIO_PCTL	|= ( 0b0111<<(PinNumber*4) );		break;
-			case 8: 	pGPIO->GPIO_PCTL	|= ( 0b1000<<(PinNumber*4) );		break;
-			case 9: 	pGPIO->GPIO_PCTL	|= ( 0b1001<<(PinNumber*4) );		break;
-			case 15:	pGPIO->GPIO_PCTL	|= ( 0b1111<<(PinNumber*4) );	 	break;
+			case 1: 	pGPIO->GPIO_PCTL	|= ( 0x1 <<(PinNumber*4) );				break;
+			case 2: 	pGPIO->GPIO_PCTL	|= ( 0x2 <<(PinNumber*4) );				break;
+			case 3: 	pGPIO->GPIO_PCTL	|= ( 0x3 <<(PinNumber*4) );				break;
+			case 4: 	pGPIO->GPIO_PCTL	|= ( 0x4 <<(PinNumber*4) );				break;
+			case 5: 	pGPIO->GPIO_PCTL	|= ( 0x5 <<(PinNumber*4) );				break;
+			case 6: 	pGPIO->GPIO_PCTL	|= ( 0x6 <<(PinNumber*4) );				break;
+			case 7: 	pGPIO->GPIO_PCTL	|= ( 0x7 <<(PinNumber*4) );				break;
+			case 8: 	pGPIO->GPIO_PCTL	|= ( 0x8 <<(PinNumber*4) );				break;
+			case 9: 	pGPIO->GPIO_PCTL	|= ( 0x9 <<(PinNumber*4) );				break;
+			case 15:	pGPIO->GPIO_PCTL	|= ( 0xA <<(PinNumber*4) );	 			break;
 			default:	break;
 		}
 	}
