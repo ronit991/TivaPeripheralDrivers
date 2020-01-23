@@ -94,6 +94,7 @@ extern uint8_t GPIOF_INT_PIN;
 *	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
 *	uint8_t		ReadFromPin()					-- Read data from a GPIO pin																										*
 *	uint8_t		ReadFromPort()				-- Read data from a GPIO port																										*
+*	uint8_t		getAltFnNum()					-- Get the alternate function no. for a specific peripheral.										*
 ******************************************************************************************************************/
 void			GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
 void			GPIO_DeInit( uint8_t GPIO_PORT);
@@ -109,7 +110,7 @@ void			WriteToPort( uint8_t GPIO_PORT, uint8_t Values);
 uint8_t		ReadFromPin( uint8_t pin);
 uint8_t		ReadFromPort( uint8_t GPIO_PORT);
 
-uint8_t		getAltFnNum(uint8_t AltFnName);																		// Get the alternate function no. for a specific peripheral
+uint8_t		getAltFnNum(uint8_t AltFnName);
 
 
 /******************************************************************************************************************

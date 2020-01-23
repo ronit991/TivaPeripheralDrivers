@@ -97,7 +97,7 @@ GPIO_reg* getPortAddrFromPortName(uint8_t GPIO_PORT, uint8_t bus)
 										case GPIO_PORT_F:		return GPIO_F_H;
 									}
 	}
-	//return GPIO_FP;
+	return GPIO_A_P;
 }
 
 

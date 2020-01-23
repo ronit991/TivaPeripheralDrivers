@@ -169,6 +169,114 @@ void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t Cloc
 	pSSI->SSI_CR[1] |= 1<<SSI_CR1_SSE;				// Enable SSI port.
 }
 
+void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
+{
+	ssi_reg*	pSSI;
+	GPIO_reg* pGPIO;
+	uint8_t gpio_pins[4];
+	uint8_t ssi_pins = 0x00;
+	
+	SSIClockControl(SSIx,ENABLE);
+	
+	switch(SSIx)
+	{
+		case SSI0:	// configure pins for SSI0 afn 2
+								gpio_pins[0] = PA2;				//	CLK
+								gpio_pins[1] = PA3;				//	SS
+								gpio_pins[2] = PA4;				//	Rx
+								gpio_pins[3] = PA5;				//	Tx
+		
+								pGPIO = GPIO_A_P;
+								ssi_pins = 0x3C;
+								GPIO_ClockControl(GPIO_PORT_A, ENABLE);
+								pGPIO->GPIO_AFSEL |= ssi_pins;
+								pGPIO->GPIO_PCTL &= 0xFF0000FF;
+								pGPIO->GPIO_PCTL |= 0x00222200;
+								pGPIO->GPIO_DEN |= ssi_pins;
+		
+								pSSI = pSSI0;							//	Pointer to SSI0
+								break;
+		case SSI1:	// configure pins for SSI1 afn 2
+								gpio_pins[0] = PF2;				//	CLK
+								gpio_pins[1] = PF3;				//	SS
+								gpio_pins[2] = PF0;				//	Rx
+								gpio_pins[3] = PF1;				//	Tx
+		
+								pGPIO = GPIO_F_P;
+								ssi_pins = 0x0F;
+								GPIO_ClockControl(GPIO_PORT_F, ENABLE);
+								pGPIO->GPIO_AFSEL |= ssi_pins;
+								pGPIO->GPIO_PCTL &= 0xFFFF0000;
+								pGPIO->GPIO_PCTL |= 0x00002222;
+								pGPIO->GPIO_DEN |= ssi_pins;
+		
+								pSSI = pSSI1;							//	Pointer to SSI1
+								break;
+		case SSI2:	// configure pins for SSI2 afn 2
+								gpio_pins[0] = PB4;				//	CLK
+								gpio_pins[1] = PB5;				//	SS
+								gpio_pins[2] = PB6;				//	Rx
+								gpio_pins[3] = PB7;				//	Tx
+		
+								pGPIO = GPIO_B_P;
+								ssi_pins = 0xF0;
+		
+								GPIO_ClockControl(GPIO_PORT_B, ENABLE);
+								pGPIO->GPIO_AFSEL |= ssi_pins;
+								pGPIO->GPIO_PCTL &= 0x0000FFFF;
+								pGPIO->GPIO_PCTL |= 0x22220000;
+								pGPIO->GPIO_DEN |= ssi_pins;
+		
+								pSSI = pSSI2;							//	Pointer to SSI2
+								break;
+		case SSI3:	// configure pins for SSI3 afn 1
+								gpio_pins[0] = PD0;				//	CLK
+								gpio_pins[1] = PD1;				//	SS
+								gpio_pins[2] = PD2;				//	Rx
+								gpio_pins[3] = PD3;				//	Tx
+		
+								pGPIO = GPIO_D_P;
+								ssi_pins = 0x0F;
+								GPIO_ClockControl(GPIO_PORT_D, ENABLE);
+								pGPIO->GPIO_AFSEL |= ssi_pins;
+								pGPIO->GPIO_PCTL &= 0xFFFF0000;
+								pGPIO->GPIO_PCTL |= 0x00001111;
+								pGPIO->GPIO_DEN |= ssi_pins;
+								pGPIO->GPIO_PUR |= ssi_pins;
+								pGPIO->GPIO_DR4R |= ssi_pins;
+		
+								pSSI = pSSI3;							//	Pointer to SSI3
+								break;
+	}
+	pSSI->SSI_CR[1] &= ~(1<<SSI_CR1_SSE);
+	
+	switch(DeviceMode)
+	{
+		case SSI_Master_Mode:				pSSI->SSI_CR[1] = 0x00000000;				break;
+		case SSI_Slave_Mode_OutEn:	pSSI->SSI_CR[1] = 0x00000004;				break;
+		case SSI_Slave_Mode_OutDis:	pSSI->SSI_CR[1] = 0x0000000C;				break;
+	}
+	
+	switch(ClockSource)
+	{
+		case SSI_Clk_SystemClock:		pSSI->SSI_CC &= 0xFFFFFFF0;		break;		//	System Clock
+		case SSI_Clk_PIOSC:					pSSI->SSI_CC |= 0x00000005;		break;		//	Precision Internal Oscillator
+		default:										return;
+	}
+	//SSIInit(SSIx, DeviceMode, ClockSource, ClockPrescalar, SerialClockRate, Phase, Polarity, FrameFormat, DataSize)
+	//SSIInit(SSIx, DeviceMode, SSI_Clk_PIOSC, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
+	pSSI->SSI_CPSR |= (0x2	<<	0);
+	
+	pSSI->SSI_CR[0] |= ( 0x3	<<	SSI_CR0_SCR);
+	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPH);
+	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPO);
+	pSSI->SSI_CR[0] |= ( SSI_FreescaleFormat	<<	SSI_CR0_FRF);
+	pSSI->SSI_CR[0] |= ( SSI_Data_16bit	<<	SSI_CR0_DSS);
+	
+	pSSI->SSI_CR[1] |= (1<<SSI_CR1_SSE);
+}
+
+
 
 
 /******************************************************************************************************************
@@ -240,6 +348,7 @@ void SSIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled
 	//SSIInit(SSIx, DeviceMode, ClockSource, ClockPrescalar, SerialClockRate, Phase, Polarity, FrameFormat, DataSize)
 	SSIInit(SSIx, DeviceMode, SSI_Clk_PIOSC, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
 }
+
 void SSIStartK(uint8_t SSIx, uint8_t DeviceMode)
 {
 	SSIInit(SSIx, DeviceMode, SSI_Clk_SystemClock, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);

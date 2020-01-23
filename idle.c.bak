@@ -21,7 +21,7 @@ int main(void)
 	WriteToPin(PF3,PIN_SET);			delay();
 	WriteToPin(PF3,PIN_RESET);		delay();
 	
-	for(int i =0; i<2; i++)
+	for(int i =0; i<3; i++)
 	{
 		WriteToPin(PF1,PIN_SET);
 		WriteToPin(PF2,PIN_SET);

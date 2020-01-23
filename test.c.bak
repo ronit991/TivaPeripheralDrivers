@@ -16,7 +16,9 @@ int main(void)
 	clockStatus &= 0x03;
 	
 	if(clockStatus == 0x01)
-		write
+		WriteToPin(PF3,PIN_SET);
+	else
+		WriteToPin(PF1,PIN_SET);
 	
 	while(1)
 	{

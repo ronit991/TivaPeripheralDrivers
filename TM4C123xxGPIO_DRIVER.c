@@ -5,6 +5,8 @@
 *	This file contains the definitions of GPIO Driver APIs.																													*
 *																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
+*																																																									*
+*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
 ******************************************************************************************************************/
 
 
@@ -45,19 +47,20 @@ uint8_t GPIOF_INT_PIN = 99;
 *	Below are the definitions for functions which are meant to be used only by the GPIO Driver APIs.								*
 *	Any use of these functions should be striclty avoided outside the scope of this driver as this may cause				*
 *	serious problems within the microcontroller.																																		*
+*	Uncomment the below defined functions when required.																														*
 ******************************************************************************************************************/
 
-static void GPIO_write_unlock(	GPIO_reg* pGPIO)
-{
-	pGPIO->GPIO_LOCK = 0x4C4F434B;
-	pGPIO->GPIO_CR |= 0x00000011;
-}
+//static void GPIO_write_unlock(	GPIO_reg* pGPIO)
+//{
+//	pGPIO->GPIO_LOCK = 0x4C4F434B;
+//	pGPIO->GPIO_CR |= 0x00000011;
+//}
 
-static void GPIO_write_lock(	GPIO_reg* pGPIO)
-{
-	pGPIO->GPIO_LOCK = 0x00000000;
-	pGPIO->GPIO_CR &= 0x11111100;
-}
+//static void GPIO_write_lock(	GPIO_reg* pGPIO)
+//{
+//	pGPIO->GPIO_LOCK = 0x00000000;
+//	pGPIO->GPIO_CR &= 0x11111100;
+//}
 
 
 

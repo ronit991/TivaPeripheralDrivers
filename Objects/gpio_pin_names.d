@@ -2,7 +2,6 @@
 .\objects\gpio_pin_names.o: GPIO_PIN_NAMES.h
 .\objects\gpio_pin_names.o: TM4C123xx.h
 .\objects\gpio_pin_names.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\gpio_pin_names.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\gpio_pin_names.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\gpio_pin_names.o: TM4C123xxGPIO_DRIVER.h
 .\objects\gpio_pin_names.o: TM4C123xx.h

@@ -6,17 +6,19 @@
 *	definitions, peripheral register definitions, pointers to peripheral registers, and clock enable/disable macros.*
 * This file also contains some shorthands and peripheral name definitions which are used in the other files.			*
 *																																																									*
-* @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
-******************************************************************************************************************/
-
-/******************************************************************************************************************
-*		Things that need to be changed/improved																																				*
+*		Things that need to be changed/improved:-																																			*
 *			<>	Change the data type of all reserved registers to uint8_t and update the array size accordingly, so			*
 *					that it is easier to assign the size of reserved array. Also it would help in debugging.								*
 *			<>	Change GPIO register pointer names from GPIO_X(H/P) to GPIOX_(H/P) to increase readability.							*
 *					Make sure to update every header and source files to match the new naming convention.										*
 *			<>	Add bus selection feature in every function.																														*
-*			<>	Update the Exception Handler register definition with all exception handlers.														*
+*			<>	Update the Exception Handler register definition.																												*
+*			<>	Change nvic register access pointer name to capital letters, and update the files which use it.					*
+*			<>	Change ssi register name to capital letters, and update the files which use it.													*
+*																																																									*
+* @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
+**
+*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will
 ******************************************************************************************************************/
 
 /******************************************************************************************************************
@@ -40,7 +42,7 @@
 #define TM4C123XX_H
 
 #include<stdint.h>
-#include<stdio.h>
+//#include<stdio.h>
 #include<stdlib.h>
 
 #define __vo volatile
@@ -364,43 +366,44 @@ typedef struct
 }NVIC_reg;
 
 #define Nvic ( (NVIC_reg*)NVIC_BASE_ADDR )
-		/**************************************************************************************************************
-		*	NVIC Enable Registers Bit definitions																																				*
-		*							Enable 0 Reg		Enable 1 Reg		Enable 2 Reg		Enable 3 Reg		Enable 4 Reg										*
-		*		Bit				 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#			 Interrupt#											*
-		*		0								0								32							64							96							128												*
-		*		1								1								33							65							97							129												*
-		*		2								2								34							66							98							130												*
-		*		3								3								35							67							99							131												*
-		*		4								4								36							68							100							132												*
-		*		5								5								37							69							101							133												*
-		*		6								6								38							70							102							134												*
-		*		7								7								39							71							103							135												*
-		*		8								8								40							72							104							136												*
-		*		9								9								41							73							105							137												*
-		*		10							10							42							74							106							138												*
-		*		11							11							43							75							107																				*
-		*		12							12							44							76							108																				*
-		*		13							13							45							77							109																				*
-		*		14							14							46							78							110																				*
-		*		15							15							47							79							111																				*
-		*		16							16							48							80							112																				*
-		*		17							17							49							81							113																				*
-		*		18							18							50							82							114																				*
-		*		19							19							51							83							115																				*
-		*		20							20							52							84							116																				*
-		*		21							21							53							85							117																				*
-		*		22							22							54							86							118																				*
-		*		23							23							55							87							119																				*
-		*		24							24							56							88							120																				*
-		*		25							25							57							89							121																				*
-		*		26							26							58							90							122																				*
-		*		27							27							59							91							123																				*
-		*		28							28							60							92							124																				*
-		*		29							29							61							93							125																				*
-		*		30							30							62							94							126																				*
-		*		31							31							63							95							127																				*
-		**************************************************************************************************************/
+/****************************************************************************************************************
+*		NVIC Enable Registers Bit definitions																																				*
+*																																																								*
+*							En 0 Reg		En 1 Reg		En 2 Reg		En 3 Reg		En 4 Reg																					*
+*			Bit		 		Intr#			 Intr#			 Intr#			 Intr#			 Intr#																						*
+*			0...........0..........32..........64..........96.........128																							*
+*			1						1					 33					 65					 97					129																							*
+*			2...........2..........34..........66..........98.........130																							*
+*			3						3					 35					 67					 99					131																							*
+*			4...........4..........36..........68..........100........132																							*
+*			5						5					 37					 69					 101				133																							*
+*			6...........6..........38..........70..........102........134																							*
+*			7						7					 39					 71					 103				135																							*
+*			8...........8..........40..........72..........104........136																							*
+*			9						9					 41					 73					 105				137																							*
+*			10..........10.........42..........74..........106........138																							*
+*			11					11				 43				 	 75					 107																												*
+*			12..........12.........44..........76..........108																												*
+*			13					13				 45					 77					 109																												*
+*			14..........14.........46..........78..........110																												*
+*			15					15				 47					 79					 111																												*
+*			16..........16.........48..........80..........112																												*
+*			17					17				 49					 81					 113																												*
+*			18..........18.........50..........82..........114																												*
+*			19					19				 51					 83					 115																												*
+*			20..........20.........52..........84..........116																												*
+*			21					21				 53					 85					 117																												*
+*			22..........22.........54..........86..........118																												*
+*			23					23				 55					 87					 119																												*
+*			24..........24.........56..........88..........120																												*
+*			25					25				 57					 89					 121																												*
+*			26..........26.........58..........90..........122																												*
+*			27					27				 59					 91					 123																												*
+*			28..........28.........60..........92..........124																												*
+*			29					29				 61					 93					 125																												*
+*			30..........30.........62..........94..........126																												*
+*			31					31				 63					 95					 127																												*
+****************************************************************************************************************/
 
 
 
@@ -650,7 +653,7 @@ typedef struct
 /******************************************************************************************************************
 *																				Miscellaneous macros and shorthands																				*
 ******************************************************************************************************************/
-#define SYS_CLK			16					//	System Clock Frequency (in MHz)
+#define SYS_CLK			16000000					//	System Clock Frequency (in Hz)
 
 #define ENABLE			1
 #define DISABLE			0
@@ -668,6 +671,7 @@ typedef struct
 
 #define SET_BIT(x) |= 1<<x
 #define CLR_BIT(X) &= ~ (1<<X)
+#define GET_BIT(reg,bit) ( ( reg & (1 << bit) )?1:0 )
 
 
 
@@ -677,6 +681,7 @@ typedef struct
 ******************************************************************************************************************/
 #include "TM4C123xxGPIO_DRIVER.h"
 #include "TM4C123xxSSI_DRIVER.h"
+#include "TM4C123xxI2C_DRIVER.h"
 
 #include "GPIO_PIN_NAMES.h"
 

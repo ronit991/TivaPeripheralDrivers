@@ -9,16 +9,9 @@ int main(void)
 	DigitalPin(PF1,OUT,PullDn);
 	DigitalPin(PF3,OUT,PullDn);
 	
-	WriteToPin(PF1,PIN_RESET);
-	WriteToPin(PF3,PIN_RESET);
-	
-	uint8_t clockStatus = ((SYSCTL->RCC)>>4);
-	clockStatus &= 0x03;
-	
-	if(clockStatus == 0x01)
-		WriteToPin(PF3,PIN_SET);
-	else
-		WriteToPin(PF1,PIN_SET);
+	WriteToPin(PF1,PIN_SET);
+	WriteToPin(PF3,PIN_SET);
+
 	
 	while(1)
 	{

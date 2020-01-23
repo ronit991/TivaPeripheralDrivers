@@ -13,25 +13,13 @@ int main(void)
 	DigitalPin(PF2,OUT,PullDn);
 	DigitalPin(PF3,OUT,PullDn);
 	
-	master.ACKControl = I2C_AUTO_ACK_ENABLE;
-	master.ClkSpeed = 100000;
-	master.I2Cx = I2C3;
-	master.MasterAddress = 0x61;
-	master.SpeedMode = I2C_SPEED_MODE_STD;
-	master.UseAsSlave = NO;
-	I2CInit2(&master);
-	
-	I2CInit(I2C0,I2C_SPEED_MODE_STD,100000,I2C_AUTO_ACK_ENABLE);
+	//I2CInit(I2C0,I2C_SPEED_MODE_STD,100000,I2C_AUTO_ACK_ENABLE);
 	
 	WriteToPin(PF3,PIN_SET);
-	char data[] = "test";
+
 	while(1)
 	{
-		uint8_t error;
-//		error = I2CMasterSendData(&master,0x68,(uint8_t*)&data,strlen(data));
-//		if(error)	break;
-		
-		error = I2CMasterSendData2(I2C0,0x68,(uint8_t*)&data,strlen(data));
+		uint8_t error = I2CMasterSendByte(I2C1, 0x68, 65);
 		if(error)	break;
 		
 		delay_l();

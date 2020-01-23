@@ -419,10 +419,8 @@ void I2CDeInit(uint8_t I2Cx)
 
 /******************************************************************************************************************
 *	@I2CGetAddress()																																																*
-* @I2Cx		-	Name of the I2C module.																																								*
-*	@return	-	Module Access Pointer of the given I2C Module.																												*
-*	@Note		-	If the given i2c module is invalid, this function returns the pointer to I2C0. Double check the name	*
-*						if an unexpected behaviour is observed.																																*
+* @I2Cx			-	Name of the I2C module.																																							*
+*	@return		-	Module Access Pointer of the given I2C Module.																											*
 ******************************************************************************************************************/
 I2C_reg* I2CGetAddress(uint8_t I2Cx)
 {

@@ -1,0 +1,10 @@
+.\objects\jan19__01_i2c_send_byte_test.o: Jan19__01_i2c_send_byte_test.c
+.\objects\jan19__01_i2c_send_byte_test.o: TM4C123xx.h
+.\objects\jan19__01_i2c_send_byte_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\jan19__01_i2c_send_byte_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\jan19__01_i2c_send_byte_test.o: TM4C123xxGPIO_DRIVER.h
+.\objects\jan19__01_i2c_send_byte_test.o: TM4C123xx.h
+.\objects\jan19__01_i2c_send_byte_test.o: TM4C123xxSSI_DRIVER.h
+.\objects\jan19__01_i2c_send_byte_test.o: TM4C123xxI2C_DRIVER.h
+.\objects\jan19__01_i2c_send_byte_test.o: GPIO_PIN_NAMES.h
+.\objects\jan19__01_i2c_send_byte_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
