@@ -112,6 +112,7 @@
 *		Definitions for these can be found in TM4C123xxSSI_DRIVER.c file																							*
 ******************************************************************************************************************/
 void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t ClockPrescalar, uint8_t SerialClockRate, uint8_t Phase, uint8_t Polarity, uint8_t FrameFormat, uint8_t DataSize);
+void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource);
 void SSIDeInit(uint8_t SSIx);
 void SSIClockControl(uint8_t SSIx,uint8_t	EnorDi);
 

@@ -176,7 +176,7 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 	uint8_t gpio_pins[4];
 	uint8_t ssi_pins = 0x00;
 	
-	SSIClockControl(SSIx,ENABLE);
+	SSIClockControl(SSIx,ENABLE);										//	Step 1 of Section 15.4
 	
 	switch(SSIx)
 	{
@@ -188,11 +188,10 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 		
 								pGPIO = GPIO_A_P;
 								ssi_pins = 0x3C;
-								GPIO_ClockControl(GPIO_PORT_A, ENABLE);
-								pGPIO->GPIO_AFSEL |= ssi_pins;
-								pGPIO->GPIO_PCTL &= 0xFF0000FF;
+								GPIO_ClockControl(GPIO_PORT_A, ENABLE);				//	Step 2 of Section 15.4
+								pGPIO->GPIO_AFSEL |= ssi_pins;								//	Step 3 of Section 15.4
+								pGPIO->GPIO_PCTL &= 0xFF0000FF;								//	Step 4 of Section 15.4
 								pGPIO->GPIO_PCTL |= 0x00222200;
-								pGPIO->GPIO_DEN |= ssi_pins;
 		
 								pSSI = pSSI0;							//	Pointer to SSI0
 								break;
@@ -204,11 +203,10 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 		
 								pGPIO = GPIO_F_P;
 								ssi_pins = 0x0F;
-								GPIO_ClockControl(GPIO_PORT_F, ENABLE);
-								pGPIO->GPIO_AFSEL |= ssi_pins;
-								pGPIO->GPIO_PCTL &= 0xFFFF0000;
+								GPIO_ClockControl(GPIO_PORT_F, ENABLE);				//	Step 2 of Section 15.4
+								pGPIO->GPIO_AFSEL |= ssi_pins;								//	Step 3 of Section 15.4
+								pGPIO->GPIO_PCTL &= 0xFFFF0000;								//	Step 4 of Section 15.4
 								pGPIO->GPIO_PCTL |= 0x00002222;
-								pGPIO->GPIO_DEN |= ssi_pins;
 		
 								pSSI = pSSI1;							//	Pointer to SSI1
 								break;
@@ -221,11 +219,10 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 								pGPIO = GPIO_B_P;
 								ssi_pins = 0xF0;
 		
-								GPIO_ClockControl(GPIO_PORT_B, ENABLE);
-								pGPIO->GPIO_AFSEL |= ssi_pins;
-								pGPIO->GPIO_PCTL &= 0x0000FFFF;
+								GPIO_ClockControl(GPIO_PORT_B, ENABLE);				//	Step 2 of Section 15.4
+								pGPIO->GPIO_AFSEL |= ssi_pins;								//	Step 3 of Section 15.4
+								pGPIO->GPIO_PCTL &= 0x0000FFFF;								//	Step 4 of Section 15.4
 								pGPIO->GPIO_PCTL |= 0x22220000;
-								pGPIO->GPIO_DEN |= ssi_pins;
 		
 								pSSI = pSSI2;							//	Pointer to SSI2
 								break;
@@ -237,27 +234,29 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 		
 								pGPIO = GPIO_D_P;
 								ssi_pins = 0x0F;
-								GPIO_ClockControl(GPIO_PORT_D, ENABLE);
-								pGPIO->GPIO_AFSEL |= ssi_pins;
-								pGPIO->GPIO_PCTL &= 0xFFFF0000;
+								GPIO_ClockControl(GPIO_PORT_D, ENABLE);					//	Step 2 of Section 15.4
+								pGPIO->GPIO_AFSEL |= ssi_pins;									//	Step 3 of Section 15.4
+								pGPIO->GPIO_PCTL &= 0xFFFF0000;									//	Step 4 of Section 15.4
 								pGPIO->GPIO_PCTL |= 0x00001111;
-								pGPIO->GPIO_DEN |= ssi_pins;
-								pGPIO->GPIO_PUR |= ssi_pins;
-								pGPIO->GPIO_DR4R |= ssi_pins;
 		
 								pSSI = pSSI3;							//	Pointer to SSI3
 								break;
 	}
-	pSSI->SSI_CR[1] &= ~(1<<SSI_CR1_SSE);
 	
-	switch(DeviceMode)
+	pGPIO->GPIO_DEN |= ssi_pins;									//	Step 5... of Section 15.4
+	pGPIO->GPIO_PUR |= ssi_pins;									//	Step 5... of Section 15.4
+	pGPIO->GPIO_DR8R |= ssi_pins;									//	Step 5... of Section 15.4
+	
+	pSSI->SSI_CR[1] &= ~(1<<SSI_CR1_SSE);					//	Step ff.1 of Section 15.4
+	
+	switch(DeviceMode)														//	Step ff.2 of Section 15.4
 	{
 		case SSI_Master_Mode:				pSSI->SSI_CR[1] = 0x00000000;				break;
 		case SSI_Slave_Mode_OutEn:	pSSI->SSI_CR[1] = 0x00000004;				break;
 		case SSI_Slave_Mode_OutDis:	pSSI->SSI_CR[1] = 0x0000000C;				break;
 	}
 	
-	switch(ClockSource)
+	switch(ClockSource)														//	Step ff.3 of Section 15.4
 	{
 		case SSI_Clk_SystemClock:		pSSI->SSI_CC &= 0xFFFFFFF0;		break;		//	System Clock
 		case SSI_Clk_PIOSC:					pSSI->SSI_CC |= 0x00000005;		break;		//	Precision Internal Oscillator
@@ -265,15 +264,17 @@ void SSIInit2(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource)
 	}
 	//SSIInit(SSIx, DeviceMode, ClockSource, ClockPrescalar, SerialClockRate, Phase, Polarity, FrameFormat, DataSize)
 	//SSIInit(SSIx, DeviceMode, SSI_Clk_PIOSC, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
-	pSSI->SSI_CPSR |= (0x2	<<	0);
+	pSSI->SSI_CPSR |= (0x2	<<	0);								//	Step ff.4 of Section 15.4
 	
-	pSSI->SSI_CR[0] |= ( 0x3	<<	SSI_CR0_SCR);
-	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPH);
-	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPO);
-	pSSI->SSI_CR[0] |= ( SSI_FreescaleFormat	<<	SSI_CR0_FRF);
-	pSSI->SSI_CR[0] |= ( SSI_Data_16bit	<<	SSI_CR0_DSS);
+	pSSI->SSI_CR[0] |= ( 0x3	<<	SSI_CR0_SCR);											//	Step ff.5.1 of Section 15.4
+	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPH);											//	Step ff.5.2 of Section 15.4
+	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPO);											//	Step ff.5.2 of Section 15.4
+	pSSI->SSI_CR[0] |= ( SSI_FreescaleFormat	<<	SSI_CR0_FRF);			//	Step ff.5.3 of Section 15.4
+	pSSI->SSI_CR[0] |= ( SSI_Data_16bit	<<	SSI_CR0_DSS);						//	Step ff.5.4 of Section 15.4
 	
+	/* Step 6: DMA Configuration isn't implemented yet. It is optional, so we'll come back to it later, sometime.*/
 	
+	pSSI->SSI_CR[1] |= (1<<SSI_CR1_SSE);
 }
 
 

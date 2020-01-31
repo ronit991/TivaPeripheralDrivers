@@ -116,6 +116,7 @@ void SSIDeInit(uint8_t SSIx);
 void SSIClockControl(uint8_t SSIx,uint8_t	EnorDi);
 
 void SSIStart(uint8_t SSIx, uint8_t DeviceMode, uint8_t InterruptMode);
+void SSIStartK(uint8_t SSIx, uint8_t DeviceMode);
 
 ssi_reg* GetSSIAddressOf(uint8_t SSIx);
 
