@@ -683,7 +683,7 @@ typedef struct
 #include "TM4C123xxSSI_DRIVER.h"
 #include "TM4C123xxI2C_DRIVER.h"
 
-#include "GPIO_PIN_NAMES.h"
+#include "GPIO_PINS.h"
 
 
 #endif

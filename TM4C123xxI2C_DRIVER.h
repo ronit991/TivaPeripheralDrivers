@@ -1,3 +1,15 @@
+/******************************************************************************************************************
+*	@file			-	TM4C123xxI2C_DRIVER.h																																								*
+*	@author		-	Ronit Vairagi																																												*
+*																																																									*
+*	This file contains prototypes of I2C Driver APIs. Bit position macros and shorthands which are used by the I2C	*
+*	Driver APIs are also defined here.																																							*
+*																																																									*
+* @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
+*																																																									*
+*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
+******************************************************************************************************************/
+
 #ifndef TM4C123XXI2C_DRIVER_H
 #define TM4C123XXI2C_DRIVER_H
 
@@ -13,7 +25,7 @@
 #define I2C_MCS_ERROR				1							//	Error in last operation
 #define I2C_MCS_ADRACK			2							//	Address Acknowledge
 #define I2C_MCS_DATAACK			3							//	Data Acknowledge
-#define I2C_MCS_ARBLST			4							//	Arbitration Lost
+#define I2C_MCS_ARBLOST			4							//	Arbitration Lost
 #define I2C_MCS_IDLE				5							//	I2C Controller is Idle
 #define I2C_MCS_BUSBUSY			6							//	Bus Busy
 #define I2C_MCS_CLKTO				7							//	Clock Timeout Error
@@ -59,10 +71,14 @@
 #define I2C_MCR2_GFPW 			4							//	Glitch Filter Pulse Width
 
 // Slave Control/Status Register	(I2CSCSR)
+/* Control Register */
 #define I2C_SCSR_RREQ				0							//	Receive Request
 #define I2C_SCSR_TREQ				1							//	Transmit Request
 #define I2C_SCSR_FBR				2							//	First Byte Received
 #define I2C_SCSR_OAR2SEL		3							//	OAR2 Address Matched
+
+/* Control Register */
+#define I2C_SCSR_DA					0							//	Device Active: Enable/Disable Slave Operation
 
 // Slave Interrupt Mask Register	(I2CSIMR)
 #define I2C_SIMR_DATA				0							//	Data Received / Data Requested Interrupt Mask
@@ -102,7 +118,7 @@
 
 
 /******************************************************************************************************************
-*																			Miscellaneous macros and shorthands																					*
+*															Miscellaneous macros, shorthands and Global variables																*
 ******************************************************************************************************************/
 
 #define I2C_SPEED_MODE_STD			0
@@ -112,6 +128,9 @@
 
 #define I2C_AUTO_ACK_DISABLE		0
 #define I2C_AUTO_ACK_ENABLE			1
+
+#define I2C_USE_AS_SLAVE				YES
+#define I2C_DONT_USE_AS_SLAVE		NO
 
 #define I2C0_SCL_PIN						PB2
 #define I2C0_SDA_PIN						PB3
@@ -124,6 +143,9 @@
 
 #define I2C3_SCL_PIN						PD0
 #define I2C3_SDA_PIN						PD1
+
+// Global variables used by the driver APIs.
+extern uint8_t I2CDeviceAddress[4];
 
 
 
@@ -145,10 +167,27 @@ typedef struct
 
 /******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
-*		Below are the prototypes for driver APIs																																			*
+*	Below are the prototypes for driver APIs																																				*
+*	void I2CInit()								-	Initialize an I2C Module.																												*
+*	void I2CInit2()								-	Initialize an I2C Module.																												*
+*	void I2CDeInit()							-	Reset and turn off an I2C module.																								*
+*																																																									*
+*	uint8_t I2CClockControl()			-	Enable/Disable Clock for an I2C Module.																					*
+*																																																									*
+*	uint8_t I2CMasterSendData()		-	Send data as Master.																														*
+*	uint8_t I2CMasterSendData2()	-	Send data as Master.																														*
+*	uint8_t I2CMasterSendByte()		-	Send one byte data as Master.																										*
+*																																																									*
+* uint8_t I2CMasterRecvData()		- Receive data as Master.																													*
+* uint8_t I2CMasterRecvByte()		- Receive one single byte as Master.																							*
+*																																																									*
+*	uint8_t GetSCLPin()						-	Get pin number of SCL line.																											*
+*	uint8_t GetSDAPin()						-	Get pin number of SDA line.																											*
+*																																																									*
+*	I2C_reg* I2CGetAddress()			-	Get access pointer of an I2C Module.																						*
 *		Definitions for these can be found in TM4C123xxI2C_DRIVER.c file																							*
 ******************************************************************************************************************/
-void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKControl);
+void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKControl, uint8_t UseAsSlave);
 void I2CInit2(I2CHandle* pI2CHandle);
 void I2CDeInit(uint8_t I2Cx);
 
@@ -157,6 +196,9 @@ uint8_t I2CClockControl(uint8_t I2Cx,uint8_t	EnorDi);
 uint8_t I2CMasterSendData(I2CHandle* pI2CHandle, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
 uint8_t I2CMasterSendData2(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
 uint8_t I2CMasterSendByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t Data);
+
+uint8_t I2CMasterRecvData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxBuf, uint8_t Len);
+uint8_t I2CMasterRecvByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxByte);
 
 uint8_t GetSCLPin(uint8_t I2Cx);
 uint8_t GetSDAPin(uint8_t I2Cx);

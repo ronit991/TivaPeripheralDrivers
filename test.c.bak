@@ -13,12 +13,12 @@ int main(void)
 	
 	WriteToPin(PF3,PIN_SET);
 
-	uint16_t data = 0x1234;
+	uint16_t data = 0x8;
 	
 	SSIInit2(SSI3,SSI_Master_Mode,SSI_Clk_SystemClock);
 	while(1)
 	{
-		SSISendData(SSI3,&data,1);
+		SSISendData(SSI3,&data,16);
 		blink_led();
 	}
 	return 0;
@@ -35,8 +35,8 @@ void delay(void)
 
 void blink_led(void)
 {
-	WriteToPin(PF1,PIN_SET);			delay();
-	WriteToPin(PF1,PIN_RESET);		delay();
-	WriteToPin(PF1,PIN_SET);			delay();
-	WriteToPin(PF1,PIN_RESET);		delay();
+	ToggleGPIOPin(PF1);			delay();
+	ToggleGPIOPin(PF1);			delay();
+	ToggleGPIOPin(PF1);			delay();
+	ToggleGPIOPin(PF1);			delay();
 }

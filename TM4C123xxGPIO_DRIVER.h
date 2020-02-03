@@ -91,6 +91,7 @@ extern uint8_t GPIOF_INT_PIN;
 *	void			GPIO_DeInit()					-- De-Initialize or Reset a GPIO port																						*
 *	void			DigitalPin()					-- Initialize a GPIO pin in Digital mode with some default configurations.			*
 *	void			AnalogPin()						-- Initialize a GPIO pin in Analog	mode with some default configurations.			*
+*	void			InterruptPin()				-- Initialize a GPIO pin in Digital(input) mode with interrupt reception.				*
 *	void			WriteToPin()					-- Write digital values to a GPIO pin																						*
 *	void			WriteToPort()					-- Write digital values to a GPIO port																					*
 *	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
@@ -100,6 +101,7 @@ extern uint8_t GPIOF_INT_PIN;
 ******************************************************************************************************************/
 void			GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
 void			GPIO_DeInit( uint8_t GPIO_PORT);
+
 void			GPIO_ClockControl( uint8_t GPIO_Port, uint8_t Clk_En);
 
 void			DigitalPin( uint8_t pin, uint8_t IOmode, uint8_t opType);

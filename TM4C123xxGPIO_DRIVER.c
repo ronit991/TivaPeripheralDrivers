@@ -12,7 +12,6 @@
 
 
 #include "TM4C123xxGPIO_DRIVER.h"
-#include "GPIO_PIN_NAMES.h"
 
 
 
@@ -70,11 +69,15 @@ uint8_t GPIOF_INT_PIN = 99;
 *	void			GPIO_ClockControl()		-- Enable/Disable clock for a GPIO port																					*
 *	void			GPIO_Init()						-- Initialize a GPIO port																												*
 *	void			GPIO_DeInit()					-- De-Initialize or Reset a GPIO port																						*
-*	void			WriteToPin()					-- Write data to a GPIO pin																											*
-*	void			WriteToPort()					-- Write data to a GPIO port																										*
+*	void			DigitalPin()					-- Initialize a GPIO pin in Digital mode with some default configurations.			*
+*	void			AnalogPin()						-- Initialize a GPIO pin in Analog	mode with some default configurations.			*
+*	void			InterruptPin()				-- Initialize a GPIO pin in Digital(input) mode with interrupt reception.				*
+*	void			WriteToPin()					-- Write digital values to a GPIO pin																						*
+*	void			WriteToPort()					-- Write digital values to a GPIO port																					*
 *	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
 *	uint8_t		ReadFromPin()					-- Read data from a GPIO pin																										*
 *	uint8_t		ReadFromPort()				-- Read data from a GPIO port																										*
+*	uint8_t		getAltFnNum()					-- Get the alternate function no. for a specific peripheral.										*
 ******************************************************************************************************************/
 
 
@@ -310,7 +313,7 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 ******************************************************************************************************************/
 void	GPIO_DeInit(uint8_t GPIOPort)
 {
-	SYSCTL->SRGPIO |=  (1<<GPIOPort);				// Reset the port by setting the appropriate bit
+	SYSCTL->SRGPIO |=  (1<<GPIOPort);				// Reset the port by setting the appropriate bit in SRGPIO register.
 	SYSCTL->SRGPIO &= ~(1<<GPIOPort);				// The bit is cleared so that it doesn't always remain in reset state.
 	
 	GPIO_ClockControl(GPIOPort,DISABLE);		// Disable the clock.
@@ -340,7 +343,7 @@ uint8_t	ReadFromPin(uint8_t pin)
 ******************************************************************************************************************/
 uint8_t	ReadFromPort(uint8_t GPIOPort)
 {
-	return ( getPortAddrFromPortName(GPIOPort,APB_BUS) )->GPIO_DATA;
+	return ( getPortAddr(GPIOPort,APB_BUS) )->GPIO_DATA;
 	// The above statement is equivalent to return pGPIOx->GPIO_DATA;
 }
 	
@@ -353,7 +356,7 @@ uint8_t	ReadFromPort(uint8_t GPIOPort)
 *	@Value				-	Value which is to be written to the pin.																												*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void			WriteToPin(uint8_t pin, uint8_t Value)
+void WriteToPin(uint8_t pin, uint8_t Value)
 {
 	if(Value == PIN_SET)					getPortAddr(pin,APB_BUS)->GPIO_DATA |=	( 1<<getPinNumber(pin) );
 	else if(Value == PIN_RESET)		getPortAddr(pin,APB_BUS)->GPIO_DATA &= ~( 1<<getPinNumber(pin) );
@@ -372,9 +375,9 @@ void			WriteToPin(uint8_t pin, uint8_t Value)
 *	@Values				-	Values which is to be written to the port.																											*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void			WriteToPort(uint8_t GPIO_PORT, uint8_t Values)
+void WriteToPort(uint8_t GPIO_PORT, uint8_t Values)
 {
-	( getPortAddrFromPortName(GPIO_PORT,APB_BUS) )->GPIO_DATA = Values;
+	( getPortAddr(GPIO_PORT,APB_BUS) )->GPIO_DATA = Values;
 	//	The above statement is equivalent to pGPIOx->GPIO_DATA = Values
 }
 	
@@ -386,7 +389,7 @@ void			WriteToPort(uint8_t GPIO_PORT, uint8_t Values)
 * @pin					-	This is the pin which needs to be toggled.																											*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void			ToggleGPIOPin(uint8_t pin)
+void ToggleGPIOPin(uint8_t pin)
 {
 	getPortAddr(pin,APB_BUS)->GPIO_DATA ^= (1<<getPinNumber(pin));
 	//	The above statement is equivalent to pGPIOx->GPIO_DATA ^= (1<<PinNumber)
@@ -402,7 +405,7 @@ void			ToggleGPIOPin(uint8_t pin)
 *	@opType				-	Pull Up, Pull Down, or Open Drain mode.																													*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void	DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
+void DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
 {
 	GPIO_Init(pin,IOmode,NoAlternateFunction,opType,Digital,Eight_mA,NoInterrupt);
 }

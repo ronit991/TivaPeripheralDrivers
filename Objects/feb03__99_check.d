@@ -1,0 +1,9 @@
+.\objects\feb03__99_check.o: Feb03__99_check.c
+.\objects\feb03__99_check.o: TM4C123xx.h
+.\objects\feb03__99_check.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\feb03__99_check.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\feb03__99_check.o: TM4C123xxGPIO_DRIVER.h
+.\objects\feb03__99_check.o: TM4C123xx.h
+.\objects\feb03__99_check.o: TM4C123xxSSI_DRIVER.h
+.\objects\feb03__99_check.o: TM4C123xxI2C_DRIVER.h
+.\objects\feb03__99_check.o: GPIO_PINS.h

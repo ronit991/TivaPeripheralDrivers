@@ -17,8 +17,8 @@
 *			<>	Change ssi register name to capital letters, and update the files which use it.													*
 *																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
-**
-*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will
+*																																																									*
+*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
 ******************************************************************************************************************/
 
 /******************************************************************************************************************

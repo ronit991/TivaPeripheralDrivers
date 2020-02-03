@@ -2,7 +2,6 @@
 #define GPIO_PIN_NAMES_H
 
 #include "TM4C123xx.h"
-#include "TM4C123xxGPIO_DRIVER.h"
 
 #define PA0 0
 #define PA1 1
@@ -58,7 +57,14 @@
 #define PF6 56
 #define PF7 57
 
+#define LED_RED			PF1
+#define LED_BLUE		PF2
+#define LED_GREEN		PF3
+
+#define USER_
+
 GPIO_reg* getPortAddr(uint8_t pin, uint8_t bus);
+GPIO_reg* getPortAddrFromPortName(uint8_t GPIO_PORT, uint8_t bus);
 uint8_t getPortName(uint8_t pin);
 uint8_t getPinNumber(uint8_t pin);
 

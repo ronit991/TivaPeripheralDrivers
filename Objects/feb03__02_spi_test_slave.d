@@ -1,0 +1,9 @@
+.\objects\feb03__02_spi_test_slave.o: Feb03__02_spi_test_slave.c
+.\objects\feb03__02_spi_test_slave.o: TM4C123xx.h
+.\objects\feb03__02_spi_test_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\feb03__02_spi_test_slave.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\feb03__02_spi_test_slave.o: TM4C123xxGPIO_DRIVER.h
+.\objects\feb03__02_spi_test_slave.o: TM4C123xx.h
+.\objects\feb03__02_spi_test_slave.o: TM4C123xxSSI_DRIVER.h
+.\objects\feb03__02_spi_test_slave.o: TM4C123xxI2C_DRIVER.h
+.\objects\feb03__02_spi_test_slave.o: GPIO_PINS.h
