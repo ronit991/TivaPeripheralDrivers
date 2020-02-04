@@ -1,0 +1,9 @@
+.\objects\feb03__03_spi_master_sequence.o: Feb03__03_spi_master_sequence.c
+.\objects\feb03__03_spi_master_sequence.o: TM4C123xx.h
+.\objects\feb03__03_spi_master_sequence.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\feb03__03_spi_master_sequence.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\feb03__03_spi_master_sequence.o: TM4C123xxGPIO_DRIVER.h
+.\objects\feb03__03_spi_master_sequence.o: TM4C123xx.h
+.\objects\feb03__03_spi_master_sequence.o: TM4C123xxSSI_DRIVER.h
+.\objects\feb03__03_spi_master_sequence.o: TM4C123xxI2C_DRIVER.h
+.\objects\feb03__03_spi_master_sequence.o: GPIO_PINS.h

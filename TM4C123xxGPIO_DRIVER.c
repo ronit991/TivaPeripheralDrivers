@@ -16,22 +16,6 @@
 
 
 /******************************************************************************************************************
-*																					GPIO Interrupt Pin Numbers																							*
-*	These variables hold the pin number which has been configured as an Interrupt pin for a particular port.				*
-*	Default value for all these variables is 99. This value also suggests that a particular port does not have any 	*
-*	pin configured as an interrupt pin. While de-initializing a GPIO port or while removing the interrupt, the			*
-*	corresponding variable is re-assigned the value 99.																															*
-******************************************************************************************************************/
-uint8_t GPIOA_INT_PIN = 99;
-uint8_t GPIOB_INT_PIN = 99;
-uint8_t GPIOC_INT_PIN = 99;
-uint8_t GPIOD_INT_PIN = 99;
-uint8_t GPIOE_INT_PIN = 99;
-uint8_t GPIOF_INT_PIN = 99;
-
-
-
-/******************************************************************************************************************
 *																					User Switches and Onboard LEDs																					*
 *	This information is valid for TM4C123GXL  board only.																														*
 *		Pin:				PF0					PF1					PF2					PF3						PF4																							*
@@ -64,20 +48,23 @@ uint8_t GPIOF_INT_PIN = 99;
 
 
 /******************************************************************************************************************
-*																				User APIs Supported by this Driver																				*
+*																					APIs Supported by this Driver																						*
+*		Below are the prototypes for driver APIs																																			*
+*		Definitions for these can be found in TM4C123xxGPIO_DRIVER.c file																							*
 *																																																									*
-*	void			GPIO_ClockControl()		-- Enable/Disable clock for a GPIO port																					*
-*	void			GPIO_Init()						-- Initialize a GPIO port																												*
-*	void			GPIO_DeInit()					-- De-Initialize or Reset a GPIO port																						*
-*	void			DigitalPin()					-- Initialize a GPIO pin in Digital mode with some default configurations.			*
-*	void			AnalogPin()						-- Initialize a GPIO pin in Analog	mode with some default configurations.			*
-*	void			InterruptPin()				-- Initialize a GPIO pin in Digital(input) mode with interrupt reception.				*
-*	void			WriteToPin()					-- Write digital values to a GPIO pin																						*
-*	void			WriteToPort()					-- Write digital values to a GPIO port																					*
-*	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
-*	uint8_t		ReadFromPin()					-- Read data from a GPIO pin																										*
-*	uint8_t		ReadFromPort()				-- Read data from a GPIO port																										*
-*	uint8_t		getAltFnNum()					-- Get the alternate function no. for a specific peripheral.										*
+*	1. 	GPIO_ClockControl()		-		Enable/Disable clock for a GPIO port.																							*
+*	2. 	GPIO_Init()						-		Initialize a GPIO port. Use this function in your programs only if you	need a		*
+*																fine control over the drive strength of the pin.																	*
+*																Otherwise use functions 4/5/6 for simplicity.																			*
+*	3. 	GPIO_DeInit()					-		Reset and turn off a GPIO port.																										*
+*	4. 	DigitalPin()					-		Initialize a GPIO pin in Digital mode with 8mA drive strength.										*
+*	5. 	AnalogPin()						-		Initialize a GPIO pin in Analog	mode with 8mA drive strength.											*
+*	6. 	InterruptPin()				-		Initialize a GPIO pin in Digital(input) mode with interrupt reception.						*
+*	7. 	WriteToPin()					-		Write digital values to a GPIO pin																								*
+*	8. 	WriteToPort()					-		Write digital values to a GPIO port																								*
+*	9. 	ToggleGPIOPin()				-		Toggle the state of a GPIO pin																										*
+*	10. ReadFromPin()					-		Read data from a GPIO pin																													*
+*	11. ReadFromPort()				-		Read data from a GPIO port																												*
 ******************************************************************************************************************/
 
 
@@ -100,24 +87,24 @@ void	GPIO_ClockControl(uint8_t GPIOPort, uint8_t ClkEn)
 	{
 		switch(GPIOPort)												// Enable the clock for the port.
 		{
-			case GPIO_PORT_A:	GPIOA_PCLK_EN(); break;
-			case GPIO_PORT_B:	GPIOB_PCLK_EN(); break;
-			case GPIO_PORT_C:	GPIOC_PCLK_EN(); break;
-			case GPIO_PORT_D:	GPIOD_PCLK_EN(); break;
-			case GPIO_PORT_E:	GPIOE_PCLK_EN(); break;
-			case GPIO_PORT_F:	GPIOF_PCLK_EN(); break;
+			case GPIO_PORT_A:		GPIOA_PCLK_EN();				break;	// These macros are defined in TM4C123xx.h file in section 2.2
+			case GPIO_PORT_B:		GPIOB_PCLK_EN(); 				break;
+			case GPIO_PORT_C:		GPIOC_PCLK_EN(); 				break;
+			case GPIO_PORT_D:		GPIOD_PCLK_EN(); 				break;
+			case GPIO_PORT_E:		GPIOE_PCLK_EN(); 				break;
+			case GPIO_PORT_F:		GPIOF_PCLK_EN(); 				break;
 		}
 	}
 	else if(ClkEn == DISABLE)
 	{
-		switch(GPIOPort)												// Disable the clock and set interrupt pin number to default.
+		switch(GPIOPort)												// Disable the clock.
 		{
-			case GPIO_PORT_A:		GPIOA_PCLK_DIS(); 	GPIOA_INT_PIN = 99;		break;
-			case GPIO_PORT_B:		GPIOB_PCLK_DIS(); 	GPIOB_INT_PIN = 99;		break;
-			case GPIO_PORT_C:		GPIOC_PCLK_DIS(); 	GPIOC_INT_PIN = 99;		break;
-			case GPIO_PORT_D:		GPIOD_PCLK_DIS(); 	GPIOD_INT_PIN = 99;		break;
-			case GPIO_PORT_E:		GPIOE_PCLK_DIS(); 	GPIOE_INT_PIN = 99;		break;
-			case GPIO_PORT_F:		GPIOF_PCLK_DIS(); 	GPIOF_INT_PIN = 99;		break;
+			case GPIO_PORT_A:		GPIOA_PCLK_DIS(); 			break;	// These macros are defined in TM4C123xx.h file in section 2.2
+			case GPIO_PORT_B:		GPIOB_PCLK_DIS(); 			break;
+			case GPIO_PORT_C:		GPIOC_PCLK_DIS(); 			break;
+			case GPIO_PORT_D:		GPIOD_PCLK_DIS(); 			break;
+			case GPIO_PORT_E:		GPIOE_PCLK_DIS(); 			break;
+			case GPIO_PORT_F:		GPIOF_PCLK_DIS(); 			break;
 		}
 	}
 }
@@ -147,11 +134,11 @@ void	GPIO_ClockControl(uint8_t GPIOPort, uint8_t ClkEn)
 *										7. Configure type, event, and mask for interrupt.																							*
 * 									Refer to section 10.3(Pg 656) of datasheet for detailed information on all these steps.				*
 ******************************************************************************************************************/
-void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger)
+void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger)
 {
-	GPIO_reg* pGPIO =		getPortAddr(pin,APB_BUS);		//	Variable which points to the GPIO port.
-	uint8_t GPIO_Port = getPortName(pin);						//	Variable which stores the name of the GPIO port.
-	uint8_t PinNumber = getPinNumber(pin);					//	Variable which stores the Pin number which needs to be initialized.
+	GPIO_reg* pGPIO =		getPortAddr(pin,APB_BUS);		//	Pointer to the GPIO port.
+	uint8_t GPIO_Port = getPortName(pin);						//	Name of the GPIO port.
+	uint8_t PinNumber = getPinNumber(pin);					//	Pin number which needs to be initialized.
 	
 	//	Step1:	Enable Clock.
 	GPIO_ClockControl(GPIO_Port, ENABLE);
@@ -159,38 +146,16 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	//	Step2:	Set pin direction by setting or clearing appropriate bits in the GPIODIR register.
 	switch(Dir)
 	{
-		case OUT:		pGPIO->GPIO_DIR |= 1<<(PinNumber);						break;
-		case IN:		pGPIO->GPIO_DIR &= ~( 1<<(PinNumber) );				break;
+		case OUT:		pGPIO->GPIO_DIR SET_BIT(PinNumber);				break;
+		case IN:		pGPIO->GPIO_DIR CLR_BIT(PinNumber);				break;
 	}
 	
-	//	Step3:	Configure Alternate function.
-	if(AltFn != NoAlternateFunction)
-	{
-		pGPIO->GPIO_AFSEL	|=	1<<(PinNumber);												// Use the pin in alternate function mode.
-		
-		/**************************************************************************************************************
-		*	Get the alternate function number/index  using getAltFnNum() function so that the corresponding bits could	*
-		*	be writtten to the GPIOPCTL register. For more information on this step, see section 10.3 in the datasheet.	*
-		*	Also see table 23-5 (Page 1351) to check for the peripheral which needs to be used in place of the GPIO.		*
-		**************************************************************************************************************/
-		uint8_t AF = getAltFnNum(AltFn);
-		pGPIO->GPIO_PCTL	&= ~(0xF<<(PinNumber*4));									// Clear the appropriate bits in the PCTL register.
-		//	Replace the cleared bits with appropriate function selection bits in the GPIOPCTL register.
-		switch(AF)
-		{
-			case 1: 	pGPIO->GPIO_PCTL	|= ( 0x1 <<(PinNumber*4) );				break;
-			case 2: 	pGPIO->GPIO_PCTL	|= ( 0x2 <<(PinNumber*4) );				break;
-			case 3: 	pGPIO->GPIO_PCTL	|= ( 0x3 <<(PinNumber*4) );				break;
-			case 4: 	pGPIO->GPIO_PCTL	|= ( 0x4 <<(PinNumber*4) );				break;
-			case 5: 	pGPIO->GPIO_PCTL	|= ( 0x5 <<(PinNumber*4) );				break;
-			case 6: 	pGPIO->GPIO_PCTL	|= ( 0x6 <<(PinNumber*4) );				break;
-			case 7: 	pGPIO->GPIO_PCTL	|= ( 0x7 <<(PinNumber*4) );				break;
-			case 8: 	pGPIO->GPIO_PCTL	|= ( 0x8 <<(PinNumber*4) );				break;
-			case 9: 	pGPIO->GPIO_PCTL	|= ( 0x9 <<(PinNumber*4) );				break;
-			case 15:	pGPIO->GPIO_PCTL	|= ( 0xA <<(PinNumber*4) );	 			break;
-			default:	break;
-		}
-	}
+	
+	/****************************************************************************************************************
+	*	Step3:	Configure Alternate function.																																					*
+	*	Alternate function is not configured here as it is done by the Driver APIs of the respective peripherals.			*
+	****************************************************************************************************************/
+	
 	
 	/****************************************************************************************************************
 	*	Step 4:	Configure drive strength.																																							*
@@ -199,9 +164,9 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	****************************************************************************************************************/
 	switch(DriveStrength)
 	{
-		case Two_mA		:		pGPIO->GPIO_DR2R |= 1<<( PinNumber );			break;
-		case Four_mA	:		pGPIO->GPIO_DR4R |= 1<<( PinNumber );			break;
-		case Eight_mA	:		pGPIO->GPIO_DR8R |= 1<<( PinNumber );			break;
+		case Two_mA		:		pGPIO->GPIO_DR2R SET_BIT( PinNumber );		break;
+		case Four_mA	:		pGPIO->GPIO_DR4R SET_BIT( PinNumber );		break;
+		case Eight_mA	:		pGPIO->GPIO_DR8R SET_BIT( PinNumber );		break;
 	}
 	
 	/****************************************************************************************************************
@@ -211,9 +176,9 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	****************************************************************************************************************/
 	switch(OpType)
 	{
-		case PullUp	:			pGPIO->GPIO_PUR	|= 1<<( PinNumber );			break;
-		case PullDn	:			pGPIO->GPIO_PDR	|= 1<<( PinNumber );			break;
-		case OpenDr	:			pGPIO->GPIO_ODR	|= 1<<( PinNumber );			break;
+		case PullUp	:			pGPIO->GPIO_PUR	SET_BIT( PinNumber );			break;
+		case PullDn	:			pGPIO->GPIO_PDR	SET_BIT( PinNumber );			break;
+		case OpenDr	:			pGPIO->GPIO_ODR	SET_BIT( PinNumber );			break;
 	}
 	
 	/****************************************************************************************************************
@@ -222,8 +187,8 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	****************************************************************************************************************/
 	switch(Mode)
 	{
-		case Digital:			pGPIO->GPIO_DEN		|= 1<<( PinNumber );	break;
-		case Analog	:			pGPIO->GPIO_AMSEL	|= 1<<( PinNumber );	break;
+		case Digital:			pGPIO->GPIO_DEN		SET_BIT( PinNumber );		break;
+		case Analog	:			pGPIO->GPIO_AMSEL	SET_BIT( PinNumber );		break;
 	}
 	
 	/****************************************************************************************************************
@@ -232,7 +197,7 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	*	To prevent false interrupts, following steps should be taken when re-configuring GPIO Edge and Interrupt			*
 	*	 sense registers:-																																														*
 	*		1	Mask the corresponding port by clearing the IME field in the GPIOIM register.															*
-	*				1.1	Masking the interrupt allows the interrupt to be sent to the interrupt controller.									*
+	*				1.1	Masking the interrupt disallows the interrupt to be sent to the interrupt controller.								*
 	*						Mask => Set the bit.	Unmask => Clear the bit.																											*
 	*		2 Configure the IS and IBE field in the GPIOIS and GPIOIBE registers.																				*
 	*				2.1	Interrupt Sense (IS)																																								*
@@ -243,8 +208,8 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	*						If bit is Cleared	:	Interrupt is controlled by GPIOIEV register.																		*
 	*						__this however, works only if IS register is configured to detect edges__														*
 	*		3	Configure Interrupt Event Register in case of single-edge or level triggered interrupt.										*
-	*				Bit = Set		:	Rising  Edge / High Level																																	*
-	*				Bit = Clear	: Falling Edge / Low  Level																																	*
+	*				Bit = 1		:	Rising  Edge / High Level																																		*
+	*				Bit = 0		: Falling Edge / Low  Level																																		*
 	*		4	Clear the GPIORIS register.																																								*
 	*				4.1	GPIORIS is a Read-Only type register.																																*
 	*						If a bit is Set		:	It suggests that an Interrupt has occurred on the corresponding pin.						*
@@ -262,41 +227,41 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 	}
 	else
 	{
-		uint8_t clearICR = 0;
-		pGPIO->GPIO_IM &= ~( 1<<PinNumber );
+		uint8_t clearICR = 0;											// Flag to clear ICR register for Edge-triggered interrupts.
+		pGPIO->GPIO_IM CLR_BIT( PinNumber );			// Mask the interrupt so that it doesn't cause any unwanted event while configuring the interrupt registers.
 		switch(Trigger)
 		{
-			case RisingEdge:	pGPIO->GPIO_IS	&= ~(	1<<PinNumber );
-												pGPIO->GPIO_IBE &= ~(	1<<PinNumber );
-												pGPIO->GPIO_IEV |=	(	1<<PinNumber );
+			case RisingEdge:	pGPIO->GPIO_IS		CLR_BIT( PinNumber );
+												pGPIO->GPIO_IBE 	CLR_BIT( PinNumber );
+												pGPIO->GPIO_IEV 	SET_BIT( PinNumber );
 												clearICR = 1;
 												break;
 			
-			case FallingEdge:	pGPIO->GPIO_IS	&= ~( 1<<PinNumber );
-												pGPIO->GPIO_IBE &= ~( 1<<PinNumber );
-												pGPIO->GPIO_IEV &= ~( 1<<PinNumber );
+			case FallingEdge:	pGPIO->GPIO_IS		CLR_BIT( PinNumber );
+												pGPIO->GPIO_IBE 	CLR_BIT( PinNumber );
+												pGPIO->GPIO_IEV 	CLR_BIT( PinNumber );
 												clearICR = 1;
 												break;
 			
-			case BothEdges:		pGPIO->GPIO_IS	&= ~( 1<<PinNumber );
-												pGPIO->GPIO_IBE |=	( 1<<PinNumber );
+			case BothEdges:		pGPIO->GPIO_IS		CLR_BIT( PinNumber );
+												pGPIO->GPIO_IBE 	SET_BIT( PinNumber );
 												clearICR = 1;
 												break;
 												
-			case HighLevel:		pGPIO->GPIO_IS	|=	( 1<<PinNumber );
-												pGPIO->GPIO_IBE	&= ~( 1<<PinNumber );
-												pGPIO->GPIO_IEV	|=	( 1<<PinNumber );
+			case HighLevel:		pGPIO->GPIO_IS		SET_BIT( PinNumber );
+												pGPIO->GPIO_IBE		CLR_BIT( PinNumber );
+												pGPIO->GPIO_IEV		SET_BIT( PinNumber );
 												break;
 			
-			case LowLevel:		pGPIO->GPIO_IS	|=	( 1<<PinNumber );
-												pGPIO->GPIO_IBE &= ~( 1<<PinNumber );
-												pGPIO->GPIO_IEV &= ~( 1<<PinNumber );
+			case LowLevel:		pGPIO->GPIO_IS		SET_BIT( PinNumber );
+												pGPIO->GPIO_IBE 	CLR_BIT( PinNumber );
+												pGPIO->GPIO_IEV 	CLR_BIT( PinNumber );
 												break;
 		}
 		if(clearICR)
-			pGPIO->GPIO_ICR |= ( 1<<PinNumber );		//	Clear ICR register for Edge-triggered interrupts.
+			pGPIO->GPIO_ICR SET_BIT( PinNumber );		//	Clear ICR register for Edge-triggered interrupts.
 		
-		pGPIO->GPIO_IM |= ( 1<<PinNumber );				//	Disable the interrupt mask to re-enable the interrupts.
+		pGPIO->GPIO_IM SET_BIT( PinNumber );			//	Disable the interrupt mask to re-enable the interrupts.
 	}
 }
 
@@ -313,10 +278,10 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t 
 ******************************************************************************************************************/
 void	GPIO_DeInit(uint8_t GPIOPort)
 {
-	SYSCTL->SRGPIO |=  (1<<GPIOPort);				// Reset the port by setting the appropriate bit in SRGPIO register.
-	SYSCTL->SRGPIO &= ~(1<<GPIOPort);				// The bit is cleared so that it doesn't always remain in reset state.
+	SYSCTL->SRGPIO	SET_BIT( GPIOPort );				// Reset the port by setting the appropriate bit in SRGPIO register.
+	SYSCTL->SRGPIO	CLR_BIT( GPIOPort );				// The bit is cleared so that it doesn't always remain in reset state.
 	
-	GPIO_ClockControl(GPIOPort,DISABLE);		// Disable the clock.
+	GPIO_ClockControl(GPIOPort,DISABLE);				// Disable the clock.
 }
 	
 	
@@ -329,7 +294,8 @@ void	GPIO_DeInit(uint8_t GPIOPort)
 ******************************************************************************************************************/
 uint8_t	ReadFromPin(uint8_t pin)
 {
-	return (	getPortAddr(pin,APB_BUS)->GPIO_DATA	&	(1<<getPinNumber(pin)) )?1:0;
+	GPIO_reg* pGPIOx = getPortAddr(pin, APB_BUS);
+	return GET_BIT( pGPIOx->GPIO_DATA, getPinNumber(pin) );
 //	The above statement is equivalent to return ( pGPIO->GPIO_DATA & (1<<PinNumber) )
 }
 	
@@ -343,8 +309,8 @@ uint8_t	ReadFromPin(uint8_t pin)
 ******************************************************************************************************************/
 uint8_t	ReadFromPort(uint8_t GPIOPort)
 {
-	return ( getPortAddr(GPIOPort,APB_BUS) )->GPIO_DATA;
-	// The above statement is equivalent to return pGPIOx->GPIO_DATA;
+	GPIO_reg* pGPIO = getPortAddr(GPIOPort, APB_BUS);
+	return (uint8_t)( pGPIO->GPIO_DATA );
 }
 	
 	
@@ -358,8 +324,9 @@ uint8_t	ReadFromPort(uint8_t GPIOPort)
 ******************************************************************************************************************/
 void WriteToPin(uint8_t pin, uint8_t Value)
 {
-	if(Value == PIN_SET)					getPortAddr(pin,APB_BUS)->GPIO_DATA |=	( 1<<getPinNumber(pin) );
-	else if(Value == PIN_RESET)		getPortAddr(pin,APB_BUS)->GPIO_DATA &= ~( 1<<getPinNumber(pin) );
+	GPIO_reg* pGPIO = getPortAddr(pin, APB_BUS);
+	if(Value == PIN_SET)					pGPIO->GPIO_DATA SET_BIT( getPinNumber(pin) );
+	else if(Value == PIN_RESET)		pGPIO->GPIO_DATA CLR_BIT( getPinNumber(pin) );
 	
 	//	The above statement is equivalent to the following:-
 	//	if(Value == PIN_SET)					pGPIO->GPIO_DATA |=	(1<<PinNumber);
@@ -377,8 +344,8 @@ void WriteToPin(uint8_t pin, uint8_t Value)
 ******************************************************************************************************************/
 void WriteToPort(uint8_t GPIO_PORT, uint8_t Values)
 {
-	( getPortAddr(GPIO_PORT,APB_BUS) )->GPIO_DATA = Values;
-	//	The above statement is equivalent to pGPIOx->GPIO_DATA = Values
+	GPIO_reg* pGPIO = getPortAddr(GPIO_PORT, APB_BUS);
+	pGPIO->GPIO_DATA = Values;
 }
 	
 	
@@ -393,6 +360,7 @@ void ToggleGPIOPin(uint8_t pin)
 {
 	getPortAddr(pin,APB_BUS)->GPIO_DATA ^= (1<<getPinNumber(pin));
 	//	The above statement is equivalent to pGPIOx->GPIO_DATA ^= (1<<PinNumber)
+	//	Remember x^1 = x'
 }
 
 
@@ -407,7 +375,7 @@ void ToggleGPIOPin(uint8_t pin)
 ******************************************************************************************************************/
 void DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
 {
-	GPIO_Init(pin,IOmode,NoAlternateFunction,opType,Digital,Eight_mA,NoInterrupt);
+	GPIO_Init(pin,IOmode,opType,Digital,Eight_mA,NoInterrupt);
 }
 
 
@@ -422,7 +390,7 @@ void DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
 ******************************************************************************************************************/
 void	AnalogPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
 {
-	GPIO_Init(pin,IOmode,NoAlternateFunction,opType,Analog,Eight_mA,NoInterrupt);
+	GPIO_Init(pin, IOmode, opType, Analog, Eight_mA, NoInterrupt);
 }
 
 
@@ -438,66 +406,22 @@ void	InterruptPin(uint8_t pin, uint8_t triggerMode)
 {
 	uint8_t PortName = getPortName(pin);
 	uint8_t PinNumber = getPinNumber(pin);
-
-	GPIO_Init(pin,IN,NoAlternateFunction,PullUp,Digital,Eight_mA,triggerMode);
+	
+	// Initialize the given pin with the specified interrupt trigger mode.
+	GPIO_Init(pin, IN, PullUp, Digital, Eight_mA, triggerMode);
 	
 	/****************************************************************************************************************
-	*	Specify the address of the ISR, and Enable the interrupt by setting the appropriate bit in the NVIC Enable		*
+	*	Enable interrupt reception on the corresponding GPIO port by setting the appropriate bit in the NVIC Enable		*
 	*	register (in our case, EN0).																																									*
 	****************************************************************************************************************/
 	switch(PortName)
 	{
-		case GPIO_PORT_A:	GPIOA_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOA );
-											break;
-		case GPIO_PORT_B:	GPIOB_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOB );
-											break;
-		case GPIO_PORT_C:	GPIOC_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOC );
-											break;
-		case GPIO_PORT_D:	GPIOD_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOD );
-											break;
-		case GPIO_PORT_E:	GPIOE_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOE );
-											break;
-		case GPIO_PORT_F:	GPIOF_INT_PIN = PinNumber;
-											Nvic->EN[0] |= ( 1 << NVIC_EN0_GPIOF );
-											break;
-	}
-}
-
-
-
-/******************************************************************************************************************
-*	@getAltFnNum()																																																	*
-*	@brief				-	This function returns the number(index) of an alternate function																*
-* @AltFnName		-	This is the name of the Alternate function for which we need to find the index									*
-* @return				-	Alternate Function Number.																																			*
-******************************************************************************************************************/
-uint8_t		getAltFnNum(uint8_t AltFnName)
-{
-	switch(AltFnName)
-	{
-		case UART0:
-		case UART2:
-		case UART3:
-		case UART4:
-		case UART5:
-		case UART6:
-		case UART7:
-		case SSI3:	return 1;
-		case UART1:
-		case SSI0:
-		case SSI1:
-		case SSI2:	return 2;
-		case CAN0:
-		case I2C0:
-		case I2C1:
-		case I2C2:
-		case I2C3:	return 3;
-		default:		return 0;
+		case GPIO_PORT_A:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOA );			break;
+		case GPIO_PORT_B:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOB );			break;
+		case GPIO_PORT_C:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOC );			break;
+		case GPIO_PORT_D:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOD );			break;
+		case GPIO_PORT_E:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOE );			break;
+		case GPIO_PORT_F:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOF );			break;
 	}
 }
 
@@ -512,7 +436,7 @@ void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
 	uint8_t PortName = getPortName(pin);
 	uint8_t PinNumber = getPinNumber(pin);
 
-	GPIO_Init(pin,IN,NoAlternateFunction,PullUp,Digital,Eight_mA,triggerMode);
+	GPIO_Init(pin, IN, PullUp, Digital, Eight_mA, triggerMode);
 	
 	/****************************************************************************************************************
 	*	Specify the address of the ISR, and Enable the interrupt by setting the appropriate bit in the NVIC Enable		*
@@ -520,28 +444,22 @@ void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
 	****************************************************************************************************************/
 	switch(PortName)
 	{
-		case GPIO_PORT_A:	GPIOA_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOA = (uint32_t)isr_func;
+		case GPIO_PORT_A:	ExceptionHandlers->_GPIOA = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<0;
 											break;
-		case GPIO_PORT_B:	GPIOB_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOB = (uint32_t)isr_func;
+		case GPIO_PORT_B:	ExceptionHandlers->_GPIOB = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<1;
 											break;
-		case GPIO_PORT_C:	GPIOC_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOC = (uint32_t)isr_func;
+		case GPIO_PORT_C:	ExceptionHandlers->_GPIOC = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<2;
 											break;
-		case GPIO_PORT_D:	GPIOD_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOD = (uint32_t)isr_func;
+		case GPIO_PORT_D:	ExceptionHandlers->_GPIOD = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<3;
 											break;
-		case GPIO_PORT_E:	GPIOE_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOE = (uint32_t)isr_func;
+		case GPIO_PORT_E:	ExceptionHandlers->_GPIOE = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<4;
 											break;
-		case GPIO_PORT_F:	GPIOF_INT_PIN = PinNumber;
-											ExceptionHandlers->_GPIOF = (uint32_t)isr_func;
+		case GPIO_PORT_F: ExceptionHandlers->_GPIOF = (uint32_t)isr_func;
 											Nvic->EN[0] |= 1<<30;
 											break;
 	}

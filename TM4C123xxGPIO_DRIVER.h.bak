@@ -5,6 +5,11 @@
 *	This file contains prototypes of GPIO Driver APIs. Bit position macros and shorthands which are used by the			*
 *	GPIO Driver APIs are also defined here.																																					*
 *																																																									*
+*	Things that need to be changed/improved:-																																				*
+*	<>	Remove Alternate function configuration from GPIO_Init() function. Alternate functionality is configured		*
+*			by their respective driver api(s).																																					*
+*	<>	Remove getAltFnNum() function.																																							*
+*																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
 *																																																									*
 *	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
@@ -67,54 +72,39 @@
 
 
 /******************************************************************************************************************
-*																					GPIO Interrupt Pin Numbers																							*
-*	These variables hold the pin number which has been configured as an Interrupt pin for a particular port.				*
-*	Default value for all these variables is 99(defined in the source file). This value also suggests that a				*
-*	particular port does not have any pin configured as an interrupt pin.																						*
-******************************************************************************************************************/
-extern uint8_t GPIOA_INT_PIN;
-extern uint8_t GPIOB_INT_PIN;
-extern uint8_t GPIOC_INT_PIN;
-extern uint8_t GPIOD_INT_PIN;
-extern uint8_t GPIOE_INT_PIN;
-extern uint8_t GPIOF_INT_PIN;
-
-
-
-/******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
 *		Below are the prototypes for driver APIs																																			*
 *		Definitions for these can be found in TM4C123xxGPIO_DRIVER.c file																							*
 *																																																									*
-*	void			GPIO_ClockControl()		-- Enable/Disable clock for a GPIO port																					*
-*	void			GPIO_Init()						-- Initialize a GPIO port																												*
-*	void			GPIO_DeInit()					-- De-Initialize or Reset a GPIO port																						*
-*	void			DigitalPin()					-- Initialize a GPIO pin in Digital mode with some default configurations.			*
-*	void			AnalogPin()						-- Initialize a GPIO pin in Analog	mode with some default configurations.			*
-*	void			InterruptPin()				-- Initialize a GPIO pin in
-*	void			WriteToPin()					-- Write digital values to a GPIO pin																						*
-*	void			WriteToPort()					-- Write digital values to a GPIO port																					*
-*	void			ToggleGPIOPin()				-- Toggle the state of a GPIO pin																								*
-*	uint8_t		ReadFromPin()					-- Read data from a GPIO pin																										*
-*	uint8_t		ReadFromPort()				-- Read data from a GPIO port																										*
-*	uint8_t		getAltFnNum()					-- Get the alternate function no. for a specific peripheral.										*
+*	1. 	GPIO_ClockControl()		-		Enable/Disable clock for a GPIO port.																							*
+*	2. 	GPIO_Init()						-		Initialize a GPIO port. Use this function in your programs only if you	need a		*
+*																fine control over the drive strength of the pin.																	*
+*																Otherwise use functions 4/5/6 for simplicity.																			*
+*	3. 	GPIO_DeInit()					-		Reset and turn off a GPIO port.																										*
+*	4. 	DigitalPin()					-		Initialize a GPIO pin in Digital mode with 8mA drive strength.										*
+*	5. 	AnalogPin()						-		Initialize a GPIO pin in Analog	mode with 8mA drive strength.											*
+*	6. 	InterruptPin()				-		Initialize a GPIO pin in Digital(input) mode with interrupt reception.						*
+*	7. 	WriteToPin()					-		Write digital values to a GPIO pin																								*
+*	8. 	WriteToPort()					-		Write digital values to a GPIO port																								*
+*	9. 	ToggleGPIOPin()				-		Toggle the state of a GPIO pin																										*
+*	10. ReadFromPin()					-		Read data from a GPIO pin																													*
+*	11. ReadFromPort()				-		Read data from a GPIO port																												*
 ******************************************************************************************************************/
-void			GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t AltFn, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
-void			GPIO_DeInit( uint8_t GPIO_PORT);
+void	GPIO_ClockControl( uint8_t GPIO_Port, uint8_t Clk_En);
+void	GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
+void	GPIO_DeInit( uint8_t GPIO_PORT);
 
-void			GPIO_ClockControl( uint8_t GPIO_Port, uint8_t Clk_En);
+void	DigitalPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
+void	AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
+void	InterruptPin( uint8_t pin, uint8_t triggerMode);
 
-void			DigitalPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
-void			AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
-void			InterruptPin( uint8_t pin, uint8_t triggerMode);
+void	WriteToPin( uint8_t pin, uint8_t Value);
+void	WriteToPort( uint8_t GPIO_PORT, uint8_t Values);
 
-void			ToggleGPIOPin( uint8_t pin);
-void			WriteToPin( uint8_t pin, uint8_t Value);
-void			WriteToPort( uint8_t GPIO_PORT, uint8_t Values);
-uint8_t		ReadFromPin( uint8_t pin);
-uint8_t		ReadFromPort( uint8_t GPIO_PORT);
+void	ToggleGPIOPin( uint8_t pin);
 
-uint8_t		getAltFnNum(uint8_t AltFnName);
+uint8_t	ReadFromPin( uint8_t pin);
+uint8_t	ReadFromPort( uint8_t GPIO_PORT);
 
 
 /******************************************************************************************************************

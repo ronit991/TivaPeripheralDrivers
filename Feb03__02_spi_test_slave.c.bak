@@ -11,31 +11,30 @@ int main(void)
 	
 	blink(LED_RED);
 	
-	SSIStart(SSI3, SSI_Slave_Mode_OutDis, SSI_NoInterrupts);
+	SPIStart(SSI3, SSI_Slave_Mode_OutDis, SSI_NoInterrupts);
 	
 	uint16_t	command = 0;
 	
 	while(1)
 	{
-		SSIRecvData(SSI3, &command, 16);
-		
+		SSIRecv(SSI3, &command);
 		switch(command)
 		{
-			case B1IsPressed:					TurnOff(LED_RED);
+			case B1IsPressed:					WhiteLEDoff();
 																blink(LED_GREEN);
 																break;
 			
-			case B2IsPressed:					TurnOff(LED_RED);
-																blink(LED_GREEN);
-																blink(LED_GREEN);
-																break;
-			
-			case BothArePressed:			TurnOff(LED_RED);
+			case B2IsPressed:					WhiteLEDoff();
 																blink(LED_BLUE);
+																break;
+			
+			case BothArePressed:			WhiteLEDoff();
+																blink(LED_RED);
 																break;
 			
 			case NoButtonPressed:			TurnOn(LED_RED);
 																break;
+			default:	WhiteLEDon();
 		}
 	}
 	return 0;

@@ -128,43 +128,49 @@ extern uint8_t SSIIntrRxCount[4];
 /******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
 *	Below are the prototypes for driver APIs																																				*
-*	void SSIInit()
-*	void SSIDeInit()
-*	void SSIClockControl()
-*
-*	void SSIStart()
-*	void SSIStartK()
-*
-*	ssi_reg* GetSSIAddressOf()
-*
-*	void SSISendData()
-*	void SSIRecvData()
-*
-*	void SSISendWithIntr()
-*	void SSIRecvWithIntr()
-*
-*	void SSIIntrSend()
-*	void SSIIntrReceive()
+*	1. SSIClockControl()		-	Enable/Disable clock for an SSI Module.																								*
+*	2. SSIInit()						-	Initialize and SSI Module.																														*
+*	3. SSIDeInit()					-	Reset and turn off an SSI Module.																											*
+*																																																									*
+*	4. SPIStart()						-	Initialize an SSI Module for FREESCALE SPI format, with some default configurations.	*
+*																																																									*
+*	5. SSISendData()				-	Send data over an SSI Module.																													*
+*	6. SSISend()						-	Send one packet(16-bit) of data over an SSI Module.																		*
+*																																																									*
+*	7.	SSIRecvData()				-	Receive data over an SSI Module.																											*
+*	8.	SSIRecv()						-	Receive one packet(16-bit) of data over an SSI Module.																*
+*																																																									*
+*	9.	SSISendWithIntr()		-	Send Data without blocking the CPU by using interrupts.																*
+*	10. SSIRecvWithIntr()		-	Receive Data without blocking the CPU by using interrupts.														*
+*																																																									*
+*	11. SSIIntrSend()				-	Helper for SSI Interrupt Handler function.																						*
+*	12. SSIIntrRecv()				-	Helper for SSI Interrupt Handler function.																						*
+*																																																									*
+*	13. SSIGetAddress()			-	Get the access pointer for a given SSI Module.																				*
+*	14.	WaitWhileSSIControllerIsBusy() - Pause program execution till the SSI controller is busy in transmission.		*
 *		Definitions for these can be found in TM4C123xxSSI_DRIVER.c file																							*
 ******************************************************************************************************************/
 void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t ClockPrescalar, uint8_t SerialClockRate, uint8_t Phase, uint8_t Polarity, uint8_t FrameFormat, uint8_t DataSize);
 void SSIDeInit(uint8_t SSIx);
 void SSIClockControl(uint8_t SSIx,uint8_t	EnorDi);
 
-void SSIStart(uint8_t SSIx, uint8_t DeviceMode, uint8_t InterruptMode);
-
-ssi_reg* GetSSIAddressOf(uint8_t SSIx);
-
-void SSISend(uint8_t SSIx, uint16_t Data);
-void SSIRecv(uint8_t SSIx, uint16_t* DataBuf);
+void SPIStart(uint8_t SSIx, uint8_t DeviceMode, uint8_t InterruptMode);
 
 void SSISendData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
+void SSISend(uint8_t SSIx, uint16_t Data);
+
 void SSIRecvData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
+void SSIRecv(uint8_t SSIx, uint16_t* DataBuf);
+
 
 void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
 void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
 
-void SSIIntrSend(uint8_t SSIx, uint8_t SS_pin);
-void SSIIntrReceive(uint8_t SSIx, uint8_t SS_pin);
+void SSIIntrSend(uint8_t SSIx);
+void SSIIntrRecv(uint8_t SSIx);
+
+
+ssi_reg* SSIGetAddress(uint8_t SSIx);
+void WaitWhileSSIControllerIsBusy( ssi_reg* pSSI);
 
 #endif

@@ -37,12 +37,29 @@ uint8_t SSIIntrRxCount[4] = {0,0,0,0};
 
 
 /******************************************************************************************************************
-*																					APIs Supported by this Drivier																					*
+*																					APIs Supported by this Driver																						*
+*	Below are the prototypes for driver APIs																																				*
+*	1. SSIClockControl()		-	Enable/Disable clock for an SSI Module.																								*
+*	2. SSIInit()						-	Initialize and SSI Module.																														*
+*	3. SSIDeInit()					-	Reset and turn off an SSI Module.																											*
 *																																																									*
-*		void SSIClockControl()	-	Enable/Disable clock for SSI modules.																								*
-*		void SSIInit()					-	Initialize an SSI module.																														*
-*		void SSIDeInit()				-	De-Initialize(Reset and Disable) an SSI module.																			*
-*		void SSISendData()			-	Sends data using one of the available SSI modules.																	*
+*	4. SPIStart()						-	Initialize an SSI Module for FREESCALE SPI format, with some default configurations.	*
+*																																																									*
+*	5. SSISendData()				-	Send data over an SSI Module.																													*
+*	6. SSISend()						-	Send one packet(16-bit) of data over an SSI Module.																		*
+*																																																									*
+*	7.	SSIRecvData()				-	Receive data over an SSI Module.																											*
+*	8.	SSIRecv()						-	Receive one packet(16-bit) of data over an SSI Module.																*
+*																																																									*
+*	9.	SSISendWithIntr()		-	Send Data without blocking the CPU by using interrupts.																*
+*	10. SSIRecvWithIntr()		-	Receive Data without blocking the CPU by using interrupts.														*
+*																																																									*
+*	11. SSIIntrSend()				-	Helper for SSI Interrupt Handler function.																						*
+*	12. SSIIntrRecv()				-	Helper for SSI Interrupt Handler function.																						*
+*																																																									*
+*	13. SSIGetAddress()			-	Get the access pointer for a given SSI Module.																				*
+*	14.	WaitWhileSSIControllerIsBusy() - Pause program execution till the SSI controller is busy in transmission.		*
+*		Definitions for these can be found in TM4C123xxSSI_DRIVER.c file																							*
 ******************************************************************************************************************/
 
 
@@ -52,16 +69,14 @@ uint8_t SSIIntrRxCount[4] = {0,0,0,0};
 * @brief			-	This function is used to enable or disable clock for a particular SSI module.											*
 *	@SSIx				- Name of the SSI module for which clock needs to be enabled or disabled.														*
 *	@EnOrDi			- This variable speifies whether we have to enable or disable the clock.														*
-*								Use (I) ENABLE or (II) DISABLE macros for this variable for better readability.										*
-*								These macros are defined in TM4C123xx.h header file under the section "Miscellaneous macros and		*
-*								shorthands".																																											*
+*								Use (I) ENABLE or (II) DISABLE macros for this variable.																					*
 ******************************************************************************************************************/
-void SSIClockControl(uint8_t SSIx,uint8_t	EnOrDi)
+void SSIClockControl(uint8_t SSIx, uint8_t	EnOrDi)
 {
 	if(EnOrDi == ENABLE)
 		switch(SSIx)
 		{
-			case SSI0:	SSI0_PCLK_EN();		break;
+			case SSI0:	SSI0_PCLK_EN();		break;		//	These macros are defined in section 3.2 in TM4C123xx.h file
 			case SSI1:	SSI1_PCLK_EN();		break;
 			case SSI2:	SSI2_PCLK_EN();		break;
 			case SSI3:	SSI3_PCLK_EN();		break;
@@ -69,7 +84,7 @@ void SSIClockControl(uint8_t SSIx,uint8_t	EnOrDi)
 	else
 		switch(SSIx)
 		{
-			case SSI0: SSI0_PCLK_DIS();		break;
+			case SSI0: SSI0_PCLK_DIS();		break;		//	These macros are defined in section 3.2 in TM4C123xx.h file
 			case SSI1: SSI1_PCLK_DIS();		break;
 			case SSI2: SSI2_PCLK_DIS();		break;
 			case SSI3: SSI3_PCLK_DIS();		break;
@@ -92,22 +107,23 @@ void SSIClockControl(uint8_t SSIx,uint8_t	EnOrDi)
 *	@FrameFormat			-	Format of data transfer (Freescale SPI, MICROWIRE, TI SSI Format).													*
 *	@DataSize					-	Size of data frame in bits.																																	*
 *																																																									*
-*	@Note							-	See Pg No. 956 (Section 15.4) for detailed steps on initialization and Configuration.				*
+*	@Note							-	See Pg No. 956 (Section 15.4) for detailed steps on Initialization and Configuration.				*
 ******************************************************************************************************************/
 void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t ClockPrescalar, uint8_t SerialClkRate, uint8_t Phase, uint8_t Polarity, uint8_t FrameFormat, uint8_t DataSize)
 {
-	ssi_reg*	pSSI;
-	GPIO_reg* pGPIO;
-	uint8_t ssi_pins = 0x00;
+	ssi_reg*	pSSI;								// Pointer to the SSI Module which needs to be initialized.
+	GPIO_reg* pGPIO;							// Pointer to the GPIO port which has pins for the given SSI Module.
+	uint8_t ssi_pins = 0x00;			// Variable to hold '1' for corresponding SSI pins on a GPIO port.
 	
-	SSIClockControl(SSIx,ENABLE);																	//	Step 1 of Section 15.4
+	SSIClockControl(SSIx, ENABLE);																//	Step 1 of Section 15.4: Enable Clock for the SSI Module.
 	
 	switch(SSIx)
 	{
 		case SSI0:	// Configure pins for SSI0 (Alternate Function # 2)
 		
-								pGPIO = GPIO_A_P;
-								ssi_pins = 0x3C;
+								pGPIO = GPIO_A_P;																//	GPIO_A has the pins for SSI0
+								ssi_pins = 0x3C;																//	PA2,3,4,5 are used for SSI0
+		
 								GPIO_ClockControl(GPIO_PORT_A, ENABLE);					//	Step 2 of Section 15.4
 								pGPIO->GPIO_AFSEL |= ssi_pins;									//	Step 3 of Section 15.4
 								pGPIO->GPIO_PCTL &= 0xFF0000FF;									//	Step 4 of Section 15.4
@@ -115,10 +131,13 @@ void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t Cloc
 		
 								pSSI = pSSI0;							//	Pointer to SSI0
 								break;
+		
+		//-------------------------------------------------------------------------------------------------------------
 		case SSI1:	// Configure pins for SSI1 (Alternate Function # 2)
 		
-								pGPIO = GPIO_F_P;
-								ssi_pins = 0x0F;
+								pGPIO = GPIO_F_P;																//	GPIO_F has the pins for SSI1
+								ssi_pins = 0x0F;																//	PF0,1,2,3 are used for SSI2
+		
 								GPIO_ClockControl(GPIO_PORT_F, ENABLE);					//	Step 2 of Section 15.4
 								pGPIO->GPIO_AFSEL |= ssi_pins;									//	Step 3 of Section 15.4
 								pGPIO->GPIO_PCTL &= 0xFFFF0000;									//	Step 4 of Section 15.4
@@ -126,10 +145,12 @@ void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t Cloc
 		
 								pSSI = pSSI1;							//	Pointer to SSI1
 								break;
+		
+		//-------------------------------------------------------------------------------------------------------------
 		case SSI2:	// Configure pins for SSI2 (Alternate Function # 2)
 		
-								pGPIO = GPIO_B_P;
-								ssi_pins = 0xF0;
+								pGPIO = GPIO_B_P;																//	GPIO_B has the pins for SSI2
+								ssi_pins = 0xF0;																//	PB4,5,6,7 are used for SSI2
 		
 								GPIO_ClockControl(GPIO_PORT_B, ENABLE);					//	Step 2 of Section 15.4
 								pGPIO->GPIO_AFSEL |= ssi_pins;									//	Step 3 of Section 15.4
@@ -138,10 +159,13 @@ void SSIInit(uint8_t SSIx, uint8_t DeviceMode, uint8_t ClockSource, uint8_t Cloc
 		
 								pSSI = pSSI2;							//	Pointer to SSI2
 								break;
+		
+		//-------------------------------------------------------------------------------------------------------------
 		case SSI3:	// Configure pins for SSI3 (Alternate Function # 1)
 		
-								pGPIO = GPIO_D_P;
-								ssi_pins = 0x0F;
+								pGPIO = GPIO_D_P;																//	GPIO_D has the pins for SSI3
+								ssi_pins = 0x0F;																//	PD0,1,2,3 are used for SSI3
+		
 								GPIO_ClockControl(GPIO_PORT_D, ENABLE);					//	Step 2 of Section 15.4
 								pGPIO->GPIO_AFSEL |= ssi_pins;									//	Step 3 of Section 15.4
 								pGPIO->GPIO_PCTL &= 0xFFFF0000;									//	Step 4 of Section 15.4
@@ -205,30 +229,31 @@ void SSIDeInit(uint8_t SSIx)
 
 
 /******************************************************************************************************************
-* @SSIStart()																																																			*
-* @brief											-	This function initializes an SSI module with default settings and a 2 MHz SSI			*
+* @SPIStart()																																																			*
+* @brief											-	This function initializes an SSI module for FREESCALE SPI format with 2MHz Serial	*
 *																Clock. Additionally, interrupt delivery from the SSI module to the interrupt			*
 *																controller(NVIC) can be enabled or disabled as required.													*
 * @SSIx												-	This is the name of the SSI module which needs to be initialized.									*
 *	@DeviceMode									-	Used to specify Master or Slave mode.																							*
-*	@InterruptsNeedToBeEnabled	- Specifies whether interrupts should be enabled or not.														*
+*	@InterruptsNeedToBeEnabled	- Specifies which interrupts should be enabled.																			*
 *																																																									*
-* @Note												- Default settings for SSI modules:																									*
-*																1. Clock Source			-	System Clock																								*
+* @Note												- SSI configuration for this function:																							*
+*																1. Clock Source			-	System Clock(16 MHz in our board)														*
 *																2. Clock Prescalar	-	2																														*
 *																3. Serial Clk Rate	-	3																														*
 *																4. Phase						-	0																														*
 *																5. Polarity					-	0																														*
 *																6. Frame Format			-	Freescale SPI format																				*
 *																7. Data Size				-	16-bit																											*
-*	In case of an ssi module name mismatch, this function will break out, and no ssi module will be configured.			*
 ******************************************************************************************************************/
-void SSIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled)
+void SPIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled)
 {
 	if(InterruptsNeedToBeEnabled)
 	{
-		ssi_reg* pSSI = GetSSIAddressOf(SSIx);
+		ssi_reg* pSSI = SSIGetAddress(SSIx);
 		SSIClockControl(SSIx,ENABLE);
+		
+		// Enable interrupt reception for the given SSI Module.
 		switch(SSIx)
 		{
 			case	SSI0:			Nvic->EN[0] |= ( 1 << NVIC_EN0_SSI0 );		 	break;
@@ -240,29 +265,233 @@ void SSIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled
 		
 		/**************************************************************************************************************
 		*	The Interrupt Mode macros (defined in the SSI driver header file) have integer values equal to their bit		*
-		*	position in the Interrupt Mask register (SSIIM) plus one. To enable an interrupt, corresponding mask should *
-		*	be disabled by setting the bit in SSIIM register. To get the bit position, subtract one from the interrupt	*
-		*	mode variable (InterruptsNeedToBeEnabled).																																	*
+		*	position in the Interrupt Mask register (SSIIM) plus 'one'. To enable an interrupt, corresponding mask 			*
+		*	should be disabled by setting the bit in SSIIM register. To get the bit position, subtract one from the			*
+		*	interrupt mode variable (InterruptsNeedToBeEnabled).																												*
 		**************************************************************************************************************/
 		if(InterruptsNeedToBeEnabled == SSI_InterruptTxRxBoth)
 			pSSI->SSI_IM |= 0x0000000C;
 		else
 		{
 			uint8_t IntrMaskPosition = ( InterruptsNeedToBeEnabled - 1 );
-			pSSI->SSI_IM |= ( 1 << IntrMaskPosition );		//	Enable the requested interrupt.
+			pSSI->SSI_IM SET_BIT( IntrMaskPosition );													//	Enable the requested interrupt.
 		}
 	}
 	
 	//SSIInit(SSIx, DeviceMode, ClockSource, ClockPrescalar, SerialClockRate, Phase, Polarity, FrameFormat, DataSize)
 	SSIInit(SSIx, DeviceMode, SSI_Clk_SystemClock, 2, 3, 0, 0, SSI_FreescaleFormat, SSI_Data_16bit);
-//	pSSI->SSI_CPSR |= (0x2	<<	0);															//	Step ff.4 of Section 15.4
-//	
-//	pSSI->SSI_CR[0] |= ( 0x3	<<	SSI_CR0_SCR);											//	Step ff.5.1 of Section 15.4
-//	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPH);											//	Step ff.5.2 of Section 15.4
-//	pSSI->SSI_CR[0] |= ( 0x0	<<	SSI_CR0_SPO);											//	Step ff.5.2 of Section 15.4
-//	pSSI->SSI_CR[0] |= ( SSI_FreescaleFormat	<<	SSI_CR0_FRF);			//	Step ff.5.3 of Section 15.4
-//	pSSI->SSI_CR[0] |= ( SSI_Data_16bit	<<	SSI_CR0_DSS);						//	Step ff.5.4 of Section 15.4
-//	
+}
+
+
+
+/******************************************************************************************************************
+*	@SSISendData()																																																	*
+*	@brief				-	This function is used to transmit/send data over an SSI channel.																*
+* @SSIx					-	This is the name of the SSI module over which, data has to be sent.															*
+*	@DataBuf			-	Pointer to the data that has to be transmitted.																									*
+*	@Len					-	Length of Data (in bits) which needs to be sent.																								*
+*																																																									*
+*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
+*									the SSI module is already configured as needed otherwise data transmission might not occur.			*
+*									Also, it might generate bus faults if the clock is disabled.																		*
+*	@Note2				-	In case of incorrect data length, the function does not proceed further and breaks out.					*
+******************************************************************************************************************/
+void SSISendData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+
+	if(Len <= 0)	return;											//	Break out of the function in case of incorrect length.
+	else
+	{
+		uint8_t n = ceil( Len/16.0 );						//	Tx count (no of 16 bit data packets that are to be sent)
+		do
+		{
+			WaitWhileSSIControllerIsBusy(pSSI);
+			
+			pSSI->SSI_DR = (*DataBuf)<<0;					//	Insert data into the Tx buffer by writing it to SSIDR register.
+			
+			DataBuf++;														//	Step the pointer to the next data set.
+			n--;																	//	Decrease the Tx count.
+		}while(n>0);														//	Do this until the Tx count becomes zero.
+	}
+}
+/******************************************************************************************************************
+*	@SSISend()																																																			*
+*	@brief				-	This function is used to transmit a single packet(16-bit) over an SSI channel.									*
+* @SSIx					-	This is the name of the SSI module over which, data has to be sent.															*
+*	@Data					-	Data that needs to be transmitted.																															*
+*																																																									*
+*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
+*									the SSI module is already configured as needed otherwise data transmission might not occur.			*
+*									Also, it might generate bus faults if the clock is disabled.																		*
+******************************************************************************************************************/
+void SSISend(uint8_t SSIx, uint16_t Data)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+
+	WaitWhileSSIControllerIsBusy(pSSI);
+			
+	pSSI->SSI_DR = Data<<0;										//	Insert data into the Tx buffer by writing it to SSIDR register.
+}
+
+
+
+/******************************************************************************************************************
+*	@SSIRecvData()																																																	*
+*	@brief				-	This function is used to recevie data over an SSI channel.																			*
+* @SSIx					-	This is the name of the SSI module from which, data has to be received.													*
+*	@DataBuf			-	Pointer to data buffer which will be used to hold the received data.														*
+*	@Len					-	Length of Data (in bits) which needs to be received.																						*
+*																																																									*
+*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
+*									the SSI module is already configured as needed otherwise no data will be received.							*
+*									Also, it might generate bus faults if the clock is disabled.																		*
+*	@Note2				-	In case of incorrect data length, the function does not proceed further and breaks out.					*
+******************************************************************************************************************/
+void SSIRecvData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+	
+	if(Len <= 0)	return;											//	Break out of the function in case of incorrect data length
+	else
+	{
+		
+		uint8_t n = ceil( Len/16.0 );						// Rx count (no of 16 bit data packets that are to be received)
+		do
+		{
+			WaitWhileSSIControllerIsBusy(pSSI);
+			
+			*DataBuf = (uint16_t)pSSI->SSI_DR;
+			/************************************************************************************************************
+			*	Pick data from SSIDR register, and put it into the Rx buffer. NOTE: SSI_DR register is 32-bit register,		*
+			*	but Rx shift register is of 16-bits. Rest of the 16 bits in the SSI_DR register are reserved. Data, of		*
+			*	our concern, lies in the first 16-bits. So we convert the value in the SSI_DR register to uint16_t. This	*
+			*	discards the higher 16 bits, and stores the remaining bits in the data variable, pointed by DataBuf.			*
+			************************************************************************************************************/
+			
+			DataBuf++;														//	Step the pointer for the next data set.
+			n--;																	//	Decrease the Rx-count.
+		}while(n>0);														//	Do this until the Rx-count becomes zero.
+	}
+}
+
+
+
+/******************************************************************************************************************
+*	@SSIRecv()																																																			*
+*	@brief				-	This function is used to receive a single packet(16-bit) over an SSI channel.										*
+* @SSIx					-	This is the name of the SSI module over which, data should be received.													*
+*	@DataBuf			-	Pointer to the variable where received data should be stored.																		*
+*																																																									*
+*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
+*									the SSI module is already configured as needed otherwise data might not be received.						*
+*									Also, it might generate bus faults if the clock is disabled.																		*
+******************************************************************************************************************/
+void SSIRecv(uint8_t SSIx, uint16_t* DataBuf)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+	WaitWhileSSIControllerIsBusy(pSSI);
+	
+	*DataBuf = (uint16_t)pSSI->SSI_DR;
+	/****************************************************************************************************************
+	*	Pick data from SSIDR register, and put it into the Rx buffer. NOTE: SSI_DR register is 32-bit register, but		*
+	*	Rx shift register is of 16-bits. Rest 16 bits in the SSI_DR register are reserved. Data, of our concern, lies	*
+	*	in the first 16-bits. So we convert the value in the SSI_DR register to uint16_t. This discards the higher		*
+	*	16 bits, and stores the remaining bits in the data variable, pointed by DataBuf.															*
+	****************************************************************************************************************/
+}
+
+
+
+/******************************************************************************************************************
+* @SSISendWithIntr()																																															*
+* @brief				-	This function sends data over an SSI module without blocking the CPU.														*
+* @SSIx					-	This is the name of the SSI module over which, data has to be sent.															*
+*	@DataBuf			-	Data buffer, which points to the data that has to be transmitted.																*
+*	@Len					-	Data Size, or the length of Data bits which need to be sent.																		*
+* @return				-	None.																																														*
+******************************************************************************************************************/
+void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+	
+	pSSI->SSI_CR[1] CLR_BIT( SSI_CR1_SSE );						//	Disable SSI operation.
+	pSSI->SSI_IM 		SET_BIT( SSI_IM_TX );
+	pSSI->SSI_CR[1] SET_BIT( SSI_CR1_SSE );						//	Re-Enable SSI operation.
+
+	SSIIntrTxBuf[SSIx-6] = DataBuf;									//	Save the data pointer to the appropriate buffer variable.
+	SSIIntrTxCount[SSIx-6] = ceil( Len/16.0 );			//	Tx count (no of 16-bit data packets that are to be sent)
+}
+
+
+
+/******************************************************************************************************************
+* @SSIRecvWithIntr()																																															*
+* @brief				-	This function receives data from an SSI module without blocking the CPU.												*
+* @SSIx					-	This is the name of the SSI module from which, data has to be received.													*
+*	@DataBuf			-	Pointer to data buffer which will be used to hold the received data.														*
+*	@Len					-	Length of Data (in bits) which need to be received.																							*
+* @return				-	None.																																														*
+******************************************************************************************************************/
+void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);
+	
+	pSSI->SSI_CR[1] CLR_BIT( SSI_CR1_SSE );						//	Disable SSI operation.
+	pSSI->SSI_IM 		SET_BIT( SSI_IM_RX );
+	pSSI->SSI_CR[1] SET_BIT( SSI_CR1_SSE );						//	Re-Enable SSI operation.
+	
+	SSIIntrRxBuf[SSIx-6] = DataBuf;									//	Save the data pointer to the appropriate buffer variable.
+	SSIIntrRxCount[SSIx-6] = ceil( Len/16.0 );			//	Rx count (no of 16-bit data packets that are to be sent)
+}
+
+
+
+/******************************************************************************************************************
+* @SSIIntrSend()																																																	*
+* @brief				-	Function to send data over an SSI Module. It needs to be called from Interrupt Handler.					*
+* @SSIx					-	This is the name of the SSI module over which, data needs to be sent.														*
+* @return				-	None.																																														*
+******************************************************************************************************************/
+void SSIIntrSend(uint8_t SSIx)
+{
+	uint8_t SSI = SSIx - 6;													//	Index of SSI Module
+	ssi_reg* pSSI = SSIGetAddress(SSIx);						//	Pointer to the SSI Module
+	
+	if(SSIIntrTxCount[SSI] > 0)											//	If the transmission is not complete...
+	{
+			uint16_t currentData = *SSIIntrTxBuf[SSI];	//	Fetch data from the data buffer
+			pSSI->SSI_DR = currentData<<0;							//	Insert data into the Tx buffer by writing it to SSIDR register.
+
+			SSIIntrTxBuf[SSI]++;												//	Step the pointer to the next data set.
+			SSIIntrTxCount[SSI]--;											//	Decrease the Tx count.
+	}
+	if( SSIIntrTxCount[SSI] == 0 )
+		pSSI->SSI_IM CLR_BIT( SSI_IM_TX );						//	Disable interrupt reception once the transmission is over.
+}
+
+
+
+/******************************************************************************************************************
+* @SSIIntrRecv()																																																	*
+* @brief				-	Function to receive data over an SSI Module. It needs to be called from Interrupt Handler.			*
+* @SSIx					-	This is the name of the SSI module from which, data has to be received.													*
+* @return				-	None.																																														*
+******************************************************************************************************************/
+void SSIIntrRecv(uint8_t SSIx)
+{
+	ssi_reg* pSSI = SSIGetAddress(SSIx);						//	Pointer to the SSI Module
+	uint8_t SSI = SSIx - 6;													//	Index of SSI Module
+	
+	if(SSIIntrTxCount[SSI] > 0)											//	If the transmission is not complete...
+	{
+		*SSIIntrRxBuf[SSI] = (uint16_t)pSSI->SSI_DR;	//	Pick Data from SSIDR Register and store in the Rx Buffer.
+
+		SSIIntrRxBuf[SSI]++;													//	Step the pointer to the next data set.
+		SSIIntrRxCount[SSI]--;												//	Decrease the Rx count.
+	}
+	if(SSIIntrTxCount[SSI] == 0)
+		pSSI->SSI_IM CLR_BIT( SSI_IM_RX );						//	Disable interrupt reception once the transmission is over.
 }
 
 
@@ -273,7 +502,7 @@ void SSIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled
 * @SSIx			-	This is the name of the SSI module whose address is required.																				*
 * @return		-	Pointer to an SSI Module's peripheral register.																											*
 ******************************************************************************************************************/
-ssi_reg* GetSSIAddressOf(uint8_t SSIx)
+ssi_reg* SSIGetAddress(uint8_t SSIx)
 {
 	switch(SSIx)
 	{
@@ -288,212 +517,17 @@ ssi_reg* GetSSIAddressOf(uint8_t SSIx)
 
 
 /******************************************************************************************************************
-*	@SSISendData()																																																	*
-*	@brief				-	This function is used to transmit/send data over an SSI channel.																*
-* @SSIx					-	This is the name of the SSI module over which, data has to be sent.															*
-*	@DataBuf			-	Data buffer, which points to the data that has to be transmitted.																*
-*	@Len					-	Data Size, or the length of Data bits which need to be sent.																		*
-*																																																									*
-*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
-*									the SSI module is already configured as needed otherwise data transmission might not occur.			*
-*									Also, it might generate bus faults if the clock is disabled.																		*
-*	@Note2				-	In case of a mismatch of module name, or incorrect data length, the function does not proceed		*
-*									further and breaks out when an anomaly is detected.																							*
+*	@WaitWhileSSIControllerIsBusy()																																									*
+* @brief				-	This function pauses program execution while the SSI controller is busy in transmission by			*
+*									continuously polling the busy bit of the ssi status register in a loop.													*
+* @pSSI					-	Wait for this SSI Module.																																				*
+*	@return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void SSISendData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+void WaitWhileSSIControllerIsBusy( ssi_reg* pSSI)
 {
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-
-	if(Len == 0)	return;											//	Break out of the function in case of a mismatch.
-	else
+	uint8_t Busy;
+	do
 	{
-		uint8_t n = ceil( Len/16.0 );						//	Tx count (no of 16 bit data packets that are to be sent)
-		do
-		{
-			/************************************************************************************************************
-			*	First bit of status register shows whether the Tx buffer is empty or not.																	*
-			*	1 -> Tx buffer is empty.	0 -> Tx buffer is not empty.																										*
-			************************************************************************************************************/
-			uint8_t TxNotEmpty;
-			do
-			{
-				TxNotEmpty = ( pSSI->SSI_SR & (1<<SSI_SR_TFE) )?0:1;
-			}while( TxNotEmpty );									//	Wait until the Tx buffer becomes empty.
-			uint16_t currentData = *DataBuf;
-			pSSI->SSI_DR |= currentData<<0;				//	Insert data into the Tx buffer by writing it to SSIDR register.
-			//WriteToPin(SS_pin,PIN_RESET);					//	Pull the SS pin low, to activate the slave.
-			
-			while(pSSI->SSI_SR & 1<<SSI_SR_BSY);	//	Wait while the SSI module is busy sending the data.
-			
-			//WriteToPin(SS_pin,PIN_SET);						//	Pull SS Pin high to de-activate the slave.
-			DataBuf++;														//	Step the pointer to the next data set.
-			n--;																	//	Decrease the Tx count.
-		}while(n>0);														//	Do this until the Tx count becomes zero.
-	}
-}
-void SSISend(uint8_t SSIx, uint16_t Data)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-
-			/************************************************************************************************************
-			*	First bit of status register shows whether the Tx buffer is empty or not.																	*
-			*	1 -> Tx buffer is empty.	0 -> Tx buffer is not empty.																										*
-			************************************************************************************************************/
-			uint8_t TxNotEmpty;
-			do
-			{
-				TxNotEmpty = ( pSSI->SSI_SR & (1<<SSI_SR_TFE) )?0:1;
-			}while( TxNotEmpty );									//	Wait until the Tx buffer becomes empty.
-			
-			pSSI->SSI_DR |= Data<<0;				//	Insert data into the Tx buffer by writing it to SSIDR register.
-			//WriteToPin(SS_pin,PIN_RESET);					//	Pull the SS pin low, to activate the slave.
-			
-			while(pSSI->SSI_SR & 1<<SSI_SR_BSY);	//	Wait while the SSI module is busy sending the data.
-}
-
-
-
-/******************************************************************************************************************
-*	@SSIRecvData()																																																	*
-*	@brief				-	This function is used to recevie data over an SSI channel.																			*
-* @SSIx					-	This is the name of the SSI module from which, data has to be received.													*
-*	@DataBuf			-	Pointer to data buffer which will be used to hold the received data.														*
-*	@Len					-	Data Size, or the length of Data bits which need to be received.																*
-*																																																									*
-*	@Note					-	This function does not care if the SSI module is properly initialized or not. Make sure that		*
-*									the SSI module is already configured as needed otherwise no data will be received.							*
-*									Also, it might generate bus faults if the clock is disabled.																		*
-*	@Note2				-	In case of a mismatch of module name, or incorrect data length, the function does not proceed		*
-*									further and breaks out when an anomaly is detected.																							*
-******************************************************************************************************************/
-void SSIRecvData(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-	
-	if(Len == 0)	return;											//	Break out of the function in case of a mismatch.
-	else
-	{
-		
-		uint8_t n = ceil( Len/16.0 );						// Rx count (no of 16 bit data packets that are to be received)
-		do
-		{
-			/************************************************************************************************************
-			*	Fourth bit (SSI_SR_RFF) of status register shows whether the Rx buffer is full or not.										*
-			*	1 -> Rx buffer is full.		0 -> Rx buffer is not full.																											*
-			************************************************************************************************************/
-			uint8_t RxNotFull;
-			do
-			{
-				RxNotFull = ( pSSI->SSI_SR & (1<<SSI_SR_RFF) )?0:1;
-			}while( RxNotFull );									//	Wait until the Rx buffer isn't full.
-			
-			*DataBuf = (uint16_t)pSSI->SSI_DR;
-			/************************************************************************************************************
-			*	Pick data from SSIDR register, and put it into the Rx buffer. NOTE: SSI_DR register is 32-bit register,		*
-			*	but Rx shift register is of 16-bits. Rest of the 16 bits in the SSI_DR register are reserved. Data, of		*
-			*	our concern, lies in the first 16-bits. So we convert the value in the SSI_DR register to uint16_t. This	*
-			*	discards the higher 16 bits, and stores the remaining bits in the data variable, pointed by DataBuf.			*
-			************************************************************************************************************/
-			
-			DataBuf++;														//	Step the pointer for the next data set.
-			n--;																	//	Decrease the Rx count.
-		}while(n>0);														//	Do this until the Rx count becomes zero.
-	}
-}
-void SSIRecv(uint8_t SSIx, uint16_t* DataBuf)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-			/************************************************************************************************************
-			*	Fourth bit (SSI_SR_RFF) of status register shows whether the Rx buffer is full or not.										*
-			*	1 -> Rx buffer is full.		0 -> Rx buffer is not full.																											*
-			************************************************************************************************************/
-			uint8_t RxNotFull;
-			do
-			{
-				RxNotFull = ( pSSI->SSI_SR & (1<<SSI_SR_RFF) )?0:1;
-			}while( RxNotFull );									//	Wait until the Rx buffer isn't full.
-			
-			*DataBuf = (uint16_t)pSSI->SSI_DR;
-			/************************************************************************************************************
-			*	Pick data from SSIDR register, and put it into the Rx buffer. NOTE: SSI_DR register is 32-bit register,		*
-			*	but Rx shift register is of 16-bits. Rest of the 16 bits in the SSI_DR register are reserved. Data, of		*
-			*	our concern, lies in the first 16-bits. So we convert the value in the SSI_DR register to uint16_t. This	*
-			*	discards the higher 16 bits, and stores the remaining bits in the data variable, pointed by DataBuf.			*
-			************************************************************************************************************/
-}
-
-
-
-/******************************************************************************************************************
-* @SSISendWithIntr()																																															*
-* @brief				-	This function sends data over an SSI module without blocking the cpu.														*
-* @SSIx					-	This is the name of the SSI module over which, data has to be sent.															*
-*	@DataBuf			-	Data buffer, which points to the data that has to be transmitted.																*
-*	@Len					-	Data Size, or the length of Data bits which need to be sent.																		*
-* @return				-	None.																																														*
-******************************************************************************************************************/
-void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-	pSSI->SSI_CR[1] &= ~(1<<SSI_CR1_SSE);						//	Disable SSI operation.
-	pSSI->SSI_IM |= ( 1 << SSI_IM_TX );
-	pSSI->SSI_CR[1] |= (1<<SSI_CR1_SSE);						//	Re-Enable SSI operation.
-
-	SSIIntrTxBuf[SSIx-6] = DataBuf;									//	Save the data pointer to the appropriate buffer variable.
-	SSIIntrTxCount[SSIx-6] = ceil( Len/16.0 );			//	Tx count (no of 16-bit data packets that are to be sent)
-}
-
-
-
-/******************************************************************************************************************
-* @SSIRecvWithIntr()																																															*
-* @brief				-	This function receives data from an SSI module without blocking the cpu.												*
-* @SSIx					-	This is the name of the SSI module from which, data has to be received.													*
-*	@DataBuf			-	Pointer to data buffer which will be used to hold the received data.														*
-*	@Len					-	Data Size, or the length of Data bits which need to be received.																*
-* @return				-	None.																																														*
-******************************************************************************************************************/
-void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-	pSSI->SSI_IM |= ( 1 << SSI_IM_RX );
-	
-	SSIIntrRxBuf[SSIx-6] = DataBuf;									//	Save the data pointer to the appropriate buffer variable.
-	SSIIntrRxCount[SSIx-6] = ceil( Len/16.0 );			//	Rx count (no of 16-bit data packets that are to be sent)
-}
-
-
-/******************************************************************************************************************
-******************************************************************************************************************/
-
-void SSIIntrSend(uint8_t SSIx, uint8_t SS_pin)
-{
-	uint8_t SSI = SSIx - 6;
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-	
-	if(SSIIntrTxCount[SSI] > 0)
-	{
-			uint16_t currentData = *SSIIntrTxBuf[SSI];
-			pSSI->SSI_DR |= currentData<<0;							//	Insert data into the Tx buffer by writing it to SSIDR register.
-			WriteToPin(SS_pin,PIN_RESET);								//	Pull the SS pin low, to activate the slave.
-
-			SSIIntrTxBuf[SSI]++;												//	Step the pointer to the next data set.
-			SSIIntrTxCount[SSI]--;											//	Decrease the Tx count.
-	}
-	if( SSIIntrTxCount[SSI] == 0 )
-		pSSI->SSI_IM &= ~( 1 << SSI_IM_TX );					//	Disable interrupt reception once the transmission is over.
-}
-
-void SSIIntrReceive(uint8_t SSIx, uint8_t SS_pin)
-{
-	ssi_reg* pSSI = GetSSIAddressOf(SSIx);
-	uint8_t SSI = SSIx - 6;
-	
-	if(SSIIntrTxCount[SSI] > 0)
-	{
-		*SSIIntrRxBuf[SSI] = (uint16_t)pSSI->SSI_DR;	//	Pick Data from SSIDR Register and store in the Rx Buffer.
-
-		SSIIntrRxBuf[SSI]++;													//	Step the pointer to the next data set.
-		SSIIntrRxCount[SSI]--;												//	Decrease the Rx count.
-	}
+		Busy = GET_BIT( pSSI->SSI_SR, SSI_SR_BSY );			//	Check the busy bit in the status register.
+	}while( Busy );																		//	Wait if the bit is '1'.
 }

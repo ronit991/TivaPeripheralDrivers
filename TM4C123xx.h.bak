@@ -9,9 +9,7 @@
 *		Things that need to be changed/improved:-																																			*
 *			<>	Change the data type of all reserved registers to uint8_t and update the array size accordingly, so			*
 *					that it is easier to assign the size of reserved array. Also it would help in debugging.								*
-*			<>	Change GPIO register pointer names from GPIO_X(H/P) to GPIOX_(H/P) to increase readability.							*
-*					Make sure to update every header and source files to match the new naming convention.										*
-*			<>	Add bus selection feature in every function.																														*
+*			<>	Add bus selection feature in every relevant function.																										*
 *			<>	Update the Exception Handler register definition.																												*
 *			<>	Change nvic register access pointer name to capital letters, and update the files which use it.					*
 *			<>	Change ssi register name to capital letters, and update the files which use it.													*
@@ -29,11 +27,14 @@
 * 3. SSI Modules																																																	*
 *	4. I2C Modules																																																	*
 *																																																									*
+*	9.	Miscellaneous macros & shorthands																																						*
+*	9.	Driver & other dependencies																																									*
+*																																																									*
 *		Each peripheral has the following sub-sections:-																															*
-*		i		Base Addresses.																																														*
-*		ii	Clock Enable & Disable Macros.																																						*
-*		iii	Peripheral Register Definition.																																						*
-*		iv	Module Access Pointers.																																										*
+*		1		Base Addresses.																																														*
+*		2	Cl	ock Enable & Disable Macros.																																						*
+*		3		Peripheral Register Definition.																																						*
+*		4		Module Access Pointers.																																										*
 ******************************************************************************************************************/
 
 
@@ -676,14 +677,14 @@ typedef struct
 
 
 /******************************************************************************************************************
-*																					Driver and other Header Files																						*
+*																					Driver and other Dependencies																						*
 *																																																									*
 ******************************************************************************************************************/
 #include "TM4C123xxGPIO_DRIVER.h"
 #include "TM4C123xxSSI_DRIVER.h"
 #include "TM4C123xxI2C_DRIVER.h"
 
-#include "GPIO_PIN_NAMES.h"
+#include "GPIO_PINS.h"
 
 
 #endif
