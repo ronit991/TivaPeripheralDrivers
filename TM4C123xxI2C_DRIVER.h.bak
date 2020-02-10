@@ -71,10 +71,12 @@
 #define I2C_MCR2_GFPW 			4							//	Glitch Filter Pulse Width
 
 // Slave Control/Status Register	(I2CSCSR)
+/* Control Register */
 #define I2C_SCSR_RREQ				0							//	Receive Request
 #define I2C_SCSR_TREQ				1							//	Transmit Request
 #define I2C_SCSR_FBR				2							//	First Byte Received
 #define I2C_SCSR_OAR2SEL		3							//	OAR2 Address Matched
+
 /* Control Register */
 #define I2C_SCSR_DA					0							//	Device Active: Enable/Disable Slave Operation
 

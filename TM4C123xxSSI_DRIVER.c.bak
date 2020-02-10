@@ -433,7 +433,7 @@ void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
 *	@Len					-	Length of Data (in bits) which need to be received.																							*
 * @return				-	None.																																														*
 ******************************************************************************************************************/
-void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+void SSIRecvWithIntr(uint8_t SSIx, __vo uint16_t *DataBuf, uint8_t Len)
 {
 	ssi_reg* pSSI = SSIGetAddress(SSIx);
 	
@@ -497,7 +497,7 @@ void SSIIntrRecv(uint8_t SSIx)
 
 
 /******************************************************************************************************************
-* @GetSSIAddressOf()																																															*
+* @SSIGetAddress()																																																*
 * @brief		-	This function returns the address of SSI module.																										*
 * @SSIx			-	This is the name of the SSI module whose address is required.																				*
 * @return		-	Pointer to an SSI Module's peripheral register.																											*

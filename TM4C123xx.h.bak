@@ -31,10 +31,10 @@
 *	9.	Driver & other dependencies																																									*
 *																																																									*
 *		Each peripheral has the following sub-sections:-																															*
-*		1		Base Addresses.																																														*
-*		2	Cl	ock Enable & Disable Macros.																																						*
-*		3		Peripheral Register Definition.																																						*
-*		4		Module Access Pointers.																																										*
+*		1.	Base Addresses.																																														*
+*		2.	Clock Enable & Disable Macros.																																						*
+*		3.	Peripheral Register Definition.																																						*
+*		4.	Module Access Pointers.																																										*
 ******************************************************************************************************************/
 
 

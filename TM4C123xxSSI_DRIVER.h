@@ -117,11 +117,11 @@
 #define SSI_InterruptTxRxBoth		5
 
 // Variables used by the driver APIs
-extern uint16_t* SSIIntrTxBuf[4];
-extern uint16_t* SSIIntrRxBuf[4];
+extern __vo uint16_t* SSIIntrTxBuf[4];
+extern __vo uint16_t* SSIIntrRxBuf[4];
 
-extern uint8_t SSIIntrTxCount[4];
-extern uint8_t SSIIntrRxCount[4];
+extern __vo uint8_t SSIIntrTxCount[4];
+extern __vo uint8_t SSIIntrRxCount[4];
 
 
 
@@ -164,7 +164,7 @@ void SSIRecv(uint8_t SSIx, uint16_t* DataBuf);
 
 
 void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
-void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len);
+void SSIRecvWithIntr(uint8_t SSIx, __vo uint16_t *DataBuf, uint8_t Len);
 
 void SSIIntrSend(uint8_t SSIx);
 void SSIIntrRecv(uint8_t SSIx);

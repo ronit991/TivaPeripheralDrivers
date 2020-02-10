@@ -307,8 +307,7 @@ typedef struct
 
 typedef struct
 {
-	//__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
-	__vo uint8_t	RESERVED00[64];
+	__vo uint8_t	RESERVED00[64];															// Offset(0x40) for System exceptions
 	__vo uint32_t	_GPIOA;
 	__vo uint32_t	_GPIOB;
 	__vo uint32_t	_GPIOC;

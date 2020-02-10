@@ -150,22 +150,6 @@ extern uint8_t I2CDeviceAddress[4];
 
 
 /******************************************************************************************************************
-*																								I2C Handle Structure																							*
-* >> provide description of all parameters here
-******************************************************************************************************************/
-typedef struct
-{
-	I2C_reg* pI2Cx;
-	uint8_t I2Cx;
-	uint8_t SpeedMode;
-	uint32_t ClkSpeed;
-	uint8_t ACKControl;
-	uint8_t MasterAddress;
-	uint8_t UseAsSlave;
-
-}I2CHandle;
-
-/******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
 *	Below are the prototypes for driver APIs																																				*
 *	void I2CInit()								-	Initialize an I2C Module.																												*
@@ -188,13 +172,11 @@ typedef struct
 *		Definitions for these can be found in TM4C123xxI2C_DRIVER.c file																							*
 ******************************************************************************************************************/
 void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKControl, uint8_t UseAsSlave);
-void I2CInit2(I2CHandle* pI2CHandle);
 void I2CDeInit(uint8_t I2Cx);
 
 uint8_t I2CClockControl(uint8_t I2Cx,uint8_t	EnorDi);
 
-uint8_t I2CMasterSendData(I2CHandle* pI2CHandle, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
-uint8_t I2CMasterSendData2(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
+uint8_t I2CMasterSendData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
 uint8_t I2CMasterSendByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t Data);
 
 uint8_t I2CMasterRecvData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxBuf, uint8_t Len);

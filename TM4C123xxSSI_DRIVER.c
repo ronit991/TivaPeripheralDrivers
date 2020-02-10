@@ -13,11 +13,11 @@
 #include <math.h>
 
 
-uint16_t* SSIIntrTxBuf[4] = {NULL,NULL,NULL,NULL};
-uint16_t* SSIIntrRxBuf[4] = {NULL,NULL,NULL,NULL};
+__vo uint16_t* SSIIntrTxBuf[4] = {NULL,NULL,NULL,NULL};
+__vo uint16_t* SSIIntrRxBuf[4] = {NULL,NULL,NULL,NULL};
 
-uint8_t SSIIntrTxCount[4] = {0,0,0,0};
-uint8_t SSIIntrRxCount[4] = {0,0,0,0};
+__vo uint8_t SSIIntrTxCount[4] = {0,0,0,0};
+__vo uint8_t SSIIntrRxCount[4] = {0,0,0,0};
 
 
 
@@ -433,7 +433,7 @@ void SSISendWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
 *	@Len					-	Length of Data (in bits) which need to be received.																							*
 * @return				-	None.																																														*
 ******************************************************************************************************************/
-void SSIRecvWithIntr(uint8_t SSIx, uint16_t* DataBuf, uint8_t Len)
+void SSIRecvWithIntr(uint8_t SSIx, __vo uint16_t *DataBuf, uint8_t Len)
 {
 	ssi_reg* pSSI = SSIGetAddress(SSIx);
 	
