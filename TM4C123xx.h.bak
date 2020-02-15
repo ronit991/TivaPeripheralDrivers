@@ -23,6 +23,10 @@
 *	Sections in this file:-																																													*
 * 0. Peripheral Names																																															*
 *	1. Core Components																																															*
+*			1.1	Base Addresses																																													*
+*			1.2	System Control Block																																										*
+*			1.3	Exception Handlers																																											*
+*			1.4	NVIC: Nested Vector Interrupt Controller																																*
 * 2. GPIO Modules																																																	*
 * 3. SSI Modules																																																	*
 *	4. I2C Modules																																																	*
@@ -43,7 +47,6 @@
 #define TM4C123XX_H
 
 #include<stdint.h>
-//#include<stdio.h>
 #include<stdlib.h>
 
 #define __vo volatile
@@ -114,7 +117,7 @@ typedef struct
 	__vo uint32_t  DID0;                              // Device Identification 0
   __vo uint32_t  DID1;                              // Device Identification 1
   __vo uint32_t  DC0;                               // Device Capabilities 0
-	__vo uint32_t  RESERVED;
+	__vo uint32_t  RESERVED1_0;
   __vo uint32_t  DC1;                               // Device Capabilities 1
   __vo uint32_t  DC2;                               // Device Capabilities 2
   __vo uint32_t  DC3;                               // Device Capabilities 3
@@ -124,177 +127,177 @@ typedef struct
   __vo uint32_t  DC7;                               // Device Capabilities 7
   __vo uint32_t  DC8;                               // Device Capabilities 8
   __vo uint32_t  PBORCTL;                           // Brown-Out Reset Control
-	__vo uint32_t  RESERVED1[3];
+	__vo uint32_t  RESERVED1_1[3];
   __vo uint32_t  SRCR0;                             // Software Reset Control 0
   __vo uint32_t  SRCR1;                             // Software Reset Control 1
   __vo uint32_t  SRCR2;                             // Software Reset Control 2
-	__vo uint32_t  RESERVED2;
+	__vo uint32_t  RESERVED1_2;
   __vo uint32_t  RIS;                               // Raw Interrupt Status
   __vo uint32_t  IMC;                               // Interrupt Mask Control
   __vo uint32_t  MISC;                              // Masked Interrupt Status and Clear
   __vo uint32_t  RESC;                              // Reset Cause
   __vo uint32_t  RCC;                               // Run-Mode Clock Configuration
-	__vo uint32_t  RESERVED3[2];
+	__vo uint32_t  RESERVED1_3[2];
   __vo uint32_t  GPIOHBCTL;                         // GPIO High-Performance Bus Control
   __vo uint32_t  RCC2;                              // Run-Mode Clock Configuration 2
-	__vo uint32_t  RESERVED4[2];
+	__vo uint32_t  RESERVED1_4[2];
   __vo uint32_t  MOSCCTL;                           // Main Oscillator Control
-	__vo uint32_t  RESERVED5[32];
+	__vo uint32_t  RESERVED1_5[32];
   __vo uint32_t  RCGC0;                             // Run Mode Clock Gating Control Register 0
   __vo uint32_t  RCGC1;                             // Run Mode Clock Gating Control Register 1
   __vo uint32_t  RCGC2;                             // Run Mode Clock Gating Control Register 2
-	__vo uint32_t  RESERVED6;
+	__vo uint32_t  RESERVED1_6;
   __vo uint32_t  SCGC0;                             // Sleep Mode Clock Gating Control Register 0
   __vo uint32_t  SCGC1;                             // Sleep Mode Clock Gating Control Register 1
   __vo uint32_t  SCGC2;                             // Sleep Mode Clock Gating Control Register 2
-	__vo uint32_t  RESERVED7;
+	__vo uint32_t  RESERVED1_7;
   __vo uint32_t  DCGC0;                             // Deep Sleep Mode Clock Gating Control Register 0
   __vo uint32_t  DCGC1;                             // Deep-Sleep Mode Clock Gating Control Register 1
   __vo uint32_t  DCGC2;                             // Deep Sleep Mode Clock Gating Control Register 2
-	__vo uint32_t  RESERVED8[6];
+	__vo uint32_t  RESERVED1_8[6];
   __vo uint32_t  DSLPCLKCFG;                        // Deep Sleep Clock Configuration
-	__vo uint32_t  RESERVED9;
+	__vo uint32_t  RESERVED1_9;
   __vo uint32_t  SYSPROP;                           // System Properties
   __vo uint32_t  PIOSCCAL;                          // Precision Internal Oscillator Calibration
   __vo uint32_t  PIOSCSTAT;                         // Precision Internal Oscillator Statistics
-	__vo uint32_t  RESERVED10[2];
+	__vo uint32_t  RESERVED1_10[2];
   __vo uint32_t  PLLFREQ0;                          // PLL Frequency 0
   __vo uint32_t  PLLFREQ1;                          // PLL Frequency 1
   __vo uint32_t  PLLSTAT;                           // PLL Status
-	__vo uint32_t  RESERVED11[7];
+	__vo uint32_t  RESERVED1_11[7];
   __vo uint32_t  SLPPWRCFG;                         // Sleep Power Configuration
   __vo uint32_t  DSLPPWRCFG;                        // Deep-Sleep Power Configuration
   __vo uint32_t  DC9;                               // Device Capabilities 9
-	__vo uint32_t  RESERVED12[3];
+	__vo uint32_t  RESERVED1_12[3];
   __vo uint32_t  NVMSTAT;                           // Non-Volatile Memory Information
-	__vo uint32_t  RESERVED13[4];
+	__vo uint32_t  RESERVED1_13[4];
   __vo uint32_t  LDOSPCTL;                          // LDO Sleep Power Control
-	__vo uint32_t  RESERVED14;
+	__vo uint32_t  RESERVED1_14;
   __vo uint32_t  LDODPCTL;                          // LDO Deep-Sleep Power Control
-	__vo uint32_t  RESERVED15[80];
+	__vo uint32_t  RESERVED1_15[80];
   __vo uint32_t  PPWD;                              // Watchdog Timer Peripheral Present
   __vo uint32_t  PPTIMER;                           // 16/32-Bit General-Purpose Timer Peripheral Present
   __vo uint32_t  PPGPIO;                            // General-Purpose Input/Output Peripheral Present
   __vo uint32_t  PPDMA;                             // Micro Direct Memory Access Peripheral Present
-	__vo uint32_t  RESERVED16;
+	__vo uint32_t  RESERVED1_16;
   __vo uint32_t  PPHIB;                             // Hibernation Peripheral Present
   __vo uint32_t  PPUART;                            // Universal Asynchronous Receiver/Transmitter Peripheral Present
   __vo uint32_t  PPSSI;                             // Synchronous Serial Interface Peripheral Present
   __vo uint32_t  PPI2C;                             // Inter-Integrated Circuit Peripheral Present
-	__vo uint32_t  RESERVED17;
+	__vo uint32_t  RESERVED1_17;
   __vo uint32_t  PPUSB;                             // Universal Serial Bus Peripheral Present
-	__vo uint32_t  RESERVED18[2];
+	__vo uint32_t  RESERVED1_18[2];
   __vo uint32_t  PPCAN;                             // Controller Area Network Peripheral Present
   __vo uint32_t  PPADC;                             // Analog-to-Digital Converter Peripheral Present
   __vo uint32_t  PPACMP;                            // Analog Comparator Peripheral Present
   __vo uint32_t  PPPWM;                             // Pulse Width Modulator Peripheral Present
   __vo uint32_t  PPQEI;                             // Quadrature Encoder Interface Peripheral Present
-	__vo uint32_t  RESERVED19[4];
+	__vo uint32_t  RESERVED1_19[4];
   __vo uint32_t  PPEEPROM;                          // EEPROM Peripheral Present
   __vo uint32_t  PPWTIMER;                          // 32/64-Bit Wide General-Purpose Timer Peripheral Present
-	__vo uint32_t  RESERVED20[104];
+	__vo uint32_t  RESERVED1_20[104];
   __vo uint32_t  SRWD;                              // Watchdog Timer Software Reset/
   __vo uint32_t  SRTIMER;                           // 16/32-Bit General-Purpose Timer Software Reset
   __vo uint32_t  SRGPIO;                            // General-Purpose Input/Output Software Reset
   __vo uint32_t  SRDMA;                             // Micro Direct Memory Access Software Reset
-	__vo uint32_t  RESERVED21;
+	__vo uint32_t  RESERVED1_21;
   __vo uint32_t  SRHIB;                             // Hibernation Software Reset
   __vo uint32_t  SRUART;                            // Universal Asynchronous Receiver/Transmitter Software Reset
   __vo uint32_t  SRSSI;                             // Synchronous Serial Interface Software Reset
   __vo uint32_t  SRI2C;                             // Inter-Integrated Circuit Software Reset
-	__vo uint32_t  RESERVED22;
+	__vo uint32_t  RESERVED1_22;
   __vo uint32_t  SRUSB;                             // Universal Serial Bus Software Reset
-	__vo uint32_t  RESERVED23[2];
+	__vo uint32_t  RESERVED1_23[2];
   __vo uint32_t  SRCAN;                             // Controller Area Network Software Reset
   __vo uint32_t  SRADC;                             // Analog-to-Digital Converter Software Reset
   __vo uint32_t  SRACMP;                            // Analog Comparator Software Reset
   __vo uint32_t  SRPWM;                             // Pulse Width Modulator Software Reset
   __vo uint32_t  SRQEI;                             // Quadrature Encoder Interface Software Reset
-	__vo uint32_t  RESERVED24[4];
+	__vo uint32_t  RESERVED1_24[4];
   __vo uint32_t  SREEPROM;                          // EEPROM Software Reset
   __vo uint32_t  SRWTIMER;                          // 32/64-Bit Wide General-Purpose Timer Software Reset
-	__vo uint32_t  RESERVED25[40];
+	__vo uint32_t  RESERVED1_25[40];
   __vo uint32_t  RCGCWD;                            // Watchdog Timer Run Mode Clock Gating Control
   __vo uint32_t  RCGCTIMER;                         // 16/32-Bit General-Purpose Timer Run Mode Clock Gating Control
   __vo uint32_t  RCGCGPIO;                          // General-Purpose Input/Output Run Mode Clock Gating Control
   __vo uint32_t  RCGCDMA;                           // Micro Direct Memory Access Run Mode Clock Gating Control
-	__vo uint32_t  RESERVED26;
+	__vo uint32_t  RESERVED1_26;
   __vo uint32_t  RCGCHIB;                           // Hibernation Run Mode Clock Gating Control
   __vo uint32_t  RCGCUART;                          // Universal Asynchronous Receiver/Transmitter Run Mode Clock Gating Control
   __vo uint32_t  RCGCSSI;                           // Synchronous Serial Interface Run Mode Clock Gating Control
   __vo uint32_t  RCGCI2C;                           // Inter-Integrated Circuit Run Mode Clock Gating Control
-	__vo uint32_t  RESERVED27;
+	__vo uint32_t  RESERVED1_27;
   __vo uint32_t  RCGCUSB;                           // Universal Serial Bus Run Mode Clock Gating Control
-	__vo uint32_t  RESERVED28[2];
+	__vo uint32_t  RESERVED1_28[2];
   __vo uint32_t  RCGCCAN;                           // Controller Area Network Run Mode Clock Gating Control
   __vo uint32_t  RCGCADC;                           // Analog-to-Digital Converter Run Mode Clock Gating Control
   __vo uint32_t  RCGCACMP;                          // Analog Comparator Run Mode Clock Gating Control
   __vo uint32_t  RCGCPWM;                           // Pulse Width Modulator Run Mode Clock Gating Control
   __vo uint32_t  RCGCQEI;                           // Quadrature Encoder Interface Run Mode Clock Gating Control
-	__vo uint32_t  RESERVED29[4];
+	__vo uint32_t  RESERVED1_29[4];
   __vo uint32_t  RCGCEEPROM;                        // EEPROM Run Mode Clock Gating Control
   __vo uint32_t  RCGCWTIMER;                        // 32/64-Bit Wide General-Purpose Timer Run Mode Clock Gating Control
-	__vo uint32_t  RESERVED30[40];
+	__vo uint32_t  RESERVED1_30[40];
   __vo uint32_t  SCGCWD;                            // Watchdog Timer Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCTIMER;                         // 16/32-Bit General-Purpose Timer Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCGPIO;                          // General-Purpose Input/Output Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCDMA;                           // Micro Direct Memory Access Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED31;
+	__vo uint32_t  RESERVED1_31;
   __vo uint32_t  SCGCHIB;                           // Hibernation Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCUART;                          // Universal Asynchronous Receiver/Transmitter Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCSSI;                           // Synchronous Serial Interface Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCI2C;                           // Inter-Integrated Circuit Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED32;
+	__vo uint32_t  RESERVED1_32;
   __vo uint32_t  SCGCUSB;                           // Universal Serial Bus Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED33[2];
+	__vo uint32_t  RESERVED1_33[2];
   __vo uint32_t  SCGCCAN;                           // Controller Area Network Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCADC;                           // Analog-to-Digital Converter Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCACMP;                          // Analog Comparator Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCPWM;                           // Pulse Width Modulator Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCQEI;                           // Quadrature Encoder Interface Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED34[4];
+	__vo uint32_t  RESERVED1_34[4];
   __vo uint32_t  SCGCEEPROM;                        // EEPROM Sleep Mode Clock Gating Control
   __vo uint32_t  SCGCWTIMER;                        // 32/64-Bit Wide General-Purpose Timer Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED35[40];
+	__vo uint32_t  RESERVED1_35[40];
   __vo uint32_t  DCGCWD;                            // Watchdog Timer Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCTIMER;                         // 16/32-Bit General-Purpose Timer Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCGPIO;                          // General-Purpose Input/Output Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCDMA;                           // Micro Direct Memory Access Deep-Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED36;
+	__vo uint32_t  RESERVED1_36;
   __vo uint32_t  DCGCHIB;                           // Hibernation Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCUART;                          // Universal Asynchronous Receiver/Transmitter Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCSSI;                           // Synchronous Serial Interface Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCI2C;                           // Inter-Integrated Circuit Deep-Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED37;
+	__vo uint32_t  RESERVED1_37;
   __vo uint32_t  DCGCUSB;                           // Universal Serial Bus Deep-Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED38[2];
+	__vo uint32_t  RESERVED1_38[2];
   __vo uint32_t  DCGCCAN;                           // Controller Area Network Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCADC;                           // Analog-to-Digital Converter Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCACMP;                          // Analog Comparator Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCPWM;                           // Pulse Width Modulator Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCQEI;                           // Quadrature Encoder Interface Deep-Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED39[4];
+	__vo uint32_t  RESERVED1_39[4];
   __vo uint32_t  DCGCEEPROM;                        // EEPROM Deep-Sleep Mode Clock Gating Control
   __vo uint32_t  DCGCWTIMER;                        // 32/64-Bit Wide General-Purpose Timer Deep-Sleep Mode Clock Gating Control
-	__vo uint32_t  RESERVED40[104];
+	__vo uint32_t  RESERVED1_40[104];
   __vo uint32_t  PRWD;                              // Watchdog Timer Peripheral Ready
   __vo uint32_t  PRTIMER;                           // 16/32-Bit General-Purpose Timer Peripheral Ready
   __vo uint32_t  PRGPIO;                            // General-Purpose Input/Output Peripheral Ready
   __vo uint32_t  PRDMA;                             // Micro Direct Memory Access Peripheral Ready
-	__vo uint32_t  RESERVED41;
+	__vo uint32_t  RESERVED1_41;
   __vo uint32_t  PRHIB;                             // Hibernation Peripheral Ready
   __vo uint32_t  PRUART;                            // Universal Asynchronous Receiver/Transmitter Peripheral Ready
   __vo uint32_t  PRSSI;                             // Synchronous Serial Interface Peripheral Ready
   __vo uint32_t  PRI2C;                             // Inter-Integrated Circuit Peripheral Ready
-	__vo uint32_t  RESERVED42;
+	__vo uint32_t  RESERVED1_42;
   __vo uint32_t  PRUSB;                             // Universal Serial Bus Peripheral Ready
-	__vo uint32_t  RESERVED43[2];
+	__vo uint32_t  RESERVED1_43[2];
   __vo uint32_t  PRCAN;                             // Controller Area Network Peripheral Ready
   __vo uint32_t  PRADC;                             // Analog-to-Digital Converter Peripheral Ready
   __vo uint32_t  PRACMP;                            // Analog Comparator Peripheral Ready
   __vo uint32_t  PRPWM;                             // Pulse Width Modulator Peripheral Ready
   __vo uint32_t  PRQEI;                             // Quadrature Encoder Interface Peripheral Ready
-	__vo uint32_t  RESERVED44[4];
+	__vo uint32_t  RESERVED1_44[4];
   __vo uint32_t  PREEPROM;                          // EEPROM Peripheral Ready
   __vo uint32_t  PRWTIMER; 
 }SYSCTL_reg;
@@ -307,8 +310,7 @@ typedef struct
 
 typedef struct
 {
-	//__vo uint8_t	Offset0_40h[64];						// Offset(0x40) for System exceptions
-	__vo uint8_t	RESERVED00[64];
+	__vo uint8_t	RESERVED2_1[64];															// Offset(0x40) for System exceptions
 	__vo uint32_t	_GPIOA;
 	__vo uint32_t	_GPIOB;
 	__vo uint32_t	_GPIOC;
@@ -337,7 +339,7 @@ typedef struct
 	__vo uint32_t	_ANALOG_COMPARATOR0;
 	__vo uint32_t	_ANALOG_COMPARATOR1;
 	
-	__vo uint8_t	RESERVED01[4];
+	__vo uint8_t	RESERVED2_2[4];
 	
 	__vo uint32_t	_SYSTEM_CONTROL;
 	__vo uint32_t	_FLASH_MEM_CTRL_AND_EEPROM_CTRL;
@@ -356,12 +358,12 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t EN[5];						__vo uint32_t RESERVED0[27];
-	__vo uint32_t DIS[5];						__vo uint32_t RESERVED1[27];
-	__vo uint32_t PEND[5];					__vo uint32_t RESERVED2[27];
-	__vo uint32_t UNPEND[5];				__vo uint32_t RESERVED3[27];
-	__vo uint32_t ACTIVE[5];				__vo uint32_t RESERVED4[59];
-	__vo uint32_t PRI[35];					__vo uint32_t RESERVED5[669];
+	__vo uint32_t EN[5];						__vo uint32_t RESERVED3_1[27];
+	__vo uint32_t DIS[5];						__vo uint32_t RESERVED3_2[27];
+	__vo uint32_t PEND[5];					__vo uint32_t RESERVED3_3[27];
+	__vo uint32_t UNPEND[5];				__vo uint32_t RESERVED3_4[27];
+	__vo uint32_t ACTIVE[5];				__vo uint32_t RESERVED3_5[59];
+	__vo uint32_t PRI[35];					__vo uint32_t RESERVED3_6[669];
 	__vo uint32_t SWTRIG;
 	
 }NVIC_reg;
@@ -452,7 +454,7 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t RESERVED0[255];
+	__vo uint32_t GPIO_DATA_BITS[255];
 	__vo uint32_t GPIO_DATA;
 	__vo uint32_t GPIO_DIR;
 	__vo uint32_t GPIO_IS;
@@ -463,7 +465,7 @@ typedef struct
 	__vo uint32_t GPIO_MIS;
 	__vo uint32_t GPIO_ICR;
 	__vo uint32_t GPIO_AFSEL;
-	__vo uint32_t RESERVED1[55];
+	__vo uint32_t RESERVED4_1[55];
 	__vo uint32_t GPIO_DR2R;
 	__vo uint32_t GPIO_DR4R;
 	__vo uint32_t GPIO_DR8R;
@@ -479,7 +481,7 @@ typedef struct
 	__vo uint32_t GPIO_ADCCTL;
 	__vo uint32_t GPIO_DMACTL;
 	
-	__vo uint32_t RESERVED2[678];
+	__vo uint32_t RESERVED4_2[678];
 	
 	/*	Registers defined below are READ_ONLY.*/
 	__vo uint32_t GPIOPeriphlD4;
@@ -551,7 +553,7 @@ typedef struct
 	__vo uint32_t	SSI_ICR;									// Interrupt Clear
 	__vo uint32_t	SSI_DMACTL;								// DMA Control
 	
-	__vo uint8_t	Reserved[4000];
+	__vo uint8_t	Reserved5_1[4000];
 	
 	__vo uint32_t	SSI_CC;										// Clock Configuration
 	
@@ -618,10 +620,10 @@ typedef struct
 	__vo uint32_t MCR;								// Master Configuration
 	__vo uint32_t MCLKOCNT;						// Master Clock Low Timeout Count
 	__vo uint32_t MBMON;							// Master Bus Monitor
-	__vo uint8_t	RESERVED0[8];
+	__vo uint8_t	RESERVED6_1[8];
 	__vo uint32_t MCR2;								// Master Configuration 2
 	
-	__vo uint8_t	RESERVED1[1988];
+	__vo uint8_t	RESERVED6_2[1988];
 	
 	/* I2C Slave*/
 	__vo uint32_t SOAR;								// Slave Own Address
@@ -634,7 +636,7 @@ typedef struct
 	__vo uint32_t SOAR2;							// Slave Own Address 2
 	__vo uint32_t SACKCTL;						// Slave ACK Control
 	
-	__vo uint8_t	RESERVED2[1948];
+	__vo uint8_t	RESERVED6_3[1948];
 	
 	/* I2C Control and Status*/
 	__vo uint32_t PP;									// Peripheral Properties

@@ -128,14 +128,14 @@ extern __vo uint8_t SSIIntrRxCount[4];
 /******************************************************************************************************************
 *																					APIs Supported by this Driver																						*
 *	Below are the prototypes for driver APIs																																				*
-*	1. SSIClockControl()		-	Enable/Disable clock for an SSI Module.																								*
-*	2. SSIInit()						-	Initialize and SSI Module.																														*
-*	3. SSIDeInit()					-	Reset and turn off an SSI Module.																											*
+*	1. 	SSIClockControl()		-	Enable/Disable clock for an SSI Module.																								*
+*	2. 	SSIInit()						-	Initialize and SSI Module.																														*
+*	3. 	SSIDeInit()					-	Reset and turn off an SSI Module.																											*
 *																																																									*
-*	4. SPIStart()						-	Initialize an SSI Module for FREESCALE SPI format, with some default configurations.	*
+*	4. 	SPIStart()					-	Initialize an SSI Module for FREESCALE SPI format, with some default configurations.	*
 *																																																									*
-*	5. SSISendData()				-	Send data over an SSI Module.																													*
-*	6. SSISend()						-	Send one packet(16-bit) of data over an SSI Module.																		*
+*	5. 	SSISendData()				-	Send data over an SSI Module.																													*
+*	6. 	SSISend()						-	Send one packet(16-bit) of data over an SSI Module.																		*
 *																																																									*
 *	7.	SSIRecvData()				-	Receive data over an SSI Module.																											*
 *	8.	SSIRecv()						-	Receive one packet(16-bit) of data over an SSI Module.																*

@@ -10,6 +10,15 @@
 *	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
 ******************************************************************************************************************/
 
+/******************************************************************************************************************
+*																					Pins Available for I2C Functions																				*
+*		Module				SCL					SDA																																									*
+*		I2C 0					PB2					PB3																																									*
+*		I2C 1					PA6					PA7																																									*
+*		I2C 2					PE4					PE5																																									*
+*		I2C 3					PD0					PD1																																									*
+******************************************************************************************************************/
+
 #ifndef TM4C123XXI2C_DRIVER_H
 #define TM4C123XXI2C_DRIVER_H
 
@@ -159,7 +168,6 @@ extern uint8_t I2CDeviceAddress[4];
 *	uint8_t I2CClockControl()			-	Enable/Disable Clock for an I2C Module.																					*
 *																																																									*
 *	uint8_t I2CMasterSendData()		-	Send data as Master.																														*
-*	uint8_t I2CMasterSendData2()	-	Send data as Master.																														*
 *	uint8_t I2CMasterSendByte()		-	Send one byte data as Master.																										*
 *																																																									*
 * uint8_t I2CMasterRecvData()		- Receive data as Master.																													*
@@ -176,15 +184,26 @@ void I2CDeInit(uint8_t I2Cx);
 
 uint8_t I2CClockControl(uint8_t I2Cx,uint8_t	EnorDi);
 
+
 uint8_t I2CMasterSendData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len);
 uint8_t I2CMasterSendByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t Data);
 
 uint8_t I2CMasterRecvData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxBuf, uint8_t Len);
 uint8_t I2CMasterRecvByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxByte);
 
+
+void I2CSetSlaveAddress(uint8_t I2Cx, uint8_t Address);
+uint8_t I2CSlaveSendData(uint8_t I2Cx, uint8_t* TxBuf, uint8_t Len);
+uint8_t I2CSlaveSendByte(uint8_t I2Cx, uint8_t Data);
+
+uint8_t I2CSlaveRecvData(uint8_t I2Cx, uint8_t* RxBuf, uint8_t Len);
+uint8_t I2CSlaveRecvByte(uint8_t I2Cx);
+
+
 uint8_t GetSCLPin(uint8_t I2Cx);
 uint8_t GetSDAPin(uint8_t I2Cx);
 
 I2C_reg* I2CGetAddress(uint8_t I2Cx);
+void WaitWhileI2CisBusy(uint8_t I2Cx);
 
 #endif

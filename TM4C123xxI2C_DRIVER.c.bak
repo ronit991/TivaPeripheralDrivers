@@ -41,6 +41,10 @@ uint8_t I2CDeviceAddress[4] = {0xA1, 0xA1, 0xA1, 0xA1};
 
 
 
+/*------------------------------------------ Initialization Functions -------------------------------------------*/
+
+
+
 /******************************************************************************************************************
 * @I2CClockControl()																																															*
 * @brief	-	Enable or Disable clock for an I2C Module.																														*
@@ -112,6 +116,9 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 	
 	GPIO_ClockControl(getPortName(I2C_SCL_PIN), ENABLE);			//	Step 2 of section 16.4
 	
+	pGPIO->GPIO_DEN SET_BIT( I2C_SCL_PIN_NUM );
+	pGPIO->GPIO_DEN SET_BIT( I2C_SDA_PIN_NUM );
+	
 	pGPIO->GPIO_AFSEL SET_BIT( I2C_SCL_PIN_NUM );							//	Step 3 of section 16.4
 	pGPIO->GPIO_AFSEL SET_BIT( I2C_SDA_PIN_NUM );
 	
@@ -154,8 +161,9 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 	
 	switch(UseAsSlave)
 	{
-		case YES:		pI2Cx->SCSR SET_BIT(1);
-								pI2Cx->SOAR |= ( I2CDeviceAddress[I2Cx - 10]<<0 );				//	Set Device Address
+		case YES:		pI2Cx->MCR SET_BIT(I2C_MCR_SFE);													//	Enable Slave Operation.
+								pI2Cx->SCSR SET_BIT(0);
+								pI2Cx->SOAR = ( I2CDeviceAddress[I2Cx - 10] );						//	Set Device Address
 								pI2Cx->SACKCTL SET_BIT(I2C_SACKCTL_OEN);									//	Enable ACK Override.
 								pI2Cx->SIMR SET_BIT(I2C_SIMR_DATA);												//	Enable Data Receive Interrupt
 								pI2Cx->SCSR SET_BIT(I2C_SCSR_DA);													//	Enable Slave Operation.
@@ -172,26 +180,20 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 
 
 
-/******************************************************************************************************************
-* @I2CInit2()																																																			*
-* @brief				- Initialize an I2C Module.																																				*
-* @pI2CHandle		- Pointer to the I2C Handle.																																			*
-* @return				- Nothing.																																												*
-******************************************************************************************************************/
-// This function will be implemented later.
+/*______________________________________________ Master Functions ______________________________________________*/
 
 
 
 /******************************************************************************************************************
 * @I2CMasterSendData()																																														*
 * @brief					-	Send data over an I2C Module in Master mode.																									*
-* @pI2CHandle			-	Pointer to the handle structure of I2C Module.																								*
+* @I2Cx						-	Name of the I2C Module.																																				*
 *	@SlaveAddress		-	Address of the device to which data should be sent.																						*
 *	@TxBuf					-	Pointer to the data buffer.																																		*
 *	@Len						-	Length of the data (in bytes), i.e., the no. of 8 bit packets that are to be sent.						*
-* @return					-	Error Code ( 1 if transmission error has occured | 0 if no error)															*
+* @return					-	Error Code (1 if transmission error has occured | 0 if no error)															*
 ******************************************************************************************************************/
-uint8_t I2CMasterSendData2(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len)
+uint8_t I2CMasterSendData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, uint8_t Len)
 {
 	// Verify the steps from figure 16-10 (Pg. 1010)
 	I2C_reg* pI2Cx = I2CGetAddress(I2Cx);
@@ -246,19 +248,19 @@ uint8_t I2CMasterSendByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t Data)
 	I2C_reg* pI2Cx = I2CGetAddress(I2Cx);
 	
 	
-	pI2Cx->MSA &= 0xFFFFFF00;
-	pI2Cx->MSA |= SlaveAddress<<0;
-	pI2Cx->MSA |= 0x68;
+	pI2Cx->MSA &= 0xFFFFFF00;											//	Clear the bit-field of Slave Address
+	pI2Cx->MSA |= SlaveAddress<<0;								//	Write address to the Slave Address Register
 	
-	pI2Cx->MDR |= Data;
-	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) );
+	pI2Cx->MDR |= Data;														//	Write data to the Data Register
+	WaitWhileI2CisBusy(I2Cx);
 	
-	pI2Cx->MCS = 0x00000007;
+	pI2Cx->MCS = 0x00000007;											//	See figure 16-8 for this step.
 	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) && !GET_BIT(pI2Cx->MCS,I2C_MCS_CLKTO) );
 	
-	if( GET_BIT(pI2Cx->MCS, I2C_MCS_ERROR) )		return 1;			//	Check error bit and return 1 if error has occured.
+	//	Check error bit and return 1 if error has occured.
+	if( GET_BIT(pI2Cx->MCS, I2C_MCS_ERROR) || GET_BIT(pI2Cx->MCS,I2C_MCS_CLKTO))		return 1;
 	
-	return 0;
+	return 0;																			//	Return 0 if no error occured.
 }
 
 
@@ -322,11 +324,11 @@ uint8_t I2CMasterRecvByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxByte)
 	pI2Cx->MSA &= 0xFFFFFF00;
 	pI2Cx->MSA |= SlaveAddress<<0;
 	
-	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) );
+	WaitWhileI2CisBusy(I2Cx);
 	
 	pI2Cx->MCS = 0x00000007;
 	
-	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) );
+	WaitWhileI2CisBusy(I2Cx);
 	if( GET_BIT(pI2Cx->MCS, I2C_MCS_ERROR) )		return 1;			//	Check error bit and return 1 if error has occured.
 	
 	RxData = pI2Cx->MDR;
@@ -346,10 +348,35 @@ uint8_t I2CMasterRecvByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxByte)
 void I2CDeInit(uint8_t I2Cx)
 {
 	SYSCTL->SRI2C SET_BIT( (I2Cx-10) );				//	Reset the I2C Module.
-	SYSCTL->SRI2C CLR_BIT( (I2Cx-10) );
+	SYSCTL->SRI2C CLR_BIT( (I2Cx-10) );				//	Clear the bit so that the peripheral doesn't always remain in reset state.
 	
-	I2CClockControl(I2Cx,DISABLE);
+	I2CClockControl(I2Cx,DISABLE);						//	Disable clock to the module to save power.
 }
+
+
+
+/*----------------------------------------------- Slave Functions -----------------------------------------------*/
+
+
+
+/**/
+uint8_t I2CSlaveRecvByte(uint8_t I2Cx)
+{
+	I2C_reg* pI2Cx = I2CGetAddress(I2Cx);
+	
+	pI2Cx->SCSR = 0x00000001;
+	
+	while( !GET_BIT(pI2Cx->SCSR, I2C_SCSR_RREQ) );
+	return pI2Cx->SDR;
+}
+void I2CSetSlaveAddress(uint8_t I2Cx, uint8_t Address)
+{
+	I2CDeviceAddress[I2Cx - 10] = Address;
+}
+
+
+
+/*---------------------------------------------- Helper Functions -----------------------------------------------*/
 
 
 
@@ -415,5 +442,16 @@ uint8_t GetSDAPin(uint8_t I2Cx)
 	}
 	
 	return I2C0_SDA_PIN;
+}
+
+/******************************************************************************************************************
+* @WaitWhileI2CisBusy()																																														*
+* @I2Cx		-	I2C Module Name.																																											*
+* @return	-	Nothing(void).																																												*
+******************************************************************************************************************/
+void WaitWhileI2CisBusy(uint8_t I2Cx)
+{
+	I2C_reg* pI2Cx = I2CGetAddress(I2Cx);
+	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) );
 }
 

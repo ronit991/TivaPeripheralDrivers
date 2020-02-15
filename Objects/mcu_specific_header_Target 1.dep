@@ -1,22 +1,22 @@
 Dependencies for Project 'mcu_specific_header', Target 'Target 1': (DO NOT MODIFY !)
-F (.\TM4C123xx.h)(0x5E38F797)()
-F (.\test.c)(0x5E3925D8)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\test.o --omf_browse .\objects\test.crf --depend .\objects\test.d)
-I (TM4C123xx.h)(0x5E38F797)
+F (.\TM4C123xx.h)(0x5E4790F1)()
+F (.\test.c)(0x5E4799E0)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\test.o --omf_browse .\objects\test.crf --depend .\objects\test.d)
+I (TM4C123xx.h)(0x5E4790F1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
-I (TM4C123xxSSI_DRIVER.h)(0x5E383CFB)
-I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
 I (GPIO_PINS.h)(0x5E385848)
-F (.\extra_space.txt)(0x5E39AC17)()
+F (.\extra_space.txt)(0x5E41858E)()
 F (.\TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)()
 F (.\TM4C123xxGPIO_DRIVER.c)(0x5E392544)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123xxgpio_driver.o --omf_browse .\objects\tm4c123xxgpio_driver.crf --depend .\objects\tm4c123xxgpio_driver.d)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
-I (TM4C123xx.h)(0x5E38F797)
+I (TM4C123xx.h)(0x5E4790F1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
-I (TM4C123xxSSI_DRIVER.h)(0x5E39B212)
-I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
 I (GPIO_PINS.h)(0x5E385848)
 F (.\nov18_01_led_test.c)(0x5DD26D42)()
 F (.\nov18_02_led_test.c)(0x5DD278E9)()
@@ -36,14 +36,14 @@ I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
 I (GPIO_PINS.h)(0x5E385848)
 F (.\dec14_00_interrupt.c)(0x5DF63CBD)()
 F (.\dec15_00_interrupt_working.c)(0x5DF63DF4)()
-F (.\TM4C123xxSSI_DRIVER.h)(0x5E39B212)()
+F (.\TM4C123xxSSI_DRIVER.h)(0x5E4189F2)()
 F (.\TM4C123xxSSI_DRIVER.c)(0x5E39B250)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123xxssi_driver.o --omf_browse .\objects\tm4c123xxssi_driver.crf --depend .\objects\tm4c123xxssi_driver.d)
-I (TM4C123xxSSI_DRIVER.h)(0x5E39B212)
-I (TM4C123xx.h)(0x5E38F797)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xx.h)(0x5E4790F1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
-I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
 I (GPIO_PINS.h)(0x5E385848)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x599EFE66)
 F (.\dec18_00__interrupt.c)(0x5E02007E)()
@@ -54,15 +54,15 @@ F (.\jan05__01_spi_tiva_to_arduino_with_commands.c)(0x5E133C17)()
 F (.\jan06__00_spi_tiva_slave.c)(0x5E133790)()
 F (.\jan06__01_spi_tiva_slave_with_command_action.c)(0x5E13405A)()
 F (.\jan12__00_spi_master_with_interrupt.c)(0x5E2097E8)()
-F (.\TM4C123xxI2C_DRIVER.c)(0x5E36B70D)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123xxi2c_driver.o --omf_browse .\objects\tm4c123xxi2c_driver.crf --depend .\objects\tm4c123xxi2c_driver.d)
-I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
-I (TM4C123xx.h)(0x5E38F797)
+F (.\TM4C123xxI2C_DRIVER.c)(0x5E4431F7)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\tm4c123xxi2c_driver.o --omf_browse .\objects\tm4c123xxi2c_driver.crf --depend .\objects\tm4c123xxi2c_driver.d)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
+I (TM4C123xx.h)(0x5E4790F1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
-I (TM4C123xxSSI_DRIVER.h)(0x5E39B212)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
 I (GPIO_PINS.h)(0x5E385848)
-F (.\TM4C123xxI2C_DRIVER.h)(0x5E36B473)()
+F (.\TM4C123xxI2C_DRIVER.h)(0x5E442A3B)()
 F (.\Jan19__00_i2c_build_test.c)(0x5E2449F0)()
 F (.\Jan19__01_i2c_send_byte_test.c)(0x5E36AA26)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\jan19__01_i2c_send_byte_test.o --omf_browse .\objects\jan19__01_i2c_send_byte_test.crf --depend .\objects\jan19__01_i2c_send_byte_test.d)
 I (TM4C123xx.h)(0x5E36AD13)
@@ -83,12 +83,12 @@ I (GPIO_PINS.h)(0x5E36B0D4)
 F (.\GPIO_PINS.h)(0x5E385848)()
 F (.\GPIO_PINS.c)(0x5E39272C)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\gpio_pins.o --omf_browse .\objects\gpio_pins.crf --depend .\objects\gpio_pins.d)
 I (GPIO_PINS.h)(0x5E385848)
-I (TM4C123xx.h)(0x5E38F797)
+I (TM4C123xx.h)(0x5E4790F1)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
-I (TM4C123xxSSI_DRIVER.h)(0x5E39B212)
-I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
 F (.\Feb03__01_spi_test_master.c)(0x5E39A04A)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\feb03__01_spi_test_master.o --omf_browse .\objects\feb03__01_spi_test_master.crf --depend .\objects\feb03__01_spi_test_master.d)
 I (TM4C123xx.h)(0x5E36AD13)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
@@ -161,6 +161,22 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
 I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
 I (TM4C123xxSSI_DRIVER.h)(0x5E39B212)
 I (TM4C123xxI2C_DRIVER.h)(0x5E36B473)
+I (GPIO_PINS.h)(0x5E385848)
+F (.\Feb12__01_i2c_master_send.c)(0x5E4428AE)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\feb12__01_i2c_master_send.o --omf_browse .\objects\feb12__01_i2c_master_send.crf --depend .\objects\feb12__01_i2c_master_send.d)
+I (TM4C123xx.h)(0x5E41861A)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
+I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
+I (GPIO_PINS.h)(0x5E385848)
+F (.\Feb12__02_i2c_slave_receive.c)(0x5E44292F)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\feb12__02_i2c_slave_receive.o --omf_browse .\objects\feb12__02_i2c_slave_receive.crf --depend .\objects\feb12__02_i2c_slave_receive.d)
+I (TM4C123xx.h)(0x5E41861A)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599EFE66)
+I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x599EFE64)
+I (TM4C123xxGPIO_DRIVER.h)(0x5E3921F9)
+I (TM4C123xxSSI_DRIVER.h)(0x5E4189F2)
+I (TM4C123xxI2C_DRIVER.h)(0x5E442A3B)
 I (GPIO_PINS.h)(0x5E385848)
 F (RTE\Device\TM4C123GH6PM\startup_TM4C123.s)(0x51B6B2CE)(--cpu Cortex-M4.fp --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123--pd "__UVISION_VERSION SETA 526" --pd "_RTE_ SETA 1" --pd "TM4C123GH6PM SETA 1"--list .\listings\startup_tm4c123.lst --xref -o .\objects\startup_tm4c123.o --depend .\objects\startup_tm4c123.d)
 F (RTE\Device\TM4C123GH6PM\system_TM4C123.c)(0x550A34A2)(--c99 --gnu -c --cpu Cortex-M4.fp -D__EVAL -g -O0 --apcs=interwork --split_sections-I.\RTE\_Target_1-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include-IC:\Keil_v5\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C123-D__UVISION_VERSION="526" -D_RTE_ -DTM4C123GH6PM-o .\objects\system_tm4c123.o --omf_browse .\objects\system_tm4c123.crf --depend .\objects\system_tm4c123.d)

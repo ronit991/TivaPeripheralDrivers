@@ -1,6 +1,6 @@
 --cpu=Cortex-M4.fp
+".\objects\test.o"
 ".\objects\tm4c123xxgpio_driver.o"
-".\objects\idle.o"
 ".\objects\tm4c123xxssi_driver.o"
 ".\objects\tm4c123xxi2c_driver.o"
 ".\objects\gpio_pins.o"
