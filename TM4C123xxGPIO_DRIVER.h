@@ -50,6 +50,12 @@
 #define Eight_mA			2
 
 //	GPIO Pull-Up, Pull-Down, and Open Drain configuration
+#define Input							0
+#define InputPullUp				1
+#define InputPullDown			2
+#define Output						3
+#define OutputOpenDrain		4
+
 #define PullUp				0
 #define PullDn				1
 #define OpenDr				2
@@ -84,11 +90,11 @@
 *	11. ReadFromPort()				-		Read data from a GPIO port																												*
 ******************************************************************************************************************/
 void	GPIO_ClockControl( uint8_t GPIO_Port, uint8_t Clk_En);
-void	GPIO_Init( uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger);
+void	GPIO_Init(uint8_t pin, uint8_t ioMode, uint8_t pinMode, uint8_t DriveStrength, uint8_t Trigger);
 void	GPIO_DeInit( uint8_t GPIO_PORT);
 
-void	DigitalPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
-void	AnalogPin( uint8_t pin, uint8_t IOmode, uint8_t opType);
+void	DigitalPin( uint8_t pin, uint8_t IOmode);
+void	AnalogPin( uint8_t pin, uint8_t IOmode);
 void	InterruptPin( uint8_t pin, uint8_t triggerMode);
 
 void	WriteToPin( uint8_t pin, uint8_t Value);

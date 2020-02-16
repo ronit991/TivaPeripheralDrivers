@@ -1,6 +1,6 @@
 #include "TM4C123xx.h"
 
-#define Hello (uint8_t)0x69
+#define Hello (uint8_t)0xC3
 #define SlaveAddress (uint8_t)0x68
 
 void delay(void)
@@ -11,6 +11,7 @@ void delay(void)
 int main(void)
 {
 	UseLEDs();
+	TurnOn(LED_GREEN);
 	I2CInit(I2C0, I2C_SPEED_MODE_STD, 100000, I2C_AUTO_ACK_ENABLE, NO);
 	uint8_t error = 0, preverror = 0;
 	
@@ -33,5 +34,6 @@ int main(void)
 		}
 		
 		delay();
+		blink(LED_BLUE);
 	}
 }

@@ -115,10 +115,9 @@ void	GPIO_ClockControl(uint8_t GPIOPort, uint8_t ClkEn)
 *	@GPIO_Init																																																			*
 *	@brief					- This function is used to Initialize/Configure a GPIO Pin.																			*
 *	@pin						-	Pin Number.																																										*
-*	@Dir						-	Direction (In/Out).																																						*
+*	@ioMode					-	Direction (In/Out), and Pin Type (Pull Up, Pull Down, Open Drain).														*
 *	@AltFn					-	Alternate Function Number.																																		*
-*	@OpType					-	Output Mode Type ( Pull Up, Pull Down, Open Drain ).																					*
-*	@Mode						-	Pin Mode ( Analog / Digital ).																																*
+*	@pinMode				-	Pin Mode ( Analog / Digital ).																																*
 *	@DriveStrength	- Drive Strength ( 2mA, 4mA, 8mA ).																															*
 * @Trigger				-	Interrupt Trigger Mode ( Rising/Falling/Both Edge trigger or High/Low Level trigger ).				*
 * @return					-	Nothing (void).																																								*
@@ -134,7 +133,7 @@ void	GPIO_ClockControl(uint8_t GPIOPort, uint8_t ClkEn)
 *										7. Configure type, event, and mask for interrupt.																							*
 * 									Refer to section 10.3(Pg 656) of datasheet for detailed information on all these steps.				*
 ******************************************************************************************************************/
-void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t DriveStrength, uint8_t Trigger)
+void	GPIO_Init(uint8_t pin, uint8_t ioMode, uint8_t pinMode, uint8_t DriveStrength, uint8_t Trigger)
 {
 	GPIO_reg* pGPIO =		getPortAddr(pin,APB_BUS);		//	Pointer to the GPIO port.
 	uint8_t GPIO_Port = getPortName(pin);						//	Name of the GPIO port.
@@ -143,11 +142,25 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t D
 	//	Step1:	Enable Clock.
 	GPIO_ClockControl(GPIO_Port, ENABLE);
 	
-	//	Step2:	Set pin direction by setting or clearing appropriate bits in the GPIODIR register.
-	switch(Dir)
+	//	Step2,5:	Set pin direction, and mode by setting/clearing appropriate bits in the GPIODIR and GPIO(PUR/PDR/ODR) registers.
+	switch(ioMode)
 	{
-		case OUT:		pGPIO->GPIO_DIR SET_BIT(PinNumber);				break;
-		case IN:		pGPIO->GPIO_DIR CLR_BIT(PinNumber);				break;
+		case OutputOpenDrain:			pGPIO->GPIO_ODR	SET_BIT( PinNumber );
+															pGPIO->GPIO_DIR SET_BIT( PinNumber );
+															break;
+		case Output:							pGPIO->GPIO_ODR	CLR_BIT( PinNumber );
+															pGPIO->GPIO_DIR SET_BIT( PinNumber );
+															break; 
+		case InputPullUp:					pGPIO->GPIO_PUR	SET_BIT( PinNumber );
+															pGPIO->GPIO_DIR CLR_BIT(PinNumber);
+															break;
+		case InputPullDown:				pGPIO->GPIO_PDR	SET_BIT( PinNumber );
+															pGPIO->GPIO_DIR CLR_BIT(PinNumber);
+															break;
+		case Input:								pGPIO->GPIO_PUR	CLR_BIT( PinNumber );
+															pGPIO->GPIO_PDR	CLR_BIT( PinNumber );
+															pGPIO->GPIO_DIR CLR_BIT(PinNumber);
+															break;
 	}
 	
 	
@@ -168,24 +181,13 @@ void	GPIO_Init(uint8_t pin, uint8_t Dir, uint8_t OpType, uint8_t Mode, uint8_t D
 		case Four_mA	:		pGPIO->GPIO_DR4R SET_BIT( PinNumber );		break;
 		case Eight_mA	:		pGPIO->GPIO_DR8R SET_BIT( PinNumber );		break;
 	}
-	
-	/****************************************************************************************************************
-	*	Step 5:	Configure Pull Up/Down | Open Drain mode																															*
-	*					Set the pins to have Pull Up/Down or Open Drain functionality by setting the appropriate bits in the	*
-	*					GPIO(PUR/PDR/ODR) registers.																																					*
-	****************************************************************************************************************/
-	switch(OpType)
-	{
-		case PullUp	:			pGPIO->GPIO_PUR	SET_BIT( PinNumber );			break;
-		case PullDn	:			pGPIO->GPIO_PDR	SET_BIT( PinNumber );			break;
-		case OpenDr	:			pGPIO->GPIO_ODR	SET_BIT( PinNumber );			break;
-	}
+
 	
 	/****************************************************************************************************************
 	*	Step 6:	Configure Pin Mode (Analog/Digital)																																		*
 	*					Set the appropriate bit in GPIO(DEN/AMSEL) registers to enable digital/analog function for the pin.		*
 	****************************************************************************************************************/
-	switch(Mode)
+	switch(pinMode)
 	{
 		case Digital:			pGPIO->GPIO_DEN		SET_BIT( PinNumber );		break;
 		case Analog	:			pGPIO->GPIO_AMSEL	SET_BIT( PinNumber );		break;
@@ -373,9 +375,9 @@ void ToggleGPIOPin(uint8_t pin)
 *	@opType				-	Pull Up, Pull Down, or Open Drain mode.																													*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
+void DigitalPin(uint8_t pin, uint8_t IOmode)
 {
-	GPIO_Init(pin,IOmode,opType,Digital,Eight_mA,NoInterrupt);
+	GPIO_Init(pin, IOmode, Digital, Eight_mA, NoInterrupt);
 }
 
 
@@ -388,9 +390,9 @@ void DigitalPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
 *	@opType				-	Pull Up, Pull Down, or Open Drain mode.																													*
 * @return				-	Nothing (void).																																									*
 ******************************************************************************************************************/
-void	AnalogPin(uint8_t pin, uint8_t IOmode, uint8_t opType)
+void	AnalogPin(uint8_t pin, uint8_t IOmode)
 {
-	GPIO_Init(pin, IOmode, opType, Analog, Eight_mA, NoInterrupt);
+	GPIO_Init(pin, IOmode, Analog, Eight_mA, NoInterrupt);
 }
 
 
@@ -408,7 +410,7 @@ void	InterruptPin(uint8_t pin, uint8_t triggerMode)
 	uint8_t PinNumber = getPinNumber(pin);
 	
 	// Initialize the given pin with the specified interrupt trigger mode.
-	GPIO_Init(pin, IN, PullUp, Digital, Eight_mA, triggerMode);
+	GPIO_Init(pin, Input, Digital, Eight_mA, triggerMode);
 	
 	/****************************************************************************************************************
 	*	Enable interrupt reception on the corresponding GPIO port by setting the appropriate bit in the NVIC Enable		*
@@ -436,7 +438,7 @@ void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
 	uint8_t PortName = getPortName(pin);
 	uint8_t PinNumber = getPinNumber(pin);
 
-	GPIO_Init(pin, IN, PullUp, Digital, Eight_mA, triggerMode);
+	GPIO_Init(pin, Input, Digital, Eight_mA, triggerMode);
 	
 	/****************************************************************************************************************
 	*	Specify the address of the ISR, and Enable the interrupt by setting the appropriate bit in the NVIC Enable		*

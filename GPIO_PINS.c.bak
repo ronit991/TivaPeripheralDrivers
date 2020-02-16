@@ -288,12 +288,12 @@ uint8_t getPinNumber(uint8_t pin)
 *	@UseButtons()		-	Initialize on-board buttons as Input (pulled up) pins.																				*
 * @ReadButtons()	-	Read the state of on-board buttons. (This function is not working properly)										*
 ******************************************************************************************************************/
-static void delay_for_blink(void);		// see definition below;
+static void delay_for_blink(void);		// see definition below
 void UseLEDs(void)
 {
-	DigitalPin(LED_RED,OUT,PullDn);
-	DigitalPin(LED_BLUE,OUT,PullDn);
-	DigitalPin(LED_GREEN,OUT,PullDn);
+	DigitalPin(LED_RED,Output);
+	DigitalPin(LED_BLUE,Output);
+	DigitalPin(LED_GREEN,Output);
 }
 
 

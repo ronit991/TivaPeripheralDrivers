@@ -135,6 +135,18 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 	pGPIO->GPIO_PCTL |= (0x3<<(4*I2C_SDA_PIN_NUM));
 	
 	pI2Cx->MCR SET_BIT(I2C_MCR_MFE);													//	Step 6 of section 16.4
+	switch(UseAsSlave)
+	{
+		case YES:		pI2Cx->MCR SET_BIT(I2C_MCR_SFE);													//	Enable Slave Operation.
+								pI2Cx->SOAR = ( I2CDeviceAddress[I2Cx - 10] );						//	Set Device Address
+								//pI2Cx->SACKCTL SET_BIT(I2C_SACKCTL_OEN);									//	Enable ACK Override.
+								pI2Cx->SIMR SET_BIT(I2C_SIMR_DATA);												//	Enable Data Receive Interrupt
+								break;
+		case NO:		pI2Cx->MCR CLR_BIT(I2C_MCR_SFE);
+								pI2Cx->SCSR CLR_BIT(1);
+								break;
+	}
+	
 	
 	/*Step7 : Set desired speed mode & clock speed*/
 	switch(SpeedMode)																					//	Enable/Disable High speed mode
@@ -157,17 +169,6 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 	{
 		case I2C_AUTO_ACK_ENABLE:		pI2Cx->MCS SET_BIT( I2C_MCS_ACK );
 		case I2C_AUTO_ACK_DISABLE:	pI2Cx->MCS CLR_BIT( I2C_MCS_ACK );
-	}
-	
-	switch(UseAsSlave)
-	{
-		case YES:		pI2Cx->MCR SET_BIT(I2C_MCR_SFE);													//	Enable Slave Operation.
-								pI2Cx->SCSR SET_BIT(I2C_SCSR_DA);													//	Enable Slave Operation.
-								pI2Cx->SOAR = ( I2CDeviceAddress[I2Cx - 10] );						//	Set Device Address
-								pI2Cx->SACKCTL SET_BIT(I2C_SACKCTL_OEN);									//	Enable ACK Override.
-								pI2Cx->SIMR SET_BIT(I2C_SIMR_DATA);												//	Enable Data Receive Interrupt
-								break;
-		case NO:		pI2Cx->SCSR CLR_BIT(1);			break;
 	}
 	
 	
@@ -201,7 +202,7 @@ uint8_t I2CMasterSendData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* TxBuf, ui
 	pI2Cx->MSA |= ( SlaveAddress<<0 );
 	
 	uint8_t Data = *TxBuf;
-	pI2Cx->MDR |= Data;
+	pI2Cx->MDR = Data;
 	
 	while( GET_BIT(pI2Cx->MCS,I2C_MCS_BUSY) );
 	
@@ -249,7 +250,7 @@ uint8_t I2CMasterSendByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t Data)
 	pI2Cx->MSA &= 0xFFFFFF00;											//	Clear the bit-field of Slave Address
 	pI2Cx->MSA |= SlaveAddress<<0;								//	Write address to the Slave Address Register
 	
-	pI2Cx->MDR |= Data;														//	Write data to the Data Register
+	pI2Cx->MDR = Data;														//	Write data to the Data Register
 	WaitWhileI2CisBusy(I2Cx);
 	
 	pI2Cx->MCS = 0x00000007;											//	See figure 16-8 for this step.
@@ -361,11 +362,15 @@ void I2CDeInit(uint8_t I2Cx)
 uint8_t I2CSlaveRecvByte(uint8_t I2Cx)
 {
 	I2C_reg* pI2Cx = I2CGetAddress(I2Cx);
+	uint8_t ReceivedData;
 	
 	pI2Cx->SCSR = 0x00000001;
 	
-	while( !GET_BIT(pI2Cx->SCSR, I2C_SCSR_RREQ) );
-	return pI2Cx->SDR;
+	//while( !GET_BIT(pI2Cx->SCSR, I2C_SCSR_RREQ) );
+	ReceivedData = pI2Cx->SDR;
+	pI2Cx->SCSR = 0x00000000;
+	
+	return ReceivedData;
 }
 void I2CSetSlaveAddress(uint8_t I2Cx, uint8_t Address)
 {

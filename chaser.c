@@ -19,20 +19,23 @@ int main(void)
 	DigitalPin(PB7, Output);
 	
 	GPIO_reg* pGPIOx = GPIO_B_P;
-	uint8_t Reg = 3;
-	
-	pGPIOx->GPIO_DATA = 0x01;			delay();
-	pGPIOx->GPIO_DATA = 0x03;			delay();
-	pGPIOx->GPIO_DATA = 0x06;			delay();
-	pGPIOx->GPIO_DATA = 0x0C;			delay();
-	pGPIOx->GPIO_DATA = 0x19;			delay();
-	
+	uint8_t Reg = 1;
 	while(1)
 	{
-		pGPIOx->GPIO_DATA = 0x33;			delay();
-		pGPIOx->GPIO_DATA = 0x66;			delay();
-		pGPIOx->GPIO_DATA = 0xCC;			delay();
-		pGPIOx->GPIO_DATA = 0x99;			delay();
+		for(int i = 0; i<8; i++)
+		{
+			pGPIOx->GPIO_DATA_BITS[Reg] = 0xFF;
+			Reg *= 2;
+			delay();
+		}
+		Reg = 1;
+		for(int i = 0; i<8; i++)
+		{
+			pGPIOx->GPIO_DATA_BITS[Reg] = 0x00;
+			Reg *= 2;
+			delay();
+		}
+		Reg = 1;
 	}
 	return 0;
 }

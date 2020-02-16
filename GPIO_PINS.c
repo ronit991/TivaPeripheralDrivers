@@ -291,9 +291,9 @@ uint8_t getPinNumber(uint8_t pin)
 static void delay_for_blink(void);		// see definition below
 void UseLEDs(void)
 {
-	DigitalPin(LED_RED,OUT,PullDn);
-	DigitalPin(LED_BLUE,OUT,PullDn);
-	DigitalPin(LED_GREEN,OUT,PullDn);
+	DigitalPin(LED_RED,Output);
+	DigitalPin(LED_BLUE,Output);
+	DigitalPin(LED_GREEN,Output);
 }
 
 
@@ -349,8 +349,8 @@ void blink(uint8_t pin)
 
 void UseButtons(void)
 {
-	DigitalPin(USER_SW1,IN,PullUp);
-	DigitalPin(USER_SW2,IN,PullUp);
+	DigitalPin(USER_SW1, InputPullUp);
+	DigitalPin(USER_SW2, InputPullUp);
 }
 
 uint8_t ReadButtons(void)

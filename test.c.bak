@@ -2,40 +2,37 @@
 
 void delay(void)
 {
-	for(unsigned int d = 0; d<100000; d++);
+	for(unsigned int d = 0; d<1000000; d++);
 }
 
 int main(void)
 {
 	UseLEDs();
 	blink(LED_RED);
-	DigitalPin(PB0, OUT, PullDn);
-	DigitalPin(PB1, OUT, PullDn);
-	DigitalPin(PB2, OUT, PullDn);
-	DigitalPin(PB3, OUT, PullDn);
-	DigitalPin(PB4, OUT, PullDn);
-	DigitalPin(PB5, OUT, PullDn);
-	DigitalPin(PB6, OUT, PullDn);
-	DigitalPin(PB7, OUT, PullDn);
+	DigitalPin(PB0, Output);
+	DigitalPin(PB1, Output);
+	DigitalPin(PB2, Output);
+	DigitalPin(PB3, Output);
+	DigitalPin(PB4, Output);
+	DigitalPin(PB5, Output);
+	DigitalPin(PB6, Output);
+	DigitalPin(PB7, Output);
 	
 	GPIO_reg* pGPIOx = GPIO_B_P;
-	uint8_t Reg = 1;
+	uint8_t Reg = 3;
+	
+	pGPIOx->GPIO_DATA = 0x01;			delay();
+	pGPIOx->GPIO_DATA = 0x03;			delay();
+	pGPIOx->GPIO_DATA = 0x06;			delay();
+	pGPIOx->GPIO_DATA = 0x0C;			delay();
+	pGPIOx->GPIO_DATA = 0x19;			delay();
+	
 	while(1)
 	{
-		for(int i = 0; i<8; i++)
-		{
-			pGPIOx->GPIO_DATA_BITS[Reg] = 0xFF;
-			Reg *= 2;
-			delay();
-		}
-		Reg = 1;
-		for(int i = 0; i<8; i++)
-		{
-			pGPIOx->GPIO_DATA_BITS[Reg] = 0x00;
-			Reg *= 2;
-			delay();
-		}
-		Reg = 1;
+		pGPIOx->GPIO_DATA = 0x33;			delay();
+		pGPIOx->GPIO_DATA = 0x66;			delay();
+		pGPIOx->GPIO_DATA = 0xCC;			delay();
+		pGPIOx->GPIO_DATA = 0x99;			delay();
 	}
 	return 0;
 }

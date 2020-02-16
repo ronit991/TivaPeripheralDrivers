@@ -71,7 +71,7 @@
 #define SSI2 8
 #define SSI3 9
 
-// 3 - Inter Integrated Circuit (I2C) Communication Interface
+// 3 - Inter Integrated Circuit (I2C) Interface
 #define I2C0 10
 #define I2C1 11
 #define I2C2 12
@@ -619,11 +619,12 @@ typedef struct
 	__vo uint32_t MICR;								// Master Interrupt Clear
 	__vo uint32_t MCR;								// Master Configuration
 	__vo uint32_t MCLKOCNT;						// Master Clock Low Timeout Count
+	__vo uint32_t	RESERVED6_1;
 	__vo uint32_t MBMON;							// Master Bus Monitor
-	__vo uint8_t	RESERVED6_1[8];
+	__vo uint32_t	RESERVED6_2[2];
 	__vo uint32_t MCR2;								// Master Configuration 2
 	
-	__vo uint8_t	RESERVED6_2[1988];
+	__vo uint32_t	RESERVED6_3[497];
 	
 	/* I2C Slave*/
 	__vo uint32_t SOAR;								// Slave Own Address
@@ -636,7 +637,7 @@ typedef struct
 	__vo uint32_t SOAR2;							// Slave Own Address 2
 	__vo uint32_t SACKCTL;						// Slave ACK Control
 	
-	__vo uint8_t	RESERVED6_3[1948];
+	__vo uint32_t	RESERVED6_4[487];
 	
 	/* I2C Control and Status*/
 	__vo uint32_t PP;									// Peripheral Properties
@@ -650,6 +651,101 @@ typedef struct
 #define pI2C1					( (I2C_reg*) I2C1_BASE_ADDRESS )
 #define pI2C2					( (I2C_reg*) I2C2_BASE_ADDRESS )
 #define pI2C3					( (I2C_reg*) I2C3_BASE_ADDRESS )
+
+
+
+/******************************************************************************************************************
+*																									UART MODULES																										*
+******************************************************************************************************************/
+
+//	5.1 Base Addresses
+
+#define UART0_BASE_ADDRESS			0x4000C000U
+#define UART1_BASE_ADDRESS			0x4000D000U
+#define UART2_BASE_ADDRESS			0x4000E000U
+#define UART3_BASE_ADDRESS			0x4000F000U
+#define UART4_BASE_ADDRESS			0x40010000U
+#define UART5_BASE_ADDRESS			0x40011000U
+#define UART6_BASE_ADDRESS			0x40012000U
+#define UART7_BASE_ADDRESS			0x40013000U
+
+
+//	5.2 Clock Enable and Disable Macros
+
+#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
+#define UART1_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<1) )
+#define UART2_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<2) )
+#define UART3_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<3) )
+#define UART4_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<4) )
+#define UART5_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<5) )
+#define UART6_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<6) )
+#define UART7_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<7) )
+
+#define UART0_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<0) )
+#define UART1_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<1) )
+#define UART2_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<2) )
+#define UART3_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<3) )
+#define UART4_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<4) )
+#define UART5_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<5) )
+#define UART6_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<6) )
+#define UART7_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<7) )
+
+
+//	5.3 Register Definition
+
+typedef struct
+{
+	__vo uint32_t DR;											//	DATA Register
+	__vo uint32_t RSR_ECR;								//	Receive Status / Error Clear
+	__vo uint32_t	RESERVED7_1[4];
+	__vo uint32_t FR;											//	Flag Register
+	__vo uint32_t	RESERVED7_2;
+	__vo uint32_t ILPR;										//	IrDA Low-Power Register
+	__vo uint32_t IBRD;										//	Integer Baud Rate Divisor
+	__vo uint32_t FBRD;										//	Fractional Baud Rate Divisior
+	__vo uint32_t LCRH;										//	Line Control
+	__vo uint32_t CTL;										//	Control
+	__vo uint32_t IFLS;										//	Interrupt FIFO Level Select
+	__vo uint32_t IM;											//	Interrupt Mask
+	__vo uint32_t RIS;										//	Raw Interrupt Status
+	__vo uint32_t MIS;										//	Masked Interrupt Status
+	__vo uint32_t ICR;										//	Interrupt Clear Register
+	__vo uint32_t DMACTL;									//	DMA Control
+	__vo uint32_t	RESERVED7_3[22];
+	__vo uint32_t _9BITADDR;							//	9 Bit Self Address
+	__vo uint32_t _9BITAMASK;							//	9-Bit Self Address Mask
+	__vo uint32_t	RESERVED7_4[965];
+	__vo uint32_t PP;											//	Peripheral Properties
+	__vo uint32_t CC;											//	Clock Configuration
+	__vo uint32_t	RESERVED7_5;
+	
+	/* Registers Defined below are READ-ONLY */
+	__vo uint32_t PeriphID4;							//	Peripheral Identification 4
+	__vo uint32_t PeriphID5;							//	Peripheral Identification 5
+	__vo uint32_t PeriphID6;							//	Peripheral Identification 6
+	__vo uint32_t PeriphID7;							//	Peripheral Identification 7
+	__vo uint32_t PeriphID0;							//	Peripheral Identification 0
+	__vo uint32_t PeriphID1;							//	Peripheral Identification 1
+	__vo uint32_t PeriphID2;							//	Peripheral Identification 2
+	__vo uint32_t PeriphID3;							//	Peripheral Identification 3
+	
+	__vo uint32_t PCellID4;								//	Prime Cell Identification 0
+	__vo uint32_t PCellID1;								//	Prime Cell Identification 1
+	__vo uint32_t PCellID2;								//	Prime Cell Identification 2
+	__vo uint32_t PCellID3;								//	Prime Cell Identification 3
+	
+}UART_Reg;
+
+
+//	5.4 Module Access Pointers
+#define pUART0					( (UART_Reg*) UART0_BASE_ADDRESS )
+#define pUART1					( (UART_Reg*) UART1_BASE_ADDRESS )
+#define pUART2					( (UART_Reg*) UART2_BASE_ADDRESS )
+#define pUART3					( (UART_Reg*) UART3_BASE_ADDRESS )
+#define pUART4					( (UART_Reg*) UART4_BASE_ADDRESS )
+#define pUART5					( (UART_Reg*) UART5_BASE_ADDRESS )
+#define pUART6					( (UART_Reg*) UART6_BASE_ADDRESS )
+#define pUART7					( (UART_Reg*) UART7_BASE_ADDRESS )
 
 
 
