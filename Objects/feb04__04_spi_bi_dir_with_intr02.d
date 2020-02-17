@@ -1,9 +1,0 @@
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: Feb04__04_spi_bi_dir_with_intr02.c
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: TM4C123xx.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: TM4C123xxGPIO_DRIVER.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: TM4C123xx.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: TM4C123xxSSI_DRIVER.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: TM4C123xxI2C_DRIVER.h
-.\objects\feb04__04_spi_bi_dir_with_intr02.o: GPIO_PINS.h

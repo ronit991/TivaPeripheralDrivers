@@ -1,9 +1,0 @@
-.\objects\feb12__02_i2c_slave_receive.o: Feb12__02_i2c_slave_receive.c
-.\objects\feb12__02_i2c_slave_receive.o: TM4C123xx.h
-.\objects\feb12__02_i2c_slave_receive.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\feb12__02_i2c_slave_receive.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\feb12__02_i2c_slave_receive.o: TM4C123xxGPIO_DRIVER.h
-.\objects\feb12__02_i2c_slave_receive.o: TM4C123xx.h
-.\objects\feb12__02_i2c_slave_receive.o: TM4C123xxSSI_DRIVER.h
-.\objects\feb12__02_i2c_slave_receive.o: TM4C123xxI2C_DRIVER.h
-.\objects\feb12__02_i2c_slave_receive.o: GPIO_PINS.h

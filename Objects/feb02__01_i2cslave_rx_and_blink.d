@@ -1,9 +1,0 @@
-.\objects\feb02__01_i2cslave_rx_and_blink.o: Feb02__01_I2Cslave_rx_and_blink.c
-.\objects\feb02__01_i2cslave_rx_and_blink.o: TM4C123xx.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: TM4C123xxGPIO_DRIVER.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: TM4C123xx.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: TM4C123xxSSI_DRIVER.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: TM4C123xxI2C_DRIVER.h
-.\objects\feb02__01_i2cslave_rx_and_blink.o: GPIO_PINS.h
