@@ -778,11 +778,11 @@ typedef struct
 *																					Driver and other Dependencies																						*
 *																																																									*
 ******************************************************************************************************************/
+#include "GPIO_PINS.h"
+
 #include "TM4C123xxGPIO_DRIVER.h"
 #include "TM4C123xxSSI_DRIVER.h"
 #include "TM4C123xxI2C_DRIVER.h"
-
-#include "GPIO_PINS.h"
-
+#include "TM4C123xxUART_DRIVER.h"
 
 #endif

@@ -673,15 +673,22 @@ typedef struct
 //	5.2 Clock Enable and Disable Macros
 
 #define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
+#define UART1_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<1) )
+#define UART2_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<2) )
+#define UART3_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<3) )
+#define UART4_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<4) )
+#define UART5_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<5) )
+#define UART6_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<6) )
+#define UART7_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<7) )
 
-#define UART0_PCLK_DIS()			( SYSCTL->RCGCI2C &= ~(1<<0) )
+#define UART0_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<0) )
+#define UART1_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<1) )
+#define UART2_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<2) )
+#define UART3_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<3) )
+#define UART4_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<4) )
+#define UART5_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<5) )
+#define UART6_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<6) )
+#define UART7_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<7) )
 
 
 //	5.3 Register Definition
@@ -771,11 +778,11 @@ typedef struct
 *																					Driver and other Dependencies																						*
 *																																																									*
 ******************************************************************************************************************/
+#include "GPIO_PINS.h"
+
 #include "TM4C123xxGPIO_DRIVER.h"
 #include "TM4C123xxSSI_DRIVER.h"
 #include "TM4C123xxI2C_DRIVER.h"
-
-#include "GPIO_PINS.h"
 
 
 #endif
