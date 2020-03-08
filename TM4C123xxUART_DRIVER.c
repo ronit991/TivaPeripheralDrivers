@@ -103,9 +103,9 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 	
 	uint8_t CLK_DIV = GET_BIT(pUART->CTL, UART_CTL_HSE)?8:16;
 	
-	double BRD = (SYS_CLK)/( CLK_DIV*100*BaudRateArray[BaudRate] );
+	float BRD = (SYS_CLK)/( CLK_DIV*100.0*BaudRateArray[BaudRate] );
 	
-	uint16_t iBRD = (uint16_t)BRD;														//	Integer Part of Baud Rate
+	uint16_t iBRD = BRD;														//	Integer Part of Baud Rate
 	uint8_t fBRD = (uint8_t)( (BRD - iBRD)*64 + 0.5 );				//	Fractional Part of Baud Rate Divisor
 	
 	//	Step Numbers written below, refer to the steps on Pg# 903.
@@ -152,6 +152,8 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 	// Step 6: Enable uDMA
 	// This will be implemented later.
 	
+	
+	pUART->LCRH SET_BIT(UART_LCRH_FEN);
 	// Step 7: Enable the UART Module
 	pUART->CTL SET_BIT(UART_CTL_UARTEN);
 }
@@ -196,7 +198,7 @@ uint8_t UARTRecvByte(uint8_t UARTx)
 	WaitWhileUARTisBusy(pUART);
 	
 	uint8_t RxData;
-	RxData = (uint8_t)(pUART->DR);
+	RxData = pUART->DR;
 	
 	return RxData;
 }
