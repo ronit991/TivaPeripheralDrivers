@@ -53,8 +53,8 @@
 *		Definitions for these can be found in TM4C123xxGPIO_DRIVER.c file																							*
 *																																																									*
 *	1. 	GPIO_ClockControl()		-		Enable/Disable clock for a GPIO port.																							*
-*	2. 	GPIO_Init()						-		Initialize a GPIO port. Use this function in your programs only if you	need a		*
-*																fine control over the drive strength of the pin.																	*
+*	2. 	GPIO_Init()						-		Initialize a GPIO pin. Use this function in your programs only if you	need a fine *
+*																control over the drive strength of the pin.																				*
 *																Otherwise use functions 4/5/6 for simplicity.																			*
 *	3. 	GPIO_DeInit()					-		Reset and turn off a GPIO port.																										*
 *	4. 	DigitalPin()					-		Initialize a GPIO pin in Digital mode with 8mA drive strength.										*

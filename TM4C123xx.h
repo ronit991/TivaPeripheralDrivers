@@ -4,7 +4,7 @@
 *																																																									*
 * This file contains base addresses of core components, base addresses of peripherals, core components' register	*
 *	definitions, peripheral register definitions, pointers to peripheral registers, and clock enable/disable macros.*
-* This file also contains some shorthands and peripheral name definitions which are used in the other files.			*
+* This file also contains some aliases and peripheral name definitions which are used in the other files.					*
 *																																																									*
 *		Things that need to be changed/improved:-																																			*
 *			<>	Change the data type of all reserved registers to uint8_t and update the array size accordingly, so			*
@@ -28,8 +28,9 @@
 * 2. GPIO Modules																																																	*
 * 3. SSI Modules																																																	*
 *	4. I2C Modules																																																	*
+*	5. UART Modules																																																	*
 *																																																									*
-*	9.	Miscellaneous macros & shorthands																																						*
+*	9.	Miscellaneous macros & aliases																																							*
 *	9.	Driver & other dependencies																																									*
 *																																																									*
 *		Each peripheral has the following sub-sections:-																															*
@@ -452,32 +453,32 @@ typedef struct
 
 typedef struct
 {
-	__vo uint32_t GPIO_DATA_BITS[255];
-	__vo uint32_t GPIO_DATA;
-	__vo uint32_t GPIO_DIR;
-	__vo uint32_t GPIO_IS;
-	__vo uint32_t GPIO_IBE;
-	__vo uint32_t GPIO_IEV;
-	__vo uint32_t GPIO_IM;
-	__vo uint32_t GPIO_RIS;
-	__vo uint32_t GPIO_MIS;
-	__vo uint32_t GPIO_ICR;
-	__vo uint32_t GPIO_AFSEL;
+	__vo uint32_t GPIO_DATA_A[255];						//	GPIO Data (Address Masked)
+	__vo uint32_t GPIO_DATA;									//	GPIO Data Register (All bits can be changed)
+	__vo uint32_t GPIO_DIR;										//	GPIO Direction Register
+	__vo uint32_t GPIO_IS;										//	GPIO Interrupt Sense Register
+	__vo uint32_t GPIO_IBE;										//	GPIO Interrupt Both Edges
+	__vo uint32_t GPIO_IEV;										//	GPIO Interrupt Event
+	__vo uint32_t GPIO_IM;										//	GPIO Interrupt Mask
+	__vo uint32_t GPIO_RIS;										//	GPIO Raw Interrupt Status
+	__vo uint32_t GPIO_MIS;										//	GPIO Masked Interrupt Status
+	__vo uint32_t GPIO_ICR;										//	GPIO Interrupt Clear
+	__vo uint32_t GPIO_AFSEL;									//	GPIO Alternate Function Select
 	__vo uint32_t RESERVED4_1[55];
-	__vo uint32_t GPIO_DR2R;
-	__vo uint32_t GPIO_DR4R;
-	__vo uint32_t GPIO_DR8R;
-	__vo uint32_t GPIO_ODR;
-	__vo uint32_t GPIO_PUR;
-	__vo uint32_t GPIO_PDR;
-	__vo uint32_t GPIO_SLR;
-	__vo uint32_t GPIO_DEN;
-	__vo uint32_t GPIO_LOCK;
-	__vo uint32_t GPIO_CR;
-	__vo uint32_t GPIO_AMSEL;
-	__vo uint32_t GPIO_PCTL;
-	__vo uint32_t GPIO_ADCCTL;
-	__vo uint32_t GPIO_DMACTL;
+	__vo uint32_t GPIO_DR2R;									//	GPIO Drive Strength - 2mA
+	__vo uint32_t GPIO_DR4R;									//	GPIO Drive Strength - 4mA
+	__vo uint32_t GPIO_DR8R;									//	GPIO Drive Strength - 8mA
+	__vo uint32_t GPIO_ODR;										//	GPIO Open Drain Register
+	__vo uint32_t GPIO_PUR;										//	GPIO Pull Up Register
+	__vo uint32_t GPIO_PDR;										//	GPIO Pull Down Register
+	__vo uint32_t GPIO_SLR;										//	GPIO Slew Rate
+	__vo uint32_t GPIO_DEN;										//	GPIO Digital Enable Register
+	__vo uint32_t GPIO_LOCK;									//	GPIO Lock Register
+	__vo uint32_t GPIO_CR;										//	GPIO Commit Register
+	__vo uint32_t GPIO_AMSEL;									//	GPIO Analog Mode Select
+	__vo uint32_t GPIO_PCTL;									//	GPIO Port Control
+	__vo uint32_t GPIO_ADCCTL;								//	GPIO ADC Control
+	__vo uint32_t GPIO_DMACTL;								//	GPIO DMA Control
 	
 	__vo uint32_t RESERVED4_2[678];
 	
@@ -670,14 +671,14 @@ typedef struct
 
 //	5.2 Clock Enable and Disable Macros
 
-#define UART0_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<0) )
-#define UART1_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<1) )
-#define UART2_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<2) )
-#define UART3_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<3) )
-#define UART4_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<4) )
-#define UART5_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<5) )
-#define UART6_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<6) )
-#define UART7_PCLK_EN()			( SYSCTL->RCGCUART |= (1<<7) )
+#define UART0_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<0) )
+#define UART1_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<1) )
+#define UART2_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<2) )
+#define UART3_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<3) )
+#define UART4_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<4) )
+#define UART5_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<5) )
+#define UART6_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<6) )
+#define UART7_PCLK_EN()				( SYSCTL->RCGCUART |= (1<<7) )
 
 #define UART0_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<0) )
 #define UART1_PCLK_DIS()			( SYSCTL->RCGCUART &= ~(1<<1) )
@@ -748,20 +749,28 @@ typedef struct
 
 
 /******************************************************************************************************************
-*																				Miscellaneous macros and shorthands																				*
+*																					Miscellaneous macros and aliases																				*
 ******************************************************************************************************************/
-#define SYS_CLK			16000000					//	System Clock Frequency (in Hz)
+#define SYS_CLK				16000000					//	System Clock Frequency (in Hz)
 
-#define ENABLE			1
-#define DISABLE			0
-#define SET					ENABLE
-#define RESET				DISABLE
-#define PIN_SET			SET
-#define PIN_RESET		RESET
-#define YES					1
-#define NO					0
-#define IN					0
-#define OUT					1
+#define ENABLE				1
+#define DISABLE				0
+#define ENABLED				ENABLE
+#define DISABLED			DISABLE
+
+#define SET						1
+#define RESET					0
+#define CLEAR					0
+#define PIN_SET				SET
+#define PIN_RESET			RESET
+#define PIN_CLEAR			CLEAR
+
+#define NO						0
+#define YES						1
+
+
+#define IN						0
+#define OUT						1
 
 #define APB_BUS	0
 #define AHB_BUS	1

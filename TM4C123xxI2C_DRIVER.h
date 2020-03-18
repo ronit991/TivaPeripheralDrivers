@@ -192,7 +192,7 @@ uint8_t I2CMasterRecvData(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxBuf, ui
 uint8_t I2CMasterRecvByte(uint8_t I2Cx, uint8_t SlaveAddress, uint8_t* RxByte);
 
 
-void I2CSetSlaveAddress(uint8_t I2Cx, uint8_t Address);
+void		I2CSetSlaveAddress(uint8_t I2Cx, uint8_t Address);
 uint8_t I2CSlaveSendData(uint8_t I2Cx, uint8_t* TxBuf, uint8_t Len);
 uint8_t I2CSlaveSendByte(uint8_t I2Cx, uint8_t Data);
 

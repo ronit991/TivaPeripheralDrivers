@@ -16,7 +16,11 @@
 
 <> Replace raw bit set/clear code with SET_BIT/CLR_BIT macros wherever applicable, in all the files.
 
-<> Implement spi transfer using interrupts.
-<> Check if microwire and TI formats for SSI are working or not.
+<> Implement spi transfer using interrupts
 <> Debug I2C APIs and get it running.
-<> 
+<> UART:-
+		->	implement fifo																		[X]
+		->	implement sequential transfer											[O]
+		->	test and debug variable length transfer APIs			[O]
+		->	get uart interrupts running												[O]
+		->	

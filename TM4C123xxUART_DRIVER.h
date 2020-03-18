@@ -119,11 +119,13 @@
 /******************************************************************************************************************
 *															Miscellaneous macros, shorthands and Global variables																*
 ******************************************************************************************************************/
-// Global Variables
-/**		@BaudRateArray
+
+/******************************************************************************************************************
+	@BaudRateArray
 	This array contains the standard UART Baud rates (divided by 100)
 	The standard baud rates are: 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200.
-	So the contents of this array are : 12, 24, 48, 96, 192, 384, 576, 1152.																			**/
+	So the contents of this array are : 12, 24, 48, 96, 192, 384, 576, 1152.
+******************************************************************************************************************/
 extern uint16_t BaudRateArray[8];
 
 // @BaudRate
@@ -152,8 +154,12 @@ extern uint16_t BaudRateArray[8];
 #define DisableHWFlowControl			DISABLE
 
 // @NoOfStopBits
-#define OneStopBit				0
-#define TwoStopBits				1
+#define OneStopBit						0
+#define TwoStopBits						1
+
+// @FIFOControl
+#define EnableFIFO						ENABLE
+#define DisableFIFO						DISABLE
 
 
 /******************************************************************************************************************
@@ -162,11 +168,11 @@ extern uint16_t BaudRateArray[8];
 *
 ******************************************************************************************************************/
 void UARTClockControl(uint8_t UARTx, uint8_t ENorDI);
-void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t ParityMode);
+void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t ParityMode, uint8_t NoOfStopBits, uint8_t FIFOControl);
 void UARTDeInit(uint8_t UARTx);
 
-void UARTSend(uint8_t UARTx, uint8_t *TxBuf, uint8_t Len);
-void UARTRecv(uint8_t UARTx, uint8_t *RxBuf, uint8_t Len);
+void UARTSend(uint8_t UARTx, uint8_t *TxBuf, int8_t Len);
+void UARTRecv(uint8_t UARTx, uint8_t *RxBuf, int8_t Len);
 
 void UARTSendByte(uint8_t UARTx, uint8_t TxData);
 uint8_t UARTRecvByte(uint8_t UARTx);

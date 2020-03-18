@@ -15,10 +15,10 @@
 
 /******************************************************************************************************************
 *	Sections in this file:-																																													*
-* 0. GPIO Pin Macros.																																															*
-* 1. User LEDs & Buttons.																																													*
+* 0. GPIO Pin Aliases.																																														*
+* 1. User LEDs & Buttons. (for TM4C123GH6PM)																																			*
 * 2. Pin number & Address resolver functions.																																			*
-* 3. Functions for on-board LEDs and Buttons.																																			*
+* 3. Functions for on-board LEDs and Buttons. (for TM4C123GH6PM)																									*
 ******************************************************************************************************************/
 
 #ifndef GPIO_PINS_H
@@ -27,7 +27,7 @@
 #include "TM4C123xx.h"
 
 
-// Section 0: GPIO Pin Macros
+// Section 0: GPIO Pin Aliases
 #define PA0 10
 #define PA1 11
 #define PA2 12

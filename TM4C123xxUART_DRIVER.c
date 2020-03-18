@@ -69,11 +69,12 @@ void UARTClockControl(uint8_t UARTx, uint8_t ENorDI)
 * @WordLength		- Length of the data bits to be sent at a time.																										*
 * @BaudRate			- Rate of data transmission.																																			*
 *	@ParityMode		-	Even/Odd/No Parity.																																							*
+*	@NoOfStopBits	-	Used to select if one stop bit is to be transmitted, or two.																		*
 *																																																									*
 *	@Note					->	See Pg No. 902 (Section 14.4) for detailed steps on Initialization and Configuration.					*
 *								->	Use standard macros defined in the UART header file for all the four variables.								*
 ******************************************************************************************************************/
-void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t ParityMode)
+void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t ParityMode, uint8_t NoOfStopBits, uint8_t FIFOControl)
 {
 	uint8_t TXPIN = UARTGetTxPin(UARTx);
 	uint8_t RXPIN = UARTGetRxPin(UARTx);
@@ -91,6 +92,7 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 	
 	pGPIO->GPIO_AFSEL |= UartPins;										// Step 3 - Section 14.4: Enable Alternate function for the UART pins.
 	pGPIO->GPIO_DR8R |= UartPins;											// Step 4 - Section 14.4: Current control for the UART pins.
+	pGPIO->GPIO_DEN	|=	UartPins;
 	
 	// Find out how exactly the slew rate is changing, and accordingly implement the next step.
 	//pGPIO->GPIO_SLR |= UartPins;											// Step 4 - Section 14.4 : Slew Rate
@@ -105,7 +107,8 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 	
 	float BRD = (SYS_CLK)/( CLK_DIV*100.0*BaudRateArray[BaudRate] );
 	
-	uint16_t iBRD = BRD;														//	Integer Part of Baud Rate
+	
+	uint16_t iBRD = BRD;																			//	Integer Part of Baud Rate
 	uint8_t fBRD = (uint8_t)( (BRD - iBRD)*64 + 0.5 );				//	Fractional Part of Baud Rate Divisor
 	
 	//	Step Numbers written below, refer to the steps on Pg# 903.
@@ -114,7 +117,7 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 	pUART->FBRD = fBRD;														//	Step 3: Write fractional part of Baud Rate Divisor
 	
 	// Step 4: Configure LCRH Register
-	// Stick Parity Select, Enable FIFOs, & Send Break fields aren't changed right now. It will be implemented later.
+	// Stick Parity Select & Send Break fields aren't changed right now. It will be implemented later.
 	switch(ParityMode)
 	{
 		case DisableParity:			pUART->LCRH CLR_BIT(UART_LCRH_PEN);
@@ -144,6 +147,18 @@ void UARTInit(uint8_t UARTx, uint8_t WordLength, uint8_t BaudRate, uint8_t Parit
 														break;
 		
 		default:								return;
+	}
+	
+	switch(NoOfStopBits)
+	{
+		case OneStopBit:		pUART->LCRH CLR_BIT(UART_LCRH_STP2);					break;
+		case TwoStopBits:		pUART->LCRH SET_BIT(UART_LCRH_STP2);					break;
+	}
+	
+	switch(FIFOControl)
+	{
+		case EnableFIFO:		pUART->LCRH SET_BIT(UART_LCRH_FEN);						break;
+		case DisableFIFO:		pUART->LCRH CLR_BIT(UART_LCRH_FEN);						break;
 	}
 	
 	// Step 5: Configure Clock Source
@@ -202,6 +217,35 @@ uint8_t UARTRecvByte(uint8_t UARTx)
 	
 	return RxData;
 }
+
+
+void UARTSend(uint8_t UARTx, uint8_t *TxBuf, int8_t Len)
+{
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	while(Len>0)
+	{
+		WaitWhileUARTisBusy(pUART);
+		
+		pUART->DR = (*TxBuf);						//	Pick data from transmit buffer and put it into data register.
+		TxBuf++;												//	Step the pointer, so that it points to the next data element.
+		Len--;
+	}
+}
+
+void UARTRecv(uint8_t UARTx, uint8_t *RxBuf, int8_t Len)
+{
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	while(Len>0)
+	{
+		WaitWhileUARTisBusy(pUART);
+		*RxBuf = (uint8_t)(pUART->DR);	//	Pick data from Data register and put it into receive buffer.
+		RxBuf++;												//	Step the pointer, so that it points to the next data element.
+		Len--;
+	}
+}
+
 /*---------------------------------------------- HELPER FUNCTIONS -----------------------------------------------*/
 
 
