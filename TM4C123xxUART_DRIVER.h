@@ -121,6 +121,29 @@
 ******************************************************************************************************************/
 
 /******************************************************************************************************************
+	@UARTTransferPending
+	Each bit of this variable corresponds to the UART of that index. A bit set in an index implies that some data
+	transfer is pending for that UART (by interrupts).
+	Ex: If bit 5 of this variable is set => UART5 has some pending data transfer.
+******************************************************************************************************************/
+extern uint8_t UARTTransferPending;
+
+
+/******************************************************************************************************************
+	@UARTTransferBuffer
+	This array stores pointer to data buffers which can be used by interrupt handlers.
+******************************************************************************************************************/
+extern uint8_t* UARTTransferBuffer[8];
+
+
+/******************************************************************************************************************
+	@UARTTransferLength
+	This array stores the lengths (in bytes) of data buffers of each UART peripheral. These are used by interrupt
+	handlers.
+******************************************************************************************************************/
+extern int8_t UARTTransferLength[8];
+
+/******************************************************************************************************************
 	@BaudRateArray
 	This array contains the standard UART Baud rates (divided by 100)
 	The standard baud rates are: 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200.
@@ -177,8 +200,11 @@ void UARTRecv(uint8_t UARTx, uint8_t *RxBuf, int8_t Len);
 void UARTSendByte(uint8_t UARTx, uint8_t TxData);
 uint8_t UARTRecvByte(uint8_t UARTx);
 
-void UARTSendIT(uint8_t UARTx, uint8_t *TxBuf, uint8_t Len);
-void UARTRecvIT(uint8_t UARTx, uint8_t *RxBuf, uint8_t Len);
+uint8_t UARTSendIT(uint8_t UARTx, uint8_t *TxBuf, uint8_t Len);
+uint8_t UARTRecvIT(uint8_t UARTx, uint8_t *RxBuf, uint8_t Len);
+void UARTSendIT_H(uint8_t UARTx);
+void UARTRecvIT_H(uint8_t UARTx);
+
 
 UART_Reg* UARTGetAddress(uint8_t UARTx);
 uint8_t UARTGetTxPin(uint8_t UARTx);
@@ -186,3 +212,21 @@ uint8_t UARTGetRxPin(uint8_t UARTx);
 void WaitWhileUARTisBusy(UART_Reg* pUARTx);
 
 #endif
+
+/*
+void UARTClockControl();				[X]
+void UARTInit();								[X]
+void UARTDeInit();							[X]
+void UARTSend();								[X]
+void UARTRecv();								[X]
+void UARTSendByte();						[X]
+uint8_t UARTRecvByte();					[X]
+void UARTSendIT();							[O]
+void UARTRecvIT();							[O]
+UART_Reg* UARTGetAddress();			[X]
+uint8_t UARTGetTxPin();					[X]
+uint8_t UARTGetRxPin();					[X]
+void WaitWhileUARTisBusy();			[X]
+
+*/
+

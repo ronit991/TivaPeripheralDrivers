@@ -17,7 +17,19 @@
 
 
 // GLOBAL VARIABLES
+
+// @BaudRateArray - This variable is used by UARTInit() function.
 uint16_t BaudRateArray[8] = {12, 24, 48, 96, 192, 384, 576, 1152};
+
+// @UARTTransferPending - This variable is used by interrupt handlers to check whether previous data transfer has
+//												been completed or not.
+uint8_t UARTTransferPending = 0b00000000;
+
+// @UARTTransferBuffer - Stores pointer to data buffers which can be used by interrupt handlers.
+uint8_t* UARTTransferBuffer[8];
+
+// @UARTTransferLength - Stores the lengths (in bytes) of data buffers of each UART peripheral.
+int8_t UARTTransferLength[8];
 
 
 
@@ -246,6 +258,72 @@ void UARTRecv(uint8_t UARTx, uint8_t *RxBuf, int8_t Len)
 	}
 }
 
+
+uint8_t UARTSendIT(uint8_t UARTx, uint8_t *TxBuf, uint8_t Len)
+{
+	uint8_t index = (UARTx - 0xE);
+	
+	if( GET_BIT(UARTTransferPending, index) )
+		return 1;
+	else
+	{
+		UARTTransferPending SET_BIT(index);
+		UARTTransferBuffer[index] = TxBuf;
+		UARTTransferLength[index] = Len;
+	}
+	
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	// configure interrupt registers here
+	pUART->IM SET_BIT( UART_IM_TX );					//	Tx Interrupt mask in UART registers.
+	
+	/*	UART #		:		0			1			2			3			4			5			6			7
+	*		INTR #		:		5			6			33		59		60		61		62		63
+	*		NVIC Reg	:		0			0			1			1			1			1			1			1
+	*		Bit #			:		5			6			1			27		28		29		30		31
+	*/
+	if(index <= 1)					NVIC->EN[0] SET_BIT( (index + 5) );
+	else if( index == 2)		NVIC->EN[1] SET_BIT( 1 );
+	else										NVIC->EN[1] SET_BIT( (index + 24) );
+	
+	
+	// done.
+	return 0;
+}
+
+uint8_t UARTRecvIT(uint8_t UARTx, uint8_t *RxBuf, uint8_t Len)
+{
+	uint8_t index = (UARTx - 0xE);
+	
+	if( GET_BIT(UARTTransferPending, index) )
+		return 1;
+	else
+	{
+		UARTTransferPending SET_BIT(index);
+		UARTTransferBuffer[index] = RxBuf;
+		UARTTransferLength[index] = Len;
+	}
+	
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	// configure interrupt registers here
+	pUART->IM SET_BIT( UART_IM_RX );					//	Rx Interrupt mask in UART registers.
+	
+	/*	UART #		:		0			1			2			3			4			5			6			7
+	*		INTR #		:		5			6			33		59		60		61		62		63
+	*		NVIC Reg	:		0			0			1			1			1			1			1			1
+	*		Bit #			:		5			6			1			27		28		29		30		31
+	*/
+	if(index <= 1)					NVIC->EN[0] SET_BIT( (index + 5) );
+	else if( index == 2)		NVIC->EN[1] SET_BIT( 1 );
+	else										NVIC->EN[1] SET_BIT( (index + 24) );
+	
+	
+	// done.
+	return 0;
+}
+
+
 /*---------------------------------------------- HELPER FUNCTIONS -----------------------------------------------*/
 
 
@@ -278,7 +356,7 @@ UART_Reg* UARTGetAddress(uint8_t UARTx)
 
 /******************************************************************************************************************
 * @UARTGetTxPin()																																																	*
-* @UARTx	-	Name of the UART Module whose address is required.																										*
+* @UARTx	-	Name of the UART Module whose Tx Pin is required.																											*
 * @return	- Tx Pin of the UART Module.																																						*
 *																																																									*
 * @Note		- Returns PA1(Tx Pin of UART0) if incorrect name is given to the function.															*
@@ -301,11 +379,11 @@ uint8_t UARTGetTxPin(uint8_t UARTx)
 }
 
 /******************************************************************************************************************
-* @UARTGetTxPin()																																																	*
-* @UARTx	-	Name of the UART Module whose address is required.																										*
-* @return	- Tx Pin of the UART Module.																																						*
+* @UARTGetRxPin()																																																	*
+* @UARTx	-	Name of the UART Module whose Rx Pin is required.																											*
+* @return	- Rx Pin of the UART Module.																																						*
 *																																																									*
-* @Note		- Returns PA1(Tx Pin of UART0) if incorrect name is given to the function.															*
+* @Note		- Returns PA0(Rx Pin of UART0) if incorrect name is given to the function.															*
 ******************************************************************************************************************/
 uint8_t UARTGetRxPin(uint8_t UARTx)
 {
@@ -334,4 +412,64 @@ uint8_t UARTGetRxPin(uint8_t UARTx)
 void WaitWhileUARTisBusy(UART_Reg* pUARTx)
 {
 	while( GET_BIT(pUARTx->FR, UART_FR_BUSY) );
+}
+
+
+
+/******************************************************************************************************************
+* @UARTSendIT_H()																																																	*
+*	@brief			-	Takes data from buffer and sends it over an UART module whenever a TX interrupt occurs.						*
+* @UARTx			-	Name of the UART Module.																																					*
+* @return			-	Nothing(void).																																										*
+*																																																									*
+*	@Note				-	Buffer address and length are stored in UARTTransferBuffer & UARTTransferLength[] variables.			*
+******************************************************************************************************************/
+void UARTSendIT_H(uint8_t UARTx)
+{
+	uint8_t index = (UARTx - 0xE);
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	if( UARTTransferLength[index] <= 0 )
+	{
+		pUART->IM CLR_BIT( UART_IM_TX );					//	Tx Interrupt mask in UART registers.
+		return;	// disable interrupt here.
+	}
+	else
+	{
+		uint8_t *buffer = UARTTransferBuffer[index];
+		
+		pUART->DR = ( *buffer );
+		
+		buffer++;
+		UARTTransferLength[index]--;
+	}
+}
+
+/******************************************************************************************************************
+* @UARTRecvIT_H()																																																	*
+*	@brief			-	Takes data from UART module and puts it in receive buffer, whenever data is available.						*
+* @UARTx			-	Name of the UART Module.																																					*
+* @return			-	Nothing(void).																																										*
+*																																																									*
+*	@Note				-	Buffer address and length are stored in UARTTransferBuffer & UARTTransferLength[] variables.			*
+******************************************************************************************************************/
+void UARTRecvIT_H(uint8_t UARTx)
+{
+	uint8_t index = (UARTx - 0xE);
+	UART_Reg* pUART = UARTGetAddress(UARTx);
+	
+	if( UARTTransferLength[index] <= 0 )
+	{
+		pUART->IM CLR_BIT( UART_IM_RX );					//	Tx Interrupt mask in UART registers.
+		return;	// disable interrupt here.
+	}
+	else
+	{
+		uint8_t *buffer = UARTTransferBuffer[index];
+		
+		( *buffer ) = (uint8_t)( pUART->DR );
+		
+		buffer++;
+		UARTTransferLength[index]--;
+	}
 }

@@ -416,12 +416,12 @@ void	InterruptPin(uint8_t pin, uint8_t triggerMode)
 	****************************************************************************************************************/
 	switch(PortName)
 	{
-		case GPIO_PORT_A:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOA );			break;
-		case GPIO_PORT_B:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOB );			break;
-		case GPIO_PORT_C:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOC );			break;
-		case GPIO_PORT_D:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOD );			break;
-		case GPIO_PORT_E:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOE );			break;
-		case GPIO_PORT_F:				Nvic->EN[0] SET_BIT( NVIC_EN0_GPIOF );			break;
+		case GPIO_PORT_A:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOA );			break;
+		case GPIO_PORT_B:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOB );			break;
+		case GPIO_PORT_C:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOC );			break;
+		case GPIO_PORT_D:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOD );			break;
+		case GPIO_PORT_E:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOE );			break;
+		case GPIO_PORT_F:				NVIC->EN[0] SET_BIT( NVIC_EN0_GPIOF );			break;
 	}
 }
 
