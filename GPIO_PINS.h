@@ -122,9 +122,10 @@ uint8_t getPinNumber(uint8_t pin);
 void UseLEDs(void);
 void TurnOn(uint8_t pin);
 void TurnOff(uint8_t pin);
+void blink(uint8_t pin);
+void blinkWhiteLED(void);
 void WhiteLEDon(void);
 void WhiteLEDoff(void);
-void blink(uint8_t pin);
 
 void UseButtons(void);
 uint8_t ReadButtons(void);

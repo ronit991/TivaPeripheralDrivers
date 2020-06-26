@@ -49,6 +49,7 @@
 #include<stdlib.h>
 
 #define __vo volatile
+#define __reg volatile uint32_t
 
 
 
@@ -90,7 +91,20 @@
 #define CAN0 22
 #define CAN1 23
 
-// 6 - Peripheral_6
+// 6 - General Purpose Timers
+#define Timer0 24
+#define Timer1 25
+#define Timer2 26
+#define Timer3 27
+#define Timer4 28
+#define Timer5 29
+
+#define Timer0W 30
+#define Timer1W 31
+#define Timer2W 32
+#define Timer3W 33
+#define Timer4W 34
+#define Timer5W 35
 
 
 
@@ -747,6 +761,109 @@ typedef struct
 #define pUART7					( (UART_Reg*) UART7_BASE_ADDRESS )
 
 
+
+/******************************************************************************************************************
+*																				GENERAL PURPOSE TIMER MODULE (GPTM)																				*
+******************************************************************************************************************/
+
+//	7.1 Base Addresses
+#define Timer0_BASE_ADDRESS 0x40030000
+#define Timer1_BASE_ADDRESS 0x40031000
+#define Timer2_BASE_ADDRESS 0x40032000
+#define Timer3_BASE_ADDRESS 0x40033000
+#define Timer4_BASE_ADDRESS 0x40034000
+#define Timer5_BASE_ADDRESS 0x40035000
+
+#define Timer0W_BASE_ADDRESS 0x40036000
+#define Timer1W_BASE_ADDRESS 0x40037000
+#define Timer2W_BASE_ADDRESS 0x4003C000
+#define Timer3W_BASE_ADDRESS 0x4003D000
+#define Timer4W_BASE_ADDRESS 0x4003E000
+#define Timer5W_BASE_ADDRESS 0x4003F000
+
+
+//	7.2 Clock Enable and Disable Macros
+
+#define Timer0_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<0) )
+#define Timer1_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<1) )
+#define Timer2_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<2) )
+#define Timer3_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<3) )
+#define Timer4_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<4) )
+#define Timer5_PCLK_EN() ( SYSCTL->RCGCTIMER |= (1<<5) )
+
+#define Timer0W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<0) )
+#define Timer1W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<1) )
+#define Timer2W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<2) )
+#define Timer3W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<3) )
+#define Timer4W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<4) )
+#define Timer5W_PCLK_EN() ( SYSCTL->RCGCWTIMER |= (1<<5) )
+
+
+#define Timer0_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<0) )
+#define Timer1_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<1) )
+#define Timer2_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<2) )
+#define Timer3_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<3) )
+#define Timer4_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<4) )
+#define Timer5_PCLK_DIS() ( SYSCTL->RCGCTIMER &= ~(1<<5) )
+
+#define Timer0W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<0) )
+#define Timer1W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<1) )
+#define Timer2W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<2) )
+#define Timer3W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<3) )
+#define Timer4W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<4) )
+#define Timer5W_PCLK_DIS() ( SYSCTL->RCGCWTIMER &= ~(1<<5) )
+
+
+//	7.3 Register Definition
+
+typedef struct
+{
+	__reg CFG;
+	__reg TAMR;
+	__reg TBMR;
+	__reg CTL;
+	__reg SYNC;
+	__reg RESERVED0;
+	__reg IMR;
+	__reg RIS;
+	__reg MIS;
+	__reg ICR;
+	__reg TAILR;
+	__reg TBILR;
+	__reg TAMATCHR;
+	__reg TBMATCHR;
+	__reg TAPR;
+	__reg TBPR;
+	__reg TAPMR;
+	__reg TBPMR;
+	__reg TAR;
+	__reg TBR;
+	__reg TAV;
+	__reg TBV;
+	__reg RTCPD;
+	__reg TAPS;
+	__reg TBPS;
+	__reg TAPV;
+	__reg TBPV;
+	__reg RESERVED1[981];
+	__reg PP;
+}Timer_Reg;
+
+// 7.4 Module Access Pointers
+
+#define pTimer0 ( (Timer_Reg*) Timer0_BASE_ADDRESS)
+#define pTimer1 ( (Timer_Reg*) Timer1_BASE_ADDRESS)
+#define pTimer2 ( (Timer_Reg*) Timer2_BASE_ADDRESS)
+#define pTimer3 ( (Timer_Reg*) Timer3_BASE_ADDRESS)
+#define pTimer4 ( (Timer_Reg*) Timer4_BASE_ADDRESS)
+#define pTimer5 ( (Timer_Reg*) Timer5_BASE_ADDRESS)
+
+#define pTimer0W ( (Timer_Reg*) Timer0W_BASE_ADDRESS)
+#define pTimer1W ( (Timer_Reg*) Timer1W_BASE_ADDRESS)
+#define pTimer2W ( (Timer_Reg*) Timer2W_BASE_ADDRESS)
+#define pTimer3W ( (Timer_Reg*) Timer3W_BASE_ADDRESS)
+#define pTimer4W ( (Timer_Reg*) Timer4W_BASE_ADDRESS)
+#define pTimer5W ( (Timer_Reg*) Timer5W_BASE_ADDRESS)
 
 /******************************************************************************************************************
 *																					Miscellaneous macros and aliases																				*

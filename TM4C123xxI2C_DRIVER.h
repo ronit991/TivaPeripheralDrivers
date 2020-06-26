@@ -6,8 +6,6 @@
 *	Driver APIs are also defined here.																																							*
 *																																																									*
 * @Note			-	All of the code present in the this file applies to TM4C123GH6PM microcontroller.										*
-*																																																									*
-*	@Note2		- Feel free to use, modify, and/or re-distribute this code at your will.															*
 ******************************************************************************************************************/
 
 /******************************************************************************************************************

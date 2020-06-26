@@ -437,17 +437,22 @@ void UARTSendIT_H(uint8_t UARTx)
 	else
 	{
 		uint8_t *buffer = UARTTransferBuffer[index];
+
+		while(UARTTransferLength[index] > 0)
+		{
+			WaitWhileUARTisBusy(pUART);
 		
-		pUART->DR = ( *buffer );
-		
-		buffer++;
-		UARTTransferLength[index]--;
+			pUART->DR = (*buffer);						//	Pick data from transmit buffer and put it into data register.
+			buffer++;													//	Step the pointer, so that it points to the next data element.
+			UARTTransferLength[index]--;
+		}
 	}
 }
 
 /******************************************************************************************************************
 * @UARTRecvIT_H()																																																	*
 *	@brief			-	Takes data from UART module and puts it in receive buffer, whenever data is available.						*
+*								This function needs to be called from interrupt handler.																					*
 * @UARTx			-	Name of the UART Module.																																					*
 * @return			-	Nothing(void).																																										*
 *																																																									*
@@ -458,9 +463,11 @@ void UARTRecvIT_H(uint8_t UARTx)
 	uint8_t index = (UARTx - 0xE);
 	UART_Reg* pUART = UARTGetAddress(UARTx);
 	
+	
 	if( UARTTransferLength[index] <= 0 )
 	{
-		pUART->IM CLR_BIT( UART_IM_RX );					//	Tx Interrupt mask in UART registers.
+		//pUART->IM CLR_BIT( UART_IM_RX );					//	Tx Interrupt mask in UART registers.
+		UARTTransferPending CLR_BIT(index);
 		return;	// disable interrupt here.
 	}
 	else

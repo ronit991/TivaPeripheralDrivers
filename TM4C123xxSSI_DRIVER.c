@@ -256,10 +256,10 @@ void SPIStart(uint8_t SSIx,uint8_t DeviceMode, uint8_t InterruptsNeedToBeEnabled
 		// Enable interrupt reception for the given SSI Module.
 		switch(SSIx)
 		{
-			case	SSI0:			Nvic->EN[0] |= ( 1 << NVIC_EN0_SSI0 );		 	break;
-			case	SSI1:			Nvic->EN[1] |= ( 1 << NVIC_EN1_SSI1 );		 	break;
-			case	SSI2:			Nvic->EN[1] |= ( 1 << NVIC_EN1_SSI2 );		 	break;	
-			case	SSI3:			Nvic->EN[1] |= ( 1 << NVIC_EN1_SSI3 );		 	break;
+			case	SSI0:			NVIC->EN[0] |= ( 1 << NVIC_EN0_SSI0 );		 	break;
+			case	SSI1:			NVIC->EN[1] |= ( 1 << NVIC_EN1_SSI1 );		 	break;
+			case	SSI2:			NVIC->EN[1] |= ( 1 << NVIC_EN1_SSI2 );		 	break;	
+			case	SSI3:			NVIC->EN[1] |= ( 1 << NVIC_EN1_SSI3 );		 	break;
 			default:				return;											//	Break out of the function in case of a mismatch.
 		}
 		

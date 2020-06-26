@@ -431,38 +431,38 @@ void	InterruptPin(uint8_t pin, uint8_t triggerMode)
 *																									Broken APIs																											*
 *		Below are the definitions for functions/APIs which are not in a working state yet.														*
 ******************************************************************************************************************/
-void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
-{
-	uint8_t PortName = getPortName(pin);
-	uint8_t PinNumber = getPinNumber(pin);
+//void	interruptpin(uint8_t pin, void (*isr_func)(void), uint8_t triggerMode)
+//{
+//	uint8_t PortName = getPortName(pin);
+//	uint8_t PinNumber = getPinNumber(pin);
 
-	GPIO_Init(pin, Input, Digital, Eight_mA, triggerMode);
-	
-	/****************************************************************************************************************
-	*	Specify the address of the ISR, and Enable the interrupt by setting the appropriate bit in the NVIC Enable		*
-	*	register (in our case, EN0).																																									*
-	****************************************************************************************************************/
-	switch(PortName)
-	{
-		case GPIO_PORT_A:	ExceptionHandlers->_GPIOA = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<0;
-											break;
-		case GPIO_PORT_B:	ExceptionHandlers->_GPIOB = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<1;
-											break;
-		case GPIO_PORT_C:	ExceptionHandlers->_GPIOC = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<2;
-											break;
-		case GPIO_PORT_D:	ExceptionHandlers->_GPIOD = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<3;
-											break;
-		case GPIO_PORT_E:	ExceptionHandlers->_GPIOE = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<4;
-											break;
-		case GPIO_PORT_F: ExceptionHandlers->_GPIOF = (uint32_t)isr_func;
-											Nvic->EN[0] |= 1<<30;
-											break;
-	}
-}
+//	GPIO_Init(pin, Input, Digital, Eight_mA, triggerMode);
+//	
+//	/****************************************************************************************************************
+//	*	Specify the address of the ISR, and Enable the interrupt by setting the appropriate bit in the NVIC Enable		*
+//	*	register (in our case, EN0).																																									*
+//	****************************************************************************************************************/
+//	switch(PortName)
+//	{
+//		case GPIO_PORT_A:	ExceptionHandlers->_GPIOA = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<0;
+//											break;
+//		case GPIO_PORT_B:	ExceptionHandlers->_GPIOB = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<1;
+//											break;
+//		case GPIO_PORT_C:	ExceptionHandlers->_GPIOC = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<2;
+//											break;
+//		case GPIO_PORT_D:	ExceptionHandlers->_GPIOD = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<3;
+//											break;
+//		case GPIO_PORT_E:	ExceptionHandlers->_GPIOE = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<4;
+//											break;
+//		case GPIO_PORT_F: ExceptionHandlers->_GPIOF = (uint32_t)isr_func;
+//											Nvic->EN[0] |= 1<<30;
+//											break;
+//	}
+//}
 
 

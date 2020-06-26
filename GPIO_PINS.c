@@ -345,6 +345,20 @@ void blink(uint8_t pin)
 	ToggleGPIOPin(pin);				delay_for_blink();
 }
 
+void blinkWhiteLED(void)
+{
+	WriteToPin(LED_RED, PIN_SET);
+	WriteToPin(LED_BLUE, PIN_SET);
+	WriteToPin(LED_GREEN, PIN_SET);
+	
+	delay_for_blink();
+	
+	WriteToPin(LED_RED, PIN_RESET);
+	WriteToPin(LED_BLUE, PIN_RESET);
+	WriteToPin(LED_GREEN, PIN_RESET);
+	
+	delay_for_blink();
+}
 
 
 void UseButtons(void)

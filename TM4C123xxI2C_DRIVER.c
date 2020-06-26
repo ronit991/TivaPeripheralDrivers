@@ -139,7 +139,7 @@ void I2CInit(uint8_t I2Cx, uint8_t SpeedMode, uint32_t ClkSpeed, uint8_t ACKCont
 	{
 		case YES:		pI2Cx->MCR SET_BIT(I2C_MCR_SFE);													//	Enable Slave Operation.
 								pI2Cx->SOAR = ( I2CDeviceAddress[I2Cx - 10] );						//	Set Device Address
-								//pI2Cx->SACKCTL SET_BIT(I2C_SACKCTL_OEN);									//	Enable ACK Override.
+								//pI2Cx->SACKCTL SET_BIT(I2C_SACKCTL_OEN);								//	Enable ACK Override.
 								pI2Cx->SIMR SET_BIT(I2C_SIMR_DATA);												//	Enable Data Receive Interrupt
 								break;
 		case NO:		pI2Cx->MCR CLR_BIT(I2C_MCR_SFE);
@@ -366,7 +366,7 @@ uint8_t I2CSlaveRecvByte(uint8_t I2Cx)
 	
 	pI2Cx->SCSR = 0x00000001;
 	
-	//while( !GET_BIT(pI2Cx->SCSR, I2C_SCSR_RREQ) );
+	while( !GET_BIT(pI2Cx->SCSR, I2C_SCSR_RREQ) );
 	ReceivedData = pI2Cx->SDR;
 	pI2Cx->SCSR = 0x00000000;
 	
